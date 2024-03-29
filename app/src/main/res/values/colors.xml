@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="med_grass">#229954</color>
+    <color name="pale_grass">#D4EFDF</color>
+    <color name="peri">#A4A4FF</color>
+    <color name="navy">#1B4F72</color>
+</resources>
