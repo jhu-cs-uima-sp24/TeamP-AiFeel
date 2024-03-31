@@ -2,8 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="med_grass">#229954</color>
-    <color name="pale_grass">#D4EFDF</color>
-    <color name="peri">#A4A4FF</color>
-    <color name="navy">#1B4F72</color>
+    <color name="light_gray">#E5E6E5</color>
+    <color name="pale_papaya">#FFF0D9</color>
+    <color name="peach_yellow">#FADBAD</color>
+    <color name="saffron_mango">#FFC266</color>
+    <color name="faded_red">#C44A4A</color>
 </resources>
