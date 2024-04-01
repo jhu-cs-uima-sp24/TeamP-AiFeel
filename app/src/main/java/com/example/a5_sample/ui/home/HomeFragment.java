@@ -38,8 +38,7 @@ public class HomeFragment extends Fragment {
         cntx = getActivity().getApplicationContext();
         myact = (MainActivity) getActivity();
 
-        myList = (ListView) myview.findViewById(R.id.mylist);
-        myList.setAdapter(myact.roomsAdapter);
+
         myact.roomsAdapter.notifyDataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) myview.findViewById(R.id.fab);
