@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/navigation_stats"
         android:name="com.example.a5_sample.ui.stats.StatsFragment"
-        android:label="@string/title_stats"
+        android:label="@string/title_journal"
         tools:layout="@layout/fragment_stats" />
 
 </navigation>
