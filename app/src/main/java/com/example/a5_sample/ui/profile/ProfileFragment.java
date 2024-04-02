@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,10 +23,21 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private Button btn;
-    private EditText student;
-    private EditText majors;
-    private EditText year;
-    private EditText age;
+    private TextView email;
+
+    private TextView age;
+    private ImageView userProfile;
+    private ImageView palProfile;
+
+    private TextView name;
+    private TextView gender;
+    private TextView notifications;
+    private TextView palName;
+    private TextView palAge;
+    private TextView palGender;
+
+
+
     private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,11 +49,21 @@ public class ProfileFragment extends Fragment {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // user profile
+        userProfile = binding.profilePicture;
         btn = binding.save;
-        student = binding.editTextStudent;
-        majors = binding.editTextMajors;
-        year = binding.editTextYear;
-        age = binding.editTextAge;
+        name = binding.nameDisplay;
+        email = binding.emailDisplay;
+        gender = binding.genderDisplay;
+        age = binding.ageDisplay;
+        notifications = binding.notificationsDisplay;
+
+        // AI profile
+        palProfile = binding.chatbotPicture;
+        palName = binding.nameChatDisplay;
+        palAge = binding.ageChatDisplay;
+        palGender = binding.genderChatDisplay;
 
         Context context = getActivity().getApplicationContext();
         myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
