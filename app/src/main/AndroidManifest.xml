@@ -23,6 +23,10 @@
             android:exported="true"
             android:theme="@style/Theme.A5_sample"/>
 
+        <activity android:name=".EditProfile"
+            android:exported="true"
+            android:theme="@style/Theme.A5_sample"/>
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan"
