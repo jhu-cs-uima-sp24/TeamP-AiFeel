@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "843724568798",
+    "project_id": "aifeel",
+    "storage_bucket": "aifeel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843724568798:android:abc41e97a9874b40672a4f",
+        "android_client_info": {
+          "package_name": "com.example.a5_sample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkbGKeMWUMujIoAm3czHXqm2GWMs4ac6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
