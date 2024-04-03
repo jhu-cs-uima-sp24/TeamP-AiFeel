@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">StudyRooms</string>
+    <string name="app_name">AiFeel</string>
     <string name="title_stats">Stats</string>
     <string name="title_home">Home</string>
     <string name="title_chat">Chat</string>
@@ -30,6 +30,9 @@
     <string name="enter">ENTER</string>
     <string name="leave">* LEAVE *</string>
     <string name="storage">A5_CONTEXT_SP</string>
+    <string name="email">Email</string>
+    <string name="sign_up"><u>Sign up/Forgot Password</u></string>
+    <string name="sign_in_instead"><u>Sign in Instead</u></string>
 
 
 </resources>
