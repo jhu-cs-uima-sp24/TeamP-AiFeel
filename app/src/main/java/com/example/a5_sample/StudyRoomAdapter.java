@@ -1,10 +1,9 @@
 package com.example.a5_sample;
 
-import android.graphics.PorterDuff;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
-import android.graphics.Color;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-
-public class StudyRoomAdapter extends ArrayAdapter<StudyRoom> {
+public class StudyRoomAdapter extends ArrayAdapter<JournalEntry> {
     int resource;
     MainActivity myact;
 
     String out = getContext().getString(R.string.leave);
     String in = getContext().getString(R.string.enter);
-    public StudyRoomAdapter(Context ctx, int res, List<StudyRoom> studyRoomList)
+    public StudyRoomAdapter(Context ctx, int res, List<JournalEntry> journalEntryList)
     {
-        super(ctx, res, studyRoomList);
+        super(ctx, res, journalEntryList);
         resource = res;
         myact = (MainActivity) ctx;
     }
@@ -32,7 +29,7 @@ public class StudyRoomAdapter extends ArrayAdapter<StudyRoom> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout itemView;
-        StudyRoom rm = getItem(position);
+        JournalEntry rm = getItem(position);
 
         if (convertView == null) {
             itemView = new LinearLayout(getContext());

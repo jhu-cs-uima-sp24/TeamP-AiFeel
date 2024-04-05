@@ -25,7 +25,7 @@ public class NewRoom extends AppCompatActivity {
 
                 if (!name.isEmpty() && !sizeText.isEmpty()) {
                     int cap = Integer.parseInt(size.getText().toString());
-                    StudyRoom newRoom = new StudyRoom(name, cap);
+                    JournalEntry newRoom = new JournalEntry(name, cap);
 
                     MainActivity.rooms.add(newRoom);
                     MainActivity.roomsAdapter.notifyDataSetChanged();
