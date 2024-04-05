@@ -5,7 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF0D9"
-    android:backgroundTint="#FFF0D9">
+    android:backgroundTint="#FFF0D9"
+    android:textAlignment="center">
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="105dp"
+        android:layout_height="67dp"
+        android:background="#FADCAE"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="58dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView3"
+        android:layout_width="105dp"
+        android:layout_height="67dp"
+        android:background="#FADCAE"
+        tools:layout_editor_absoluteX="277dp"
+        tools:layout_editor_absoluteY="58dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="105dp"
+        android:layout_height="67dp"
+        android:background="#FADCAE"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="58dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </HorizontalScrollView>
 
     <ImageButton
         android:id="@+id/mailButton"
@@ -55,17 +98,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <HorizontalScrollView
-        android:layout_width="409dp"
-        android:layout_height="105dp"
-        android:background="#FADCAE"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="45dp">
+    <TextView
+        android:id="@+id/prompt1"
+        android:layout_width="102dp"
+        android:layout_height="35dp"
+        android:editable="false"
+        android:fontFamily="@font/josefin_sans"
+        android:text="How was school today?"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+        app:layout_constraintTop_toTopOf="@+id/horizontalScrollView" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/prompt2"
+        android:layout_width="102dp"
+        android:layout_height="37dp"
+        android:fontFamily="@font/josefin_sans"
+        android:text="Tell me about the game"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView2"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView2"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView2"
+        app:layout_constraintTop_toTopOf="@+id/horizontalScrollView2" />
+
+    <TextView
+        android:id="@+id/prompt3"
+        android:layout_width="105dp"
+        android:layout_height="37dp"
+        android:fontFamily="@font/josefin_sans"
+        android:text="Is something stressing you out?"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView3"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView3"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView3"
+        app:layout_constraintTop_toTopOf="@+id/horizontalScrollView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
