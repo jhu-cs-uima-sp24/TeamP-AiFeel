@@ -58,10 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    // It's a good practice to log or handle the specific error
-                                    // task.getException().getMessage(); // You can log this or show specific messages
                                     Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                    //TO-DO, show toaster
+                                    //TO-DO, show customized toaster
                                 }
                             }
                         });
@@ -74,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 //navigates to signup page
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                String email = email_text.getText().toString();
+                intent.putExtra("email", email);
                 startActivity(intent);
             }
         });
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is signed in
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             //user already signed-in, directly go to to main activity

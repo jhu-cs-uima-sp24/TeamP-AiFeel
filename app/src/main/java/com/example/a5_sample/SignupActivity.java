@@ -20,16 +20,17 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
-        Context context = getApplicationContext();
-        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
+//        Context context = getApplicationContext();
+//        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
+//
+        String receivedEmail = getIntent().getStringExtra("email");
+        EditText email_text = findViewById(R.id.email_text);
+        email_text.setText(receivedEmail);
 
-        EditText student_name = findViewById(R.id.new_name);
-        student_name.setText(myPrefs.getString("MY_name", null));
-
-        ImageButton login_button = (ImageButton) findViewById(R.id.login_btn);
-        login_button.setOnClickListener(new View.OnClickListener() {
+        ImageButton search_button = (ImageButton) findViewById(R.id.email_lookup);
+        search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
 
@@ -45,19 +46,12 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        Button signup_button = (Button) findViewById(R.id.sign_up);
-        signup_button.setOnClickListener(new View.OnClickListener() {
+        Button signin_button = (Button) findViewById(R.id.sign_in);
+        signin_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-
-                //check if email + password combination makesense
-//                SharedPreferences.Editor editor = myPrefs.edit();
-//                String myName = myPrefs.getString("MY_name", null);
-//                if (myName == null || myName.isEmpty()) { // add student name to profile, the first time
-//                    editor.putString("MY_name",student_name.getText().toString());
-//                    editor.apply();
-//                }
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class); //login successful, go to main page
+                //go back to sign in page
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
