@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="#FFF0D9"
     android:backgroundTint="#FFF0D9"
-    android:textAlignment="center">
+    android:textAlignment="center"
+    tools:context=".ui.journalEntry.JournalEntryFragment">
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -145,9 +146,9 @@
         app:layout_constraintTop_toTopOf="@+id/horizontalScrollView3" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/journalEntryText"
+        android:layout_width="276dp"
+        android:layout_height="39dp"
         android:layout_marginStart="88dp"
         android:ems="10"
         android:gravity="start|top"

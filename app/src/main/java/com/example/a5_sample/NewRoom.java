@@ -27,9 +27,6 @@ public class NewRoom extends AppCompatActivity {
                     int cap = Integer.parseInt(size.getText().toString());
                     JournalEntry newRoom = new JournalEntry(name, cap);
 
-                    MainActivity.rooms.add(newRoom);
-                    MainActivity.roomsAdapter.notifyDataSetChanged();
-
                     finish();
 
                 } else {
