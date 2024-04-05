@@ -6,7 +6,7 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_stats"
+        android:id="@+id/navigation_journalEntry"
         android:icon="@drawable/pencil_icon"
         android:title="@string/title_journal" />
 

@@ -38,9 +38,9 @@
         tools:layout="@layout/fragment_chat" />
 
     <fragment
-        android:id="@+id/navigation_stats"
-        android:name="com.example.a5_sample.ui.stats.StatsFragment"
+        android:id="@+id/navigation_journalEntry"
+        android:name="com.example.a5_sample.ui.journalEntry.JournalEntryFragment"
         android:label="@string/title_journal"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_journal_entry" />
 
 </navigation>

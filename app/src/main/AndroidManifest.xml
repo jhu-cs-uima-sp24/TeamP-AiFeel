@@ -9,7 +9,7 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.A5_sample"
             android:exported="true">
             <intent-filter>
@@ -38,13 +38,6 @@
         <activity android:name=".EditProfile"
             android:exported="true"
             android:theme="@style/Theme.A5_sample"/>
-
-        <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.A5_sample"
-            android:exported="true">
-        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
