@@ -17,8 +17,8 @@ public class JournalEntryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        StatsViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(StatsViewModel.class);
+        JournalEntryViewModel dashboardViewModel =
+                new ViewModelProvider(this).get(JournalEntryViewModel.class);
         binding = FragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;

@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class StatsViewModel extends ViewModel {
+public class JournalEntryViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public StatsViewModel() {
+    public JournalEntryViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("");
     }
