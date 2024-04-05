@@ -31,13 +31,36 @@ public class CreateProfileActivity extends AppCompatActivity {
         String receivedEmail = getIntent().getStringExtra("email");
         EditText email_text = findViewById(R.id.email_text);
         email_text.setText(receivedEmail);
+        EditText name_text = findViewById(R.id.name_text);
+        EditText password_text = findViewById(R.id.password_text);
+        EditText retype_password_text = findViewById(R.id.password_text2);
 
 
         Button signup_Button = (Button) findViewById(R.id.sign_up);
         signup_Button.setOnClickListener(new View.OnClickListener() {
+            String email = email_text.getText().toString();
+            String password = password_text.getText().toString();
             @Override
             public void onClick(View v) {
-
+//                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//                mAuth.createUserWithEmailAndPassword(email, password)
+//                        .addOnCompleteListener(CreateProfileActivity.this, new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    // Sign in success, update UI with the signed-in user's information
+//                                    Log.d(TAG, "createUserWithEmail:success");
+//                                    FirebaseUser user = mAuth.getCurrentUser();
+//                                    updateUI(user);
+//                                } else {
+//                                    // If sign in fails, display a message to the user.
+//                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                                    Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+//                                            Toast.LENGTH_SHORT).show();
+//                                    updateUI(null);
+//                                }
+//                            }
+//                        });
                 Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
                 startActivity(intent);
             }

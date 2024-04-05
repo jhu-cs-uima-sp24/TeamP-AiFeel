@@ -50,6 +50,7 @@ public class SignupActivity extends AppCompatActivity {
                                 Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
                             } else {
                                 Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
+                                intent.putExtra("email", email);
                                 startActivity(intent);
                             }
                         } else {
