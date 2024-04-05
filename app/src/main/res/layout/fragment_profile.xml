@@ -1,74 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     app:layout_scrollFlags="scroll"
     tools:context=".ui.profile.ProfileFragment">
 
     <Button
-        android:id="@+id/save"
+        android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <EditText
-        android:id="@+id/editTextStudent"
-        android:layout_width="303dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="44dp"
-        android:ems="10"
-        android:hint="@string/student"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save" />
-
-    <EditText
-        android:id="@+id/editTextMajors"
-        android:layout_width="302dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/majors"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStudent" />
-
-    <EditText
-        android:id="@+id/editTextYear"
-        android:layout_width="302dp"
-        android:layout_height="67dp"
         android:layout_marginTop="28dp"
-        android:ems="10"
-        android:hint="@string/year"
-        android:inputType="number|numberDecimal"
+        android:layout_marginEnd="1dp"
+        android:text="Edit Profile"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMajors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextAge"
-        android:layout_width="302dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="24dp"
-        android:autofillHints="Age"
-        android:ems="10"
-        android:hint="@string/age"
-        android:inputType="number"
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/round_frame"
+        android:contentDescription="profile picture"
+        android:padding="8dp"
+        android:src="@drawable/profile_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emailDisplay"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="88dp"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="20dp"
+        android:text="Email"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nameDisplay"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="88dp"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailDisplay" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="Name"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toStartOf="@+id/nameDisplay"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/ageDisplay"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="Age"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/ageDisplay"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/genderDisplay"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="88dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/notificationsDisplay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameDisplay"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="51dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="70dp"
+        android:text="Gender"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/genderDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
+
+    <TextView
+        android:id="@+id/notificationsDisplay"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="79dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="28dp"
+        android:text="Notificaiton"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="404dp"
+        android:background="@color/dark_grey"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="89dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="14dp"
+        android:text="AI Pen-pal"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextYear" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <ImageView
+        android:id="@+id/chatbot_picture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/round_frame"
+        android:contentDescription="profile picture"
+        android:padding="8dp"
+        android:src="@drawable/chatbot_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/nameChatDisplay"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="44dp"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="75dp"
+        android:text="Name"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/nameChatDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/ageChatDisplay"
+        android:layout_width="70dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="121dp"
+        android:background="@color/light_gray"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="42dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="121dp"
+        android:text="Age: "
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/genderChatDisplay"
+        android:layout_width="70dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="121dp"
+        android:background="@color/light_gray"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="55dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="121dp"
+        android:text="Gender: "
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/ageChatDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:layout_width="55dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:text="Persona: "
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/editPalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:text="Edit Pal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

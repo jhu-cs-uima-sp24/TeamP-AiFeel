@@ -24,20 +24,20 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    public static ArrayList<StudyRoom> rooms;
+    public static ArrayList<JournalEntry> rooms;
     public static StudyRoomAdapter roomsAdapter;
-    public StudyRoom current;
+    public JournalEntry current;
     public Random randy = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rooms = new ArrayList<StudyRoom>();
-        rooms.add(new StudyRoom("Malone 228" , 30));
-        rooms.add(new StudyRoom("Malone 107", 20));
-        rooms.add(new StudyRoom("Hackerman 306", 12));
-        rooms.add(new StudyRoom("Dorm 101", 1)); // to test room full
+        rooms = new ArrayList<JournalEntry>();
+        rooms.add(new JournalEntry("Malone 228" , 30));
+        rooms.add(new JournalEntry("Malone 107", 20));
+        rooms.add(new JournalEntry("Hackerman 306", 12));
+        rooms.add(new JournalEntry("Dorm 101", 1)); // to test room full
         roomsAdapter = new StudyRoomAdapter(this, R.layout.roomlayout, rooms);
         current = null;
         binding = ActivityMainBinding.inflate(getLayoutInflater());

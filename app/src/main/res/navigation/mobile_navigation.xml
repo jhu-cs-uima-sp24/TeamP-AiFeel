@@ -15,7 +15,21 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.a5_sample.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/navigation_editProfile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_editProfile"
+        android:name="com.example.a5_sample.EditProfile"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/navigation_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_chat"
@@ -26,7 +40,7 @@
     <fragment
         android:id="@+id/navigation_stats"
         android:name="com.example.a5_sample.ui.stats.StatsFragment"
-        android:label="@string/title_stats"
+        android:label="@string/title_journal"
         tools:layout="@layout/fragment_stats" />
 
 </navigation>

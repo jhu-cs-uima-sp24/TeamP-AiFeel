@@ -15,7 +15,7 @@
         android:layout_marginEnd="10dp"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="10dp"
-        android:backgroundTint="@color/pale_grass"
+        android:backgroundTint="@color/pale_papaya"
         >
 
         <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_width="@dimen/card_height"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:backgroundTint="@color/peri"
+                android:backgroundTint="@color/saffron_mango"
                 android:gravity="center|center_vertical"
                 android:text="@string/enter"
                 android:textAlignment="center" />
