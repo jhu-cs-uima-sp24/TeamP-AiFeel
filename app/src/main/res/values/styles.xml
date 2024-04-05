@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <style name="ImageView.Circle" parent="">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.ImageView.Circle</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MyApp.ImageView.Circle" parent="">
+        <item name="cornerSize">50%</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">20dp</item>
+    </style>
+</resources>
