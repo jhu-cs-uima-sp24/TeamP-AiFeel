@@ -4,13 +4,19 @@ package com.example.a5_sample;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 public class SignupActivity extends AppCompatActivity {
     private SharedPreferences myPrefs;
@@ -27,22 +33,38 @@ public class SignupActivity extends AppCompatActivity {
         EditText email_text = findViewById(R.id.email_text);
         email_text.setText(receivedEmail);
 
-        ImageButton search_button = (ImageButton) findViewById(R.id.email_lookup);
-        search_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
 
-                //check if email + password combination makesense
-//                SharedPreferences.Editor editor = myPrefs.edit();
-//                String myName = myPrefs.getString("MY_name", null);
-//                if (myName == null || myName.isEmpty()) { // add student name to profile, the first time
-//                    editor.putString("MY_name",student_name.getText().toString());
-//                    editor.apply();
-//                }
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class); //login successful, go to main page
-                startActivity(intent);
+        ImageButton searchButton = findViewById(R.id.email_lookup);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = email_text.getText().toString();
+
+                // Check if the email field is not empty
+                if (!email.isEmpty()) {
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<String> signInMethods = task.getResult().getSignInMethods();
+                            if (signInMethods != null && signInMethods.contains("password")) {
+                                Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
+                                startActivity(intent);
+                            }
+                        } else {
+                            // Handle error
+                            Log.e("EmailCheck", "Failed to check email", task.getException());
+                            Toast.makeText(SignupActivity.this, "Failed to check email. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    // Email field is empty, prompt the user to fill it
+                    Toast.makeText(SignupActivity.this, "Please enter your email.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         Button signin_button = (Button) findViewById(R.id.sign_in);
         signin_button.setOnClickListener(new View.OnClickListener() {
