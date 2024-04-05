@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout3"
-            android:layout_width="190dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:scaleX="0.8"
             android:scaleY="0.8"
@@ -47,7 +47,7 @@
 
             <TextView
                 android:id="@+id/monthYearTV"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Feb 2021"
@@ -179,7 +179,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="100dp"
         android:baselineAlignBottom="false"
         android:contentDescription="@string/add"
         android:visibility="visible"
