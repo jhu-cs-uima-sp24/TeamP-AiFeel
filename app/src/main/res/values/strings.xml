@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AiFeel</string>
     <string name="title_stats">Stats</string>
+    <string name="title_journal">Journal</string>
     <string name="title_home">Home</string>
-    <string name="title_chat">Chat</string>
+    <string name="title_chat">AI Chat</string>
     <string name="title_profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text
     <string name="title_activity_login">LoginActivity</string>
