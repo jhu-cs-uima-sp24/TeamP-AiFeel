@@ -8,6 +8,9 @@ public class User {
     private int age;
     private String gender;
     // Constructors, getters, and setters
+    public User() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
     public User(String name, String email) {
         this.name= name;
         this.email = email;

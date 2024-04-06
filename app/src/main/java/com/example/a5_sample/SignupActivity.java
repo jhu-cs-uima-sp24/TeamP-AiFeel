@@ -1,6 +1,8 @@
 
 package com.example.a5_sample;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,12 +22,12 @@ import java.util.List;
 
 public class SignupActivity extends AppCompatActivity {
     private SharedPreferences myPrefs;
-
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 //        Context context = getApplicationContext();
 //        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
 //
@@ -42,13 +44,14 @@ public class SignupActivity extends AppCompatActivity {
 
                 // Check if the email field is not empty
                 if (!email.isEmpty()) {
-                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
                     mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             List<String> signInMethods = task.getResult().getSignInMethods();
                             if (signInMethods != null && signInMethods.contains("password")) {
                                 Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
                             } else {
+                                Log.d(TAG, "Navigate to create profile");
                                 Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
                                 intent.putExtra("email", email);
                                 startActivity(intent);

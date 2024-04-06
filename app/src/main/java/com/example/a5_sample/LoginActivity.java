@@ -1,8 +1,11 @@
 package com.example.a5_sample;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
@@ -36,11 +39,12 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageButton login_button = (ImageButton) findViewById(R.id.login_btn);
         login_button.setOnClickListener(new View.OnClickListener() {
-            String email = email_text.getText().toString();
-            String password = password_text.getText().toString();
+
             @Override
             public void onClick(View v){
-                 //error prevention for empty email or password
+                String email = email_text.getText().toString();
+                String password = password_text.getText().toString();
+                //error prevention for empty email or password
                 if (email == null || email.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
                     return;
@@ -71,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 //navigates to signup page
+                Log.d(TAG, "Navigate to email search");
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 String email = email_text.getText().toString();
                 intent.putExtra("email", email);
