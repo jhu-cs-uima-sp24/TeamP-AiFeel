@@ -6,15 +6,18 @@
     android:layout_height="match_parent"
     android:background="#FFF0D9"
     android:backgroundTint="#FFF0D9"
-    android:textAlignment="center">
+    android:textAlignment="center"
+    tools:context=".ui.journalEntry.JournalEntryFragment">
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
         android:layout_width="105dp"
         android:layout_height="67dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="12dp"
         android:background="#FADCAE"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="58dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,9 +29,13 @@
         android:id="@+id/horizontalScrollView3"
         android:layout_width="105dp"
         android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:background="#FADCAE"
-        tools:layout_editor_absoluteX="277dp"
-        tools:layout_editor_absoluteY="58dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/horizontalScrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,9 +47,11 @@
         android:id="@+id/horizontalScrollView2"
         android:layout_width="105dp"
         android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:background="#FADCAE"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="58dp">
+        app:layout_constraintStart_toEndOf="@+id/horizontalScrollView"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -51,51 +60,40 @@
     </HorizontalScrollView>
 
     <ImageButton
-        android:id="@+id/mailButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
-        android:background="#00000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/journalEntryText"
-        app:layout_constraintVertical_bias="0.906"
-        app:srcCompat="@drawable/mail_icon" />
-
-    <ImageButton
         android:id="@+id/sendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="72dp"
         android:background="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/journalEntryText"
-        app:layout_constraintVertical_bias="0.906"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:srcCompat="@drawable/send_icon" />
+
+    <ImageButton
+        android:id="@+id/mailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="72dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/mail_icon" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="410dp"
-        android:layout_height="479dp"
-        app:srcCompat="@drawable/journal_page"
-        tools:layout_editor_absoluteX="-3dp"
-        tools:layout_editor_absoluteY="136dp" />
-
-    <EditText
-        android:id="@+id/journalEntryText"
-        android:layout_width="298dp"
-        android:layout_height="17dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.696"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.138" />
+        android:layout_width="415dp"
+        android:layout_height="451dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2"
+        app:srcCompat="@drawable/journal_page" />
 
     <TextView
         android:id="@+id/textView"
@@ -146,5 +144,19 @@
         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView3"
         app:layout_constraintStart_toStartOf="@+id/horizontalScrollView3"
         app:layout_constraintTop_toTopOf="@+id/horizontalScrollView3" />
+
+    <EditText
+        android:id="@+id/journalEntryText"
+        android:layout_width="276dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="88dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.155" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

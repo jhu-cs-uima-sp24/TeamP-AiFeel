@@ -1,16 +1,16 @@
-package com.example.a5_sample.ui.stats;
+package com.example.a5_sample.ui.journalEntry;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class StatsViewModel extends ViewModel {
+public class JournalEntryViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public StatsViewModel() {
+    public JournalEntryViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is the stats tab.");
+        mText.setValue("");
     }
 
     public LiveData<String> getText() {
