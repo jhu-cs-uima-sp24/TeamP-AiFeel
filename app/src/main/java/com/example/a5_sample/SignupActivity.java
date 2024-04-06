@@ -44,24 +44,26 @@ public class SignupActivity extends AppCompatActivity {
 
                 // Check if the email field is not empty
                 if (!email.isEmpty()) {
-
-                    mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<String> signInMethods = task.getResult().getSignInMethods();
-                            if (signInMethods != null && signInMethods.contains("password")) {
-                                Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
-                            } else {
-                                Log.d(TAG, "Navigate to create profile");
-                                Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
-                                intent.putExtra("email", email);
-                                startActivity(intent);
-                            }
-                        } else {
-                            // Handle error
-                            Log.e("EmailCheck", "Failed to check email", task.getException());
-                            Toast.makeText(SignupActivity.this, "Failed to check email. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+//                    mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            List<String> signInMethods = task.getResult().getSignInMethods();
+//                            if (signInMethods != null && signInMethods.contains("password")) {
+//                                Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
+//                            } else {
+//                                Log.d(TAG, "Navigate to create profile");
+//                                Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
+//                                intent.putExtra("email", email);
+//                                startActivity(intent);
+//                            }
+//                        } else {
+//                            // Handle error
+//                            Log.e("EmailCheck", "Failed to check email", task.getException());
+//                            Toast.makeText(SignupActivity.this, "Failed to check email. Please try again.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
                 } else {
                     // Email field is empty, prompt the user to fill it
                     Toast.makeText(SignupActivity.this, "Please enter your email.", Toast.LENGTH_SHORT).show();
