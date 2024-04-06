@@ -8,6 +8,10 @@ public class User {
     private int age;
     private String gender;
     // Constructors, getters, and setters
+    private String uid;
+    public User() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
     public User(String name, String email) {
         this.name= name;
         this.email = email;
@@ -33,4 +37,8 @@ public class User {
     public void setName(String name){ this.name = name; }
 
     public void setGender(String gender) { this.gender = gender; }
+
+    public void setUid(String UID) {
+        uid = UID;
+    }
 }

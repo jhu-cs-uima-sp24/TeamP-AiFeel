@@ -6,154 +6,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:layout_scrollFlags="scroll"
-        tools:context=".ui.profile.ProfileFragment">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/profile_picture"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="164dp"
-            android:layout_marginTop="80dp"
             android:background="@drawable/round_frame"
             android:contentDescription="profile picture"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center"
             android:padding="8dp"
             android:src="@drawable/profile_icon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginBottom="10dp"/>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="15dp">
 
-        <TextView
-            android:id="@+id/emailDisplay"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="88dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="42dp"
+                    android:layout_height="24dp"
+                    android:text="Email"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="42dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="36dp"
-            android:text="Email"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+                <TextView
+                    android:id="@+id/emailDisplay"
+                    android:layout_width="232dp"
+                    android:layout_height="30dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/nameDisplay"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="88dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailDisplay" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="15dp">
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="42dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="24dp"
-            android:text="Name"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/nameDisplay"
-            app:layout_constraintTop_toBottomOf="@+id/emailDisplay" />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="42dp"
+                    android:layout_height="24dp"
+                    android:text="Name"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/ageDisplay"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="12dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
+                <TextView
+                    android:id="@+id/nameDisplay"
+                    android:layout_width="232dp"
+                    android:layout_height="30dp"
+                    android:background="@color/light_gray" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="42dp"
-            android:layout_height="24dp"
-            android:text="Age"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/ageDisplay"
-            tools:layout_editor_absoluteY="324dp" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/genderDisplay"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="88dp"
-            android:background="@color/light_gray"
-            app:layout_constraintBottom_toTopOf="@+id/notificationsDisplay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameDisplay"
-            app:layout_constraintVertical_bias="0.256" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="51dp"
-            android:layout_height="27dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="68dp"
-            android:text="Gender"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@+id/genderDisplay"
-            app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="15dp">
 
-        <TextView
-            android:id="@+id/notificationsDisplay"
-            android:layout_width="197dp"
-            android:layout_height="33dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="31dp"
-            android:background="@color/light_gray"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="42dp"
+                    android:layout_height="24dp"
+                    android:text="Age"
+                    android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="79dp"
-            android:layout_height="26dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="32dp"
-            android:text="Notificaiton"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                <TextView
+                    android:id="@+id/ageDisplay"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:background="@color/light_gray" />
 
-        <Button
-            android:id="@+id/quit_btn"
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="51dp"
+                    android:layout_height="27dp"
+                    android:layout_marginLeft="42dp"
+                    android:text="Gender"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/genderDisplay"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintVertical_bias="0.256" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="79dp"
+                    android:layout_height="26dp"
+                    android:text="Notificaiton"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/notificationsDisplay"
+                    android:layout_width="197dp"
+                    android:layout_height="33dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|left"
-            android:layout_marginStart="104dp"
-            android:layout_marginBottom="168dp"
-            android:layout_weight="1"
-            android:text="@string/quit"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp">
+            <Button
+                android:id="@+id/quit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/quit"
+                android:layout_marginRight="25dp"
+                android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:layout_marginEnd="92dp"
-            android:layout_marginBottom="168dp"
-            android:layout_weight="1"
-            android:text="@string/save"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/save"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
 </ScrollView>
