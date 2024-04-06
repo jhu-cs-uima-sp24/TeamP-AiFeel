@@ -24,28 +24,19 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    public static ArrayList<JournalEntry> rooms;
-    public static StudyRoomAdapter roomsAdapter;
     public JournalEntry current;
-    public Random randy = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rooms = new ArrayList<JournalEntry>();
-        rooms.add(new JournalEntry("Malone 228" , 30));
-        rooms.add(new JournalEntry("Malone 107", 20));
-        rooms.add(new JournalEntry("Hackerman 306", 12));
-        rooms.add(new JournalEntry("Dorm 101", 1)); // to test room full
-        roomsAdapter = new StudyRoomAdapter(this, R.layout.roomlayout, rooms);
         current = null;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        //BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_profile, R.id.navigation_home, R.id.navigation_chat, R.id.navigation_stats)
+                R.id.navigation_profile, R.id.navigation_home, R.id.navigation_chat, R.id.navigation_journalEntry)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

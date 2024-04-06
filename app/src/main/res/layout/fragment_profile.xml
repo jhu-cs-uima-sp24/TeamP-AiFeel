@@ -1,269 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="true"
-    app:layout_scrollFlags="scroll"
-    tools:context=".ui.profile.ProfileFragment">
+    android:orientation="vertical"
+    android:baselineAligned="false"
+    android:layout_gravity="top"
+    >
 
     <Button
+        android:layout_gravity="right"
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="1dp"
-        android:text="Edit Profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Edit Profile" />
 
     <ImageView
         android:id="@+id/profile_picture"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="76dp"
         android:background="@drawable/round_frame"
         android:contentDescription="profile picture"
+        android:layout_gravity="center"
         android:padding="8dp"
         android:src="@drawable/profile_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:id="@+id/emailDisplay"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="88dp"
-        android:background="@color/light_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="15dp">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="42dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="20dp"
-        android:text="Email"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="42dp"
+                android:layout_height="24dp"
+                android:text="Email"
+                android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/nameDisplay"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="88dp"
-        android:background="@color/light_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailDisplay" />
+            <TextView
+                android:id="@+id/emailDisplay"
+                android:layout_width="232dp"
+                android:layout_height="30dp"
+                android:background="@color/light_gray" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="42dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Name"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toStartOf="@+id/nameDisplay"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="15dp">
 
-    <TextView
-        android:id="@+id/ageDisplay"
-        android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/light_gray"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="42dp"
+                android:layout_height="24dp"
+                android:text="Name"
+                android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="42dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="16dp"
-        android:text="Age"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toStartOf="@+id/ageDisplay"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/nameDisplay"
+                android:layout_width="232dp"
+                android:layout_height="30dp"
+                android:background="@color/light_gray" />
 
-    <TextView
-        android:id="@+id/genderDisplay"
-        android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="88dp"
-        android:background="@color/light_gray"
-        app:layout_constraintBottom_toTopOf="@+id/notificationsDisplay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameDisplay"
-        app:layout_constraintVertical_bias="0.0" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="51dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="70dp"
-        android:text="Gender"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/genderDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/nameDisplay" />
 
-    <TextView
-        android:id="@+id/notificationsDisplay"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginBottom="24dp"
-        android:background="@color/light_gray"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="15dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="79dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="28dp"
-        android:text="Notificaiton"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="42dp"
+                android:layout_height="24dp"
+                android:text="Age"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ageDisplay"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@color/light_gray" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="51dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="42dp"
+                android:text="Gender"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/genderDisplay"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@color/light_gray"
+                app:layout_constraintVertical_bias="0.256" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="79dp"
+                android:layout_height="26dp"
+                android:text="Notificaiton"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/notificationsDisplay"
+                android:layout_width="197dp"
+                android:layout_height="33dp"
+                android:background="@color/light_gray" />
+        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:id="@+id/view"
+        android:layout_gravity="top"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="404dp"
         android:background="@color/dark_grey"
-        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="89dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="14dp"
-        android:text="AI Pen-pal"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <ImageView
-        android:id="@+id/chatbot_picture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/round_frame"
-        android:contentDescription="profile picture"
-        android:padding="8dp"
-        android:src="@drawable/chatbot_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/nameChatDisplay"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="44dp"
-        android:background="@color/light_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="42dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="75dp"
-        android:text="Name"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/nameChatDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/ageChatDisplay"
-        android:layout_width="70dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="121dp"
-        android:background="@color/light_gray"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="42dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="121dp"
-        android:text="Age: "
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/genderChatDisplay"
-        android:layout_width="70dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="121dp"
-        android:background="@color/light_gray"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="55dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="121dp"
-        android:text="Gender: "
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/ageChatDisplay"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-    <TextView
-        android:layout_width="55dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
-        android:text="Persona: "
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
         android:id="@+id/editPalButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:text="Edit Pal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        android:layout_gravity="end"
+        android:text="Edit Pal"/>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="102dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:text="AI Pen-pal"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/chatbot_picture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+
+            android:background="@drawable/round_frame"
+            android:contentDescription="profile picture"
+            android:padding="8dp"
+            android:src="@drawable/chatbot_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:text="Name: "
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/nameChatDisplay"
+            android:layout_width="182dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@color/light_gray" />
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <LinearLayout
+        android:layout_width="301dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:text="Age: "
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/ageChatDisplay"
+            android:layout_width="70dp"
+            android:layout_height="27dp"
+            android:layout_gravity="center"
+            android:background="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="55dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:text="Gender: "
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/genderChatDisplay"
+            android:layout_width="70dp"
+            android:layout_height="27dp"
+            android:layout_gravity="center"
+            android:background="@color/light_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="301dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:text="Persona: "
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
