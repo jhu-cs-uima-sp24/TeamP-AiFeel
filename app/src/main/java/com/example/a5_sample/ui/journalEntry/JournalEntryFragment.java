@@ -30,12 +30,11 @@ public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
     private EditText journalEntry;
-    private TextView AIResponse;
     private TextView date;
-    private TextView mood;
     private boolean sendButtonDisabled;
     private ImageButton send;
     private ImageButton mailbox;
+    private boolean emptyMailbox;
     private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,6 +52,7 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.new_mail_icon);
+                emptyMailbox = false;
             }
         });
 
@@ -61,6 +61,7 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.mail_icon);
+                emptyMailbox = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(R.string.ai_response).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
@@ -77,8 +78,14 @@ public class JournalEntryFragment extends Fragment {
         super.onResume();
         Context context = getActivity().getApplicationContext();
         myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
-        String temp = myPrefs.getString("journalEntry", "");
-        journalEntry.setText(temp);
+        String temp1 = myPrefs.getString("journalEntry", "");
+        String temp2 = myPrefs.getString("mailboxStatus", "");
+        journalEntry.setText(temp1);
+        if (temp2 == "true") {
+            mailbox.setImageResource(R.drawable.mail_icon);
+        } else if (temp2 == "false"){
+            mailbox.setImageResource(R.drawable.new_mail_icon);
+        }
     }
 
     @Override
@@ -86,6 +93,7 @@ public class JournalEntryFragment extends Fragment {
         super.onPause();
         SharedPreferences.Editor myEdit = myPrefs.edit();
         myEdit.putString("journalEntry", journalEntry.getText().toString());
+        myEdit.putString("mailboxStatus", String.valueOf(emptyMailbox));
         myEdit.apply();
     }
 
