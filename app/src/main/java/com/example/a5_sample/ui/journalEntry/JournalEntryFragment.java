@@ -1,14 +1,21 @@
 package com.example.a5_sample.ui.journalEntry;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +36,6 @@ public class JournalEntryFragment extends Fragment {
     private boolean sendButtonDisabled;
     private ImageButton send;
     private ImageButton mailbox;
-
     private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,7 +61,12 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.mail_icon);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.ai_response).setTitle(R.string.ai_response_title);
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
+
         });
 
         return root;
