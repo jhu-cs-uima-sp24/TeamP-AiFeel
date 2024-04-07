@@ -46,7 +46,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         public CalendarViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
-            this.dayOfMonth = itemView.findViewById(R.id.cellDayText); // Make sure you have a TextView with this ID in your calendar_cell.xml
+            this.dayOfMonth = itemView.findViewById(R.id.cellDayText);
             this.onItemListener = onItemListener;
             itemView.setOnClickListener(this);
         }

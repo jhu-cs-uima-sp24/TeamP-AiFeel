@@ -1,0 +1,150 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_previous_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="l" />
+
+        <TextView
+            android:id="@+id/textview_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button_next_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="r" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_jan"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Jan" />
+            <Button
+                android:id="@+id/button_feb"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Feb" />
+            <Button
+                android:id="@+id/button_mar"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Mar" />
+            <Button
+                android:id="@+id/button_apr"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Apr" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_may"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="May" />
+            <Button
+                android:id="@+id/button_jun"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Jun" />
+
+            <Button
+                android:id="@+id/button_jul"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Jul" />
+
+            <Button
+                android:id="@+id/button_aug"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Aug" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/button_sep"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="sep" />
+
+            <Button
+                android:id="@+id/button_oct"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Oct" />
+
+            <Button
+                android:id="@+id/button_nov"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Nov" />
+
+            <Button
+                android:id="@+id/button_dec"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:onClick="onMonthSelected"
+                android:text="Nov" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+</LinearLayout>
