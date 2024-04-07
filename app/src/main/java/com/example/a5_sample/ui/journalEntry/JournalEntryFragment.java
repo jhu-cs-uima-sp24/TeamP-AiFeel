@@ -26,11 +26,15 @@ import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentJournalEntryBinding;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
     private EditText journalEntry;
-    private TextView date;
+    private LocalDate date;
+    private TextView dateText;
     private boolean sendButtonDisabled;
     private ImageButton send;
     private ImageButton mailbox;
@@ -42,10 +46,13 @@ public class JournalEntryFragment extends Fragment {
         binding = FragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, send button, mail button
+        //assign journal entry, send button, mail button, date
         journalEntry = binding.journalEntryText;
         send = binding.sendButton;
         mailbox = binding.mailButton;
+        dateText = binding.dateText;
+        date = LocalDate.now();
+        dateText.setText(monthYearFromDate(date));
 
         //when user sends entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +78,11 @@ public class JournalEntryFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private String monthYearFromDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        return date.format(formatter);
     }
 
     @Override
