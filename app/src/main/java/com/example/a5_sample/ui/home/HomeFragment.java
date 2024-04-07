@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,13 +81,13 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
 
         // Set up button listeners
-        Button previousYearButton = dialogView.findViewById(R.id.button_previous_year);
+        ImageButton previousYearButton = dialogView.findViewById(R.id.button_previous_year);
         previousYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.minusYears(1);
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
         });
 
-        Button nextYearButton = dialogView.findViewById(R.id.button_next_year);
+        ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
         nextYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.plusYears(1);
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
