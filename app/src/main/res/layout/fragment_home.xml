@@ -148,6 +148,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -158,6 +159,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -168,6 +170,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -178,6 +181,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -188,6 +192,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -198,6 +203,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
 
@@ -208,6 +214,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/fire_circle"
                     android:layout_marginEnd="15dp"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp" />
             </LinearLayout>
