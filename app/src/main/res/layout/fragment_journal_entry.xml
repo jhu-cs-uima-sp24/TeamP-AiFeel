@@ -147,17 +147,21 @@
 
     <EditText
         android:id="@+id/journalEntryText"
-        android:layout_width="276dp"
-        android:layout_height="39dp"
+        android:layout_width="271dp"
         android:layout_marginStart="84dp"
         android:ems="10"
+        android:layout_height ="wrap_content"
+        android:layout_weight ="1"
         android:gravity="start|top"
-        android:inputType="textMultiLine"
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLength="2000"
+        android:maxLines="16"
+        android:scrollHorizontally="false"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.084"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintTop_toBottomOf="@+id/dateText" />
 
     <TextView
         android:id="@+id/dateText"
@@ -165,12 +169,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="89dp"
         android:layout_marginTop="62dp"
-        android:layout_marginEnd="293dp"
-        android:layout_marginBottom="30dp"
         android:text="Date"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/journalEntryText"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 

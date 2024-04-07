@@ -35,7 +35,6 @@ public class JournalEntryFragment extends Fragment {
     private EditText journalEntry;
     private LocalDate date;
     private TextView dateText;
-    private boolean sendButtonDisabled;
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
@@ -52,7 +51,7 @@ public class JournalEntryFragment extends Fragment {
         mailbox = binding.mailButton;
         dateText = binding.dateText;
         date = LocalDate.now();
-        dateText.setText(monthYearFromDate(date));
+        dateText.setText(date.toString());
 
         //when user sends entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +77,6 @@ public class JournalEntryFragment extends Fragment {
         });
 
         return root;
-    }
-
-    private String monthYearFromDate(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
     }
 
     @Override
