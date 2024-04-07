@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +27,16 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+    private Button currentSelectedButton;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +46,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
 
-        // Set up buttons for navigating months
         myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction());
         myview.findViewById(R.id.nextMonthButton).setOnClickListener(v -> nextMonthAction());
         myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction());
@@ -79,8 +83,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         yearTextView.setText(String.valueOf(selectedDate.getYear()));
 
 
-
-        // Set up button listeners
         ImageButton previousYearButton = dialogView.findViewById(R.id.button_previous_year);
         previousYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.minusYears(1);
@@ -93,20 +95,48 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
         });
 
+        Map<Integer, Button> monthButtons = new HashMap<>();
+        monthButtons.put(1, dialogView.findViewById(R.id.button_jan));
+        monthButtons.put(2, dialogView.findViewById(R.id.button_feb));
+        monthButtons.put(3, dialogView.findViewById(R.id.button_mar));
+        monthButtons.put(4, dialogView.findViewById(R.id.button_apr));
+        monthButtons.put(5, dialogView.findViewById(R.id.button_may));
+        monthButtons.put(6, dialogView.findViewById(R.id.button_jun));
+        monthButtons.put(7, dialogView.findViewById(R.id.button_jul));
+        monthButtons.put(8, dialogView.findViewById(R.id.button_aug));
+        monthButtons.put(9, dialogView.findViewById(R.id.button_sep));
+        monthButtons.put(10, dialogView.findViewById(R.id.button_oct));
+        monthButtons.put(11, dialogView.findViewById(R.id.button_nov));
+        monthButtons.put(12, dialogView.findViewById(R.id.button_dec));
+
+        for (Map.Entry<Integer, Button> entry : monthButtons.entrySet()) {
+            Button button = entry.getValue();
+            button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.month_selection_circles));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int month = entry.getKey();
+                    selectedDate = selectedDate.withMonth(month);
+
+                    if (currentSelectedButton != null) {
+                        currentSelectedButton.setSelected(false);
+                    }
+                    button.setSelected(true);
+                    currentSelectedButton = button;
+                }
+            });
+        }
+
 
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
             setMonthView();
-            // Close dialog
         });
 
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-
 
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
