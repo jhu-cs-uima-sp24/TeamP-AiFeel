@@ -53,6 +53,17 @@ public class JournalEntryFragment extends Fragment {
         date = LocalDate.now();
         dateText.setText(date.toString());
 
+        Context context = getActivity().getApplicationContext();
+        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
+        String temp1 = myPrefs.getString("journalEntry", "");
+        String temp2 = myPrefs.getString("mailboxStatus", "");
+        journalEntry.setText(temp1);
+        if (temp2 == "true") {
+            mailbox.setImageResource(R.drawable.mail_icon);
+        } else if (temp2 == "false"){
+            mailbox.setImageResource(R.drawable.new_mail_icon);
+        }
+
         //when user sends entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +117,9 @@ public class JournalEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        SharedPreferences.Editor myEdit = myPrefs.edit();
+        myEdit.putString("journalEntry", journalEntry.getText().toString());
+        myEdit.putString("mailboxStatus", String.valueOf(emptyMailbox));
+        myEdit.apply();
     }
 }
