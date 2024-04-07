@@ -26,7 +26,7 @@
         android:contentDescription="profile picture"
         android:layout_gravity="center"
         android:padding="8dp"
-        android:src="@drawable/profile_icon"
+        android:src="@drawable/profile_default"
         android:layout_marginBottom="10dp"/>
 
     <GridView
@@ -176,7 +176,7 @@
             android:background="@drawable/round_frame"
             android:contentDescription="profile picture"
             android:padding="8dp"
-            android:src="@drawable/chatbot_icon"
+            android:src="@drawable/ai_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 

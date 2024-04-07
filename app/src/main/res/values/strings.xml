@@ -37,5 +37,16 @@
     <string name="ai_response">No messages yet</string>
     <string name="ai_response_title">AI Message</string>
 
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Non-binary</item>
+    </string-array>
 
+    <string-array name="notification_array">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Never</item>
+    </string-array>
 </resources>

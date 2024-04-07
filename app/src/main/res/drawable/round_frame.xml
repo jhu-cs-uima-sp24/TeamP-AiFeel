@@ -1,7 +1,7 @@
 <!-- round_frame.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="@android:color/transparent" /> <!-- Background color of the frame -->
+    <solid android:color="@color/turquoise" /> <!-- Background color of the frame -->
     <stroke
         android:width="2dp"
         android:color="@color/black" /> <!-- Color of the frame -->
