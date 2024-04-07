@@ -1,9 +1,15 @@
 package com.example.a5_sample.ui.home;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.GridView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.R;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +43,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         // Set up buttons for navigating months
         myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction());
         myview.findViewById(R.id.nextMonthButton).setOnClickListener(v -> nextMonthAction());
+        myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction());
 
         setMonthView();
         return myview;
@@ -60,6 +68,45 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
     }
+
+    private void dateSelectionAction() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.fragment_month_picker, null);
+
+        TextView yearTextView = dialogView.findViewById(R.id.textview_year);
+        yearTextView.setText(String.valueOf(selectedDate.getYear()));
+
+
+
+        // Set up button listeners
+        Button previousYearButton = dialogView.findViewById(R.id.button_previous_year);
+        previousYearButton.setOnClickListener(v -> {
+            selectedDate = selectedDate.minusYears(1);
+            yearTextView.setText(String.valueOf(selectedDate.getYear()));
+        });
+
+        Button nextYearButton = dialogView.findViewById(R.id.button_next_year);
+        nextYearButton.setOnClickListener(v -> {
+            selectedDate = selectedDate.plusYears(1);
+            yearTextView.setText(String.valueOf(selectedDate.getYear()));
+        });
+
+
+        Button setButton = dialogView.findViewById(R.id.button_set);
+        setButton.setOnClickListener(v -> {
+            setMonthView();
+            // Close dialog
+        });
+
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
+
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
