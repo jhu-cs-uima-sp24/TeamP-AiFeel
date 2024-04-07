@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
@@ -79,6 +80,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.fragment_month_picker, null);
 
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
         TextView yearTextView = dialogView.findViewById(R.id.textview_year);
         yearTextView.setText(String.valueOf(selectedDate.getYear()));
 
@@ -131,11 +136,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
             setMonthView();
+            dialog.dismiss();
         });
 
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        Button cancelButton = dialogView.findViewById(R.id.button_cancel);
+        cancelButton.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
     }
 
 
