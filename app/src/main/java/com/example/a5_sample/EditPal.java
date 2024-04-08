@@ -100,6 +100,13 @@ public class EditPal extends AppCompatActivity {
                 personas.add(personality);
                 // Update the selected RecyclerView
                 selectedAdapter.setPersonalities(personas);
+            } else {
+                // Display a Toast message indicating the reason for failure
+                if (personas.contains(personality)) {
+                    Toast.makeText(EditPal.this, "This personality is already selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(EditPal.this, "You can select up to 3 personalities", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -143,14 +150,9 @@ public class EditPal extends AppCompatActivity {
             return new ArrayList<>(); // Return an empty list if the query is empty
         }
         List<String> filteredList = new ArrayList<>();
-        int count = 0;
         for (String personality : personalities) {
             if (personality.toLowerCase().contains(query)) {
                 filteredList.add(personality);
-                count++;
-            }
-            if (count == 30) { // Limit to 3 personalities
-                break;
             }
         }
         return filteredList;
