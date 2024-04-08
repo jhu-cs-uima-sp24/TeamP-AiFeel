@@ -94,6 +94,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                     mToast.setView(customToastLayout);
                     mToast.setGravity(Gravity.BOTTOM, 0, 50);
                     mToast.show();
+                    return;
                 } else {
                     if(password.equals(re_password)){
                         mAuth.createUserWithEmailAndPassword(email, password)

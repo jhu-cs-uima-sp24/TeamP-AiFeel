@@ -67,6 +67,7 @@
                 android:layout_height="30dp"
                 android:background="@color/light_gray"
                 android:gravity="center_horizontal"
+                android:inputType = "number"
                 android:maxLines="1"/>
 
             <TextView
