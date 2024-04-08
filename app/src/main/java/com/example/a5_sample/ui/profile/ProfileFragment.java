@@ -20,10 +20,17 @@ import com.example.a5_sample.databinding.FragmentProfileBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
+    private DatabaseReference databaseReference;
     private Button editProfile;
     private Button editPal;
     private TextView email;
@@ -32,16 +39,13 @@ public class ProfileFragment extends Fragment {
     private ImageView userProfile;
     private ImageView palProfile;
 
-    private TextView name;
+    private TextView nameView;
     private TextView gender;
     private TextView notifications;
     private TextView palName;
     private TextView palAge;
     private TextView palGender;
 
-
-
-    private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class ProfileFragment extends Fragment {
         // user profile
         userProfile = binding.profilePicture;
         editProfile = binding.editProfileButton;
-        name = binding.nameDisplay;
+        nameView = binding.nameDisplay;
         email = binding.emailDisplay;
         gender = binding.genderDisplay;
         age = binding.ageDisplay;
@@ -69,16 +73,15 @@ public class ProfileFragment extends Fragment {
         palGender = binding.genderChatDisplay;
         editPal = binding.editPalButton;
 
-        Context context = getActivity().getApplicationContext();
-        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
-
-        // TODO: implement text initialization using firebase
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        // set email
         if (currentUser != null) {
-            name.setText(currentUser.getDisplayName());
             email.setText(currentUser.getEmail());
-            //age.setText(currentUser.getAge());
+            String userId = currentUser.getUid();
+            // Now you have the UID of the current user
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
         }
 
         MainActivity myact = (MainActivity) getActivity();
@@ -105,5 +108,46 @@ public class ProfileFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Add a ValueEventListener to retrieve the "name" field
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    if (name != null) {
+                        // Set the retrieved name to the TextView
+                        nameView.setText(name);
+                    }
+                    Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
+                    if (ageNum != null) {
+                        age.setText(String.valueOf(ageNum));
+                    }
+                    if (dataSnapshot.hasChild("gender")) {
+                        String genderVal = dataSnapshot.child("gender").getValue(String.class);
+                        if (genderVal != null) {
+                            gender.setText(genderVal);
+                        }
+                    }
+                    if (dataSnapshot.hasChild("notification")) {
+                        String notificationVal = dataSnapshot.child("notification").getValue(String.class);
+                        if (notificationVal != null) {
+                            notifications.setText(notificationVal);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
     }
 }

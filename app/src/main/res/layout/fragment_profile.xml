@@ -16,6 +16,7 @@
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Edit Profile" />
 
     <ImageView
@@ -45,14 +46,16 @@
                 android:id="@+id/textView5"
                 android:layout_width="42dp"
                 android:layout_height="24dp"
-                android:text="Email"
+                android:text="@string/email_input"
+                android:gravity="center_vertical"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/emailDisplay"
                 android:layout_width="232dp"
                 android:layout_height="30dp"
-                android:background="@color/light_gray" />
+                android:background="@color/light_gray"
+                android:gravity="center"/>
         </LinearLayout>
 
         <LinearLayout
@@ -65,14 +68,16 @@
                 android:id="@+id/textView10"
                 android:layout_width="42dp"
                 android:layout_height="24dp"
-                android:text="Name"
+                android:gravity="center_vertical"
+                android:text="@string/name_input"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/nameDisplay"
                 android:layout_width="232dp"
                 android:layout_height="30dp"
-                android:background="@color/light_gray" />
+                android:background="@color/light_gray"
+                android:gravity="center"/>
 
         </LinearLayout>
 
@@ -87,21 +92,25 @@
                 android:id="@+id/textView4"
                 android:layout_width="42dp"
                 android:layout_height="24dp"
-                android:text="Age"
+                android:text="@string/age_input"
+                android:gravity="center_vertical"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/ageDisplay"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:background="@color/light_gray" />
+                android:background="@color/light_gray"
+                android:gravity="center"
+                />
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="51dp"
                 android:layout_height="27dp"
-                android:layout_marginLeft="42dp"
-                android:text="Gender"
+                android:layout_marginStart="42dp"
+                android:text="@string/gender_input"
+                android:gravity="center_vertical"
                 android:textColor="@color/black" />
 
             <TextView
@@ -109,7 +118,8 @@
                 android:layout_width="70dp"
                 android:layout_height="30dp"
                 android:background="@color/light_gray"
-                app:layout_constraintVertical_bias="0.256" />
+                app:layout_constraintVertical_bias="0.256"
+                android:gravity="center"/>
 
         </LinearLayout>
 
@@ -123,14 +133,16 @@
                 android:id="@+id/textView2"
                 android:layout_width="79dp"
                 android:layout_height="26dp"
-                android:text="Notificaiton"
+                android:text="@string/notification_input"
+                android:gravity="center_vertical"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/notificationsDisplay"
                 android:layout_width="197dp"
                 android:layout_height="33dp"
-                android:background="@color/light_gray" />
+                android:background="@color/light_gray"
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -180,14 +192,15 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:text="Name: "
+            android:text="@string/name_input"
             android:layout_marginLeft="15dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/nameChatDisplay"
-            android:layout_width="157dp"
+            android:layout_width="162dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@color/light_gray" />
@@ -205,8 +218,7 @@
             android:layout_width="42dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:layout_marginRight="15dp"
-            android:text="Age: "
+            android:text="@string/age_input"
             android:textColor="@color/black" />
 
         <TextView
@@ -214,6 +226,7 @@
             android:layout_width="70dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:background="@color/light_gray" />
 
         <TextView
@@ -222,13 +235,12 @@
             android:layout_height="24dp"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="15dp"
-            android:text="Gender: "
+            android:text="@string/gender_input"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/genderChatDisplay"
-            android:layout_width="70dp"
+            android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
             android:background="@color/light_gray" />
@@ -243,7 +255,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:text="Persona: "
+            android:text="@string/persona_input"
             android:textColor="@color/black" />
 
         <androidx.recyclerview.widget.RecyclerView

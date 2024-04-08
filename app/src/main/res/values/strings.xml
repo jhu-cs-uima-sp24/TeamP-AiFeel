@@ -43,6 +43,7 @@
     <string name="gender_input">Gender: </string>
     <string name="notification_input">Notification: </string>
     <string name="persona_input">Personas: </string>
+    <string name="email_input">Email: </string>
     <string name="search">Search</string>
 
 
