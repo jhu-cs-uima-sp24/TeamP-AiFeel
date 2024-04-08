@@ -3,6 +3,9 @@ You can login with the following info with prepopulated data
 - Email: ericzhy0815@outlook.com
 - Password: zhaohongyu0815
 
+## General State
+We have implemented most of the basic features that users interact with. For next sprint we'll work on AI and more advanced database storage. 
+
 ## Implemented Features
 ### Login/Signup
 ### Journal Entry
