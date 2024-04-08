@@ -45,6 +45,11 @@
     <string name="persona_input">Personas: </string>
     <string name="email_input">Email: </string>
     <string name="search">Search</string>
+    <string name="remove">Remove</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="edit_pal">Edit Pal</string>
+    <string name="ai_pen_pal">AI Pen-pal</string>
 
 
     <string-array name="gender_array">

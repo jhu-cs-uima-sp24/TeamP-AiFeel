@@ -12,12 +12,12 @@
     >
 
     <Button
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Edit Profile" />
+        android:text="@string/edit_profile" />
 
     <ImageView
         android:id="@+id/profile_picture"
@@ -26,7 +26,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:background="@drawable/round_frame"
-        android:contentDescription="profile picture"
+        android:contentDescription="@string/profile_picture"
         android:padding="8dp"
         android:src="@drawable/profile_default" />
 
@@ -159,14 +159,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Edit Pal"/>
+        android:text="@string/edit_pal"/>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="102dp"
         android:layout_height="31dp"
         android:layout_gravity="center"
-        android:text="AI Pen-pal"
+        android:text="@string/ai_pen_pal"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:gravity="center"/>
@@ -182,7 +182,7 @@
             android:layout_height="60dp"
 
             android:background="@drawable/round_frame"
-            android:contentDescription="profile picture"
+            android:contentDescription="@string/profile_picture"
             android:padding="8dp"
             android:src="@drawable/ai_default"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:text="@string/name_input"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/black" />
@@ -203,6 +203,7 @@
             android:layout_width="162dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:background="@color/light_gray" />
     </LinearLayout>
 
@@ -243,6 +244,7 @@
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:background="@color/light_gray" />
     </LinearLayout>
 
@@ -250,7 +252,8 @@
         android:layout_width="301dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -259,11 +262,11 @@
             android:textColor="@color/black" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+            android:id="@+id/personasRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
-
-
 
 </LinearLayout>

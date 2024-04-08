@@ -2,63 +2,86 @@ package com.example.a5_sample;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class EditPal extends AppCompatActivity {
-    private Button save;
-    private Button quit;
-    private EditText search;
-    private RecyclerView recyclerView;
-    private RecyclerView selectedRecyclerView; // RecyclerView for selected personas
+    private DatabaseReference databaseReference;
     private PersonalityAdapter adapter;
     private SelectedPersonalityAdapter selectedAdapter; // Adapter for selected personas
     private List<String> allPersonalities;
     private List<String> personas; // List to store selected personalities
     private Spinner gender;
+    private EditText name;
+    private EditText age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pal);
 
-        quit = findViewById(R.id.quit_btn);
-        save = findViewById(R.id.save_btn);
-        search = findViewById(R.id.searchPersonas);
-        recyclerView = findViewById(R.id.recyclerView);
-        selectedRecyclerView = findViewById(R.id.selectedRecyclerView);
+        Button quit = findViewById(R.id.quit_btn);
+        Button save = findViewById(R.id.save_btn);
+        EditText search = findViewById(R.id.searchPersonas);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        // RecyclerView for selected personas
+        RecyclerView selectedRecyclerView = findViewById(R.id.selectedRecyclerView);
+        name = findViewById(R.id.nameDisplay);
+        age = findViewById(R.id.ageDisplay);
 
-        quit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+
+        quit.setOnClickListener(view -> finish());
+
+        save.setOnClickListener(view -> {
+            String palName = name.getText().toString().trim();
+            int palAge = Integer.parseInt(age.getText().toString().trim());
+            String palGender = gender.getSelectedItem().toString();
+
+            // Create a map to store profile information and personas
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("palName", palName);
+            updates.put("palAge", palAge);
+            updates.put("palGender", palGender);
+
+            // Convert list of personas to a comma-separated string
+            String personasString = TextUtils.join(",", personas);
+            updates.put("personas", personasString);
+
+            // Get user ID
+            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+            // Update profile information in Firebase
+            userRef.updateChildren(updates)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(EditPal.this, "Profile updated successfully", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(EditPal.this, "Failed to update profile", Toast.LENGTH_SHORT).show());
+
+            finish();
         });
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        gender = (Spinner) findViewById(R.id.genderSpinner);
+        gender = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> genAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.gender_array,
@@ -71,15 +94,12 @@ public class EditPal extends AppCompatActivity {
 
         personas = new ArrayList<>(); // Initialize personas list
         // Set up RecyclerView with all personalities
-        adapter = new PersonalityAdapter(allPersonalities, new PersonalityAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(String personality) {
-                if (!personas.contains(personality) && personas.size() < 3) { // Check for duplicates and maximum limit
-                    // Add the clicked personality to personas
-                    personas.add(personality);
-                    // Update the selected RecyclerView
-                    selectedAdapter.setPersonalities(personas);
-                }
+        adapter = new PersonalityAdapter(allPersonalities, personality -> {
+            if (!personas.contains(personality) && personas.size() < 3) { // Check for duplicates and maximum limit
+                // Add the clicked personality to personas
+                personas.add(personality);
+                // Update the selected RecyclerView
+                selectedAdapter.setPersonalities(personas);
             }
         });
 
@@ -174,5 +194,53 @@ public class EditPal extends AppCompatActivity {
         personalities.add("Visionary");
 
         return personalities;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild("palName")) {
+                        String nameVal = dataSnapshot.child("palName").getValue(String.class);
+                        if (nameVal != null) {
+                            name.setText(nameVal);
+                        }
+                    }
+                    if (dataSnapshot.hasChild("palAge")) {
+                        Integer ageNum = dataSnapshot.child("palAge").getValue(Integer.class);
+                        if (ageNum != null) {
+                            age.setText(String.valueOf(ageNum));
+                        }
+                    }
+
+                    if (dataSnapshot.hasChild("palGender")) {
+                        String genderVal = dataSnapshot.child("palGender").getValue(String.class);
+                        if (genderVal != null) {
+                            ArrayAdapter<CharSequence> genderAdapter = (ArrayAdapter<CharSequence>) gender.getAdapter();
+                            int genderIndex = genderAdapter.getPosition(genderVal);
+                            if (genderIndex != -1) {
+                                gender.setSelection(genderIndex);
+                            }
+                        }
+                    }
+
+                    if (dataSnapshot.exists() && dataSnapshot.hasChild("personas")) {
+                        String personasString = dataSnapshot.child("personas").getValue(String.class);
+                        if (personasString != null && !personasString.isEmpty()) {
+                            personas = Arrays.asList(personasString.split(","));
+                            selectedAdapter.setPersonalities(personas); // Prepopulate the adapter with user's personas
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
     }
 }

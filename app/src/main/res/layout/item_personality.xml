@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/rounded_edittext_gray"
-    android:padding="8dp">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/personalityTextView"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_remove"
         android:padding="8dp"
-        android:contentDescription="Remove"
+        android:contentDescription="@string/remove"
         android:clickable="true"
         android:focusable="true"
         android:layout_gravity="start"/>

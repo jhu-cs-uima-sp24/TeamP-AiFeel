@@ -108,49 +108,48 @@ public class EditProfile extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            String nameVal = dataSnapshot.child("name").getValue(String.class);
-                            if (nameVal != null) {
-                                name.setText(nameVal);
-                            }
-                            Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
-                            if (ageNum != null) {
-                                age.setText(String.valueOf(ageNum));
-                            }
+        databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String nameVal = dataSnapshot.child("name").getValue(String.class);
+                    if (nameVal != null) {
+                        name.setText(nameVal);
+                    }
+                    Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
+                    if (ageNum != null) {
+                        age.setText(String.valueOf(ageNum));
+                    }
 
-                            if (dataSnapshot.hasChild("gender")) {
-                                String genderVal = dataSnapshot.child("gender").getValue(String.class);
-                                if (genderVal != null) {
-                                    ArrayAdapter<CharSequence> genderAdapter = (ArrayAdapter<CharSequence>) gender.getAdapter();
-                                    int genderIndex = genderAdapter.getPosition(genderVal);
-                                    if (genderIndex != -1) {
-                                        gender.setSelection(genderIndex);
-                                    }
-                                }
-                            }
-
-                            if (dataSnapshot.hasChild("notification")) {
-                                String notificationVal = dataSnapshot.child("notification").getValue(String.class);
-                                if (notificationVal != null) {
-                                    ArrayAdapter<CharSequence> notificationAdapter = (ArrayAdapter<CharSequence>) notification.getAdapter();
-                                    int notificationIndex = notificationAdapter.getPosition(notificationVal);
-                                    if (notificationIndex != -1) {
-                                        notification.setSelection(notificationIndex);
-                                    }
-                                }
+                    if (dataSnapshot.hasChild("gender")) {
+                        String genderVal = dataSnapshot.child("gender").getValue(String.class);
+                        if (genderVal != null) {
+                            ArrayAdapter<CharSequence> genderAdapter = (ArrayAdapter<CharSequence>) gender.getAdapter();
+                            int genderIndex = genderAdapter.getPosition(genderVal);
+                            if (genderIndex != -1) {
+                                gender.setSelection(genderIndex);
                             }
                         }
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle any errors
+                    if (dataSnapshot.hasChild("notification")) {
+                        String notificationVal = dataSnapshot.child("notification").getValue(String.class);
+                        if (notificationVal != null) {
+                            ArrayAdapter<CharSequence> notificationAdapter = (ArrayAdapter<CharSequence>) notification.getAdapter();
+                            int notificationIndex = notificationAdapter.getPosition(notificationVal);
+                            if (notificationIndex != -1) {
+                                notification.setSelection(notificationIndex);
+                            }
+                        }
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
     }
 }
 
