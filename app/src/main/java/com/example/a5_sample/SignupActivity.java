@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +51,19 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             List<String> signInMethods = task.getResult().getSignInMethods();
                             if (signInMethods != null && signInMethods.contains("password")) {
-                                Toast.makeText(SignupActivity.this, "Reset password link is send to this email.", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "reset password");
+
+                                LayoutInflater inflater = getLayoutInflater();
+                                View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                Toast mToast = new Toast(getApplicationContext());
+
+                                TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                txtMessage.setText("Reset password link is sent.");
+
+                                mToast.setDuration(Toast.LENGTH_SHORT);
+                                mToast.setView(customToastLayout);
+                                mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                mToast.show();
                             } else {
                                 Log.d(TAG, "Navigate to create profile");
                                 Intent intent = new Intent(SignupActivity.this, CreateProfileActivity.class); // Or go to a signup page
@@ -55,14 +71,33 @@ public class SignupActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         } else {
-                            // Handle error
                             Log.e("EmailCheck", "Failed to check email", task.getException());
-                            Toast.makeText(SignupActivity.this, "Failed to check email. Please try again.", Toast.LENGTH_SHORT).show();
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                            Toast mToast = new Toast(getApplicationContext());
+
+                            TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                            txtMessage.setText("Failed to check email. Please try again.");
+
+                            mToast.setDuration(Toast.LENGTH_SHORT);
+                            mToast.setView(customToastLayout);
+                            mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                            mToast.show();
                         }
                     });
                 } else {
                     // Email field is empty, prompt the user to fill it
-                    Toast.makeText(SignupActivity.this, "Please enter your email.", Toast.LENGTH_SHORT).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                    Toast mToast = new Toast(getApplicationContext());
+
+                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                    txtMessage.setText("Please enter your email.");
+
+                    mToast.setDuration(Toast.LENGTH_SHORT);
+                    mToast.setView(customToastLayout);
+                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                    mToast.show();
                 }
             }
         });
