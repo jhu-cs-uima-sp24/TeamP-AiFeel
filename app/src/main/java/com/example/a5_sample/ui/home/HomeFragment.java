@@ -177,8 +177,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     public void onItemClick(int position, String dayText) {
         if (!dayText.equals("")) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
-            Toast.makeText(getContext(), "Selected Date: " + date.toString(), Toast.LENGTH_SHORT).show();
             Fragment fragment = new OldJournalEntryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("date", date.toString());
+            fragment.setArguments(bundle);
             FragmentManager fm = getParentFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.fragment_home, fragment);

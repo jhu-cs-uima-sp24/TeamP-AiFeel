@@ -55,6 +55,10 @@ public class OldJournalEntryFragment extends Fragment {
         back = binding.backArrow;
         date = binding.dateText;
 
+        Bundle bundle = this.getArguments();
+        String dateText = bundle.getString("date", "");
+        date.setText(dateText);
+
         //when the user opens the mailbox, empty it
         mailbox.setOnClickListener(new View.OnClickListener() {
             @Override
