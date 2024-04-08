@@ -20,25 +20,26 @@
 
     <ImageView
         android:id="@+id/profile_picture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/round_frame"
         android:contentDescription="profile picture"
-        android:layout_gravity="center"
         android:padding="8dp"
-        android:src="@drawable/profile_default"
-        android:layout_marginBottom="10dp"/>
+        android:src="@drawable/profile_default" />
 
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/textView5"
@@ -58,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/textView10"
@@ -80,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/textView4"
@@ -116,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginBottom="15dp">
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/textView2"
@@ -243,6 +244,11 @@
             android:layout_height="24dp"
             android:text="Persona: "
             android:textColor="@color/black" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 // import androidx.lifecycle.ViewModelProvider;
 
+import com.example.a5_sample.EditPal;
 import com.example.a5_sample.EditProfile;
 import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
@@ -87,7 +88,8 @@ public class ProfileFragment extends Fragment {
         editPal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent launch = new Intent(myact, EditPal.class);
+                startActivity(launch);
             }
         });
         return root;

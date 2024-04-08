@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Adventurous",
+    "description": "Enjoys exploring new places and trying new activities."
+  },
+  {
+    "name": "Analytical",
+    "description": "Prefers to analyze situations logically and make decisions based on facts."
+  },
+  {
+    "name": "Artistic",
+    "description": "Expresses creativity through various forms of art."
+  },
+  {
+    "name": "Assertive",
+    "description": "Confident and self-assured in expressing opinions and taking charge."
+  },
+  {
+    "name": "Compassionate",
+    "description": "Shows concern for the well-being of others and is willing to help."
+  },
+  {
+    "name": "Confident",
+    "description": "Believes in oneself and one's abilities."
+  },
+  {
+    "name": "Creative",
+    "description": "Has a strong imagination and enjoys expressing oneself creatively."
+  },
+  {
+    "name": "Curious",
+    "description": "Eager to learn new things and explore new ideas."
+  },
+  {
+    "name": "Determined",
+    "description": "Has a strong resolve to achieve goals despite challenges."
+  },
+  {
+    "name": "Empathetic",
+    "description": "Able to understand and share the feelings of others."
+  },
+  {
+    "name": "Enthusiastic",
+    "description": "Shows great excitement and energy towards activities and interests."
+  },
+  {
+    "name": "Friendly",
+    "description": "Approachable and sociable, enjoys interacting with others."
+  },
+  {
+    "name": "Helpful",
+    "description": "Willing to assist others in need and provide support."
+  },
+  {
+    "name": "Honest",
+    "description": "Values truthfulness and integrity in interactions with others."
+  },
+  {
+    "name": "Independent",
+    "description": "Capable of thinking and acting for oneself, self-reliant."
+  },
+  {
+    "name": "Innovative",
+    "description": "Introduces new ideas and solutions, embraces creativity and originality."
+  },
+  {
+    "name": "Intelligent",
+    "description": "Has a high level of mental capacity, able to understand complex concepts."
+  },
+  {
+    "name": "Optimistic",
+    "description": "Maintains a positive outlook on life and future events."
+  },
+  {
+    "name": "Patient",
+    "description": "Able to remain calm and tolerant, especially in difficult situations."
+  },
+  {
+    "name": "Persistent",
+    "description": "Continues efforts and remains determined despite obstacles or setbacks."
+  },
+  {
+    "name": "Practical",
+    "description": "Deals with things sensibly and realistically, focusing on practical solutions."
+  },
+  {
+    "name": "Reliable",
+    "description": "Can be trusted to fulfill responsibilities and commitments."
+  },
+  {
+    "name": "Resilient",
+    "description": "Able to bounce back from challenges and setbacks, maintains mental toughness."
+  },
+  {
+    "name": "Resourceful",
+    "description": "Able to find quick and clever ways to overcome difficulties."
+  },
+  {
+    "name": "Sociable",
+    "description": "Enjoys being in the company of others, social and outgoing."
+  },
+  {
+    "name": "Supportive",
+    "description": "Provides encouragement and assistance to others, offers emotional support."
+  },
+  {
+    "name": "Thoughtful",
+    "description": "Considers the needs and feelings of others, shows kindness and consideration."
+  },
+  {
+    "name": "Tolerant",
+    "description": "Accepting of differences and able to tolerate diverse opinions and beliefs."
+  },
+  {
+    "name": "Versatile",
+    "description": "Adaptable and capable of performing various tasks or roles."
+  },
+  {
+    "name": "Visionary",
+    "description": "Thinks creatively and imagines innovative possibilities for the future."
+  }
+]

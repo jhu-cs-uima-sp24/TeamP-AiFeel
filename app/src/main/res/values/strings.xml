@@ -37,6 +37,15 @@
     <string name="ai_response">No messages yet</string>
     <string name="ai_response_title">AI Message</string>
 
+
+    <string name="name_input">Name: </string>
+    <string name="age_input">Age: </string>
+    <string name="gender_input">Gender: </string>
+    <string name="notification_input">Notification: </string>
+    <string name="persona_input">Personas: </string>
+    <string name="search">Search</string>
+
+
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
