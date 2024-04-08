@@ -1,0 +1,11 @@
+<!-- res/drawable/button_background_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/pale_papaya"/>
+        </shape>
+    </item>
+    <item>
+        <color android:color="@android:color/transparent"/>
+    </item>
+</selector>

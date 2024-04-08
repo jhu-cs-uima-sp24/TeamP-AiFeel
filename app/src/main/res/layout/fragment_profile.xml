@@ -29,6 +29,12 @@
         android:padding="8dp"
         android:src="@drawable/profile_default" />
 
+    <GridView
+        android:id="@+id/gridview_months"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3" />
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"

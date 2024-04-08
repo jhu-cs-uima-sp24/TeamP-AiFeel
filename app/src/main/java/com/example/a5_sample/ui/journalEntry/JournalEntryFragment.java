@@ -26,12 +26,15 @@ import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentJournalEntryBinding;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
     private EditText journalEntry;
-    private TextView date;
-    private boolean sendButtonDisabled;
+    private LocalDate date;
+    private TextView dateText;
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
@@ -42,10 +45,24 @@ public class JournalEntryFragment extends Fragment {
         binding = FragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, send button, mail button
+        //assign journal entry, send button, mail button, date
         journalEntry = binding.journalEntryText;
         send = binding.sendButton;
         mailbox = binding.mailButton;
+        dateText = binding.dateText;
+        date = LocalDate.now();
+        dateText.setText(date.toString());
+
+        Context context = getActivity().getApplicationContext();
+        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
+        String temp1 = myPrefs.getString("journalEntry", "");
+        String temp2 = myPrefs.getString("mailboxStatus", "");
+        journalEntry.setText(temp1);
+        if (temp2 == "true") {
+            mailbox.setImageResource(R.drawable.mail_icon);
+        } else if (temp2 == "false"){
+            mailbox.setImageResource(R.drawable.new_mail_icon);
+        }
 
         //when user sends entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +117,9 @@ public class JournalEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        SharedPreferences.Editor myEdit = myPrefs.edit();
+        myEdit.putString("journalEntry", journalEntry.getText().toString());
+        myEdit.putString("mailboxStatus", String.valueOf(emptyMailbox));
+        myEdit.apply();
     }
 }
