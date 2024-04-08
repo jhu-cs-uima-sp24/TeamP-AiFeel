@@ -1,7 +1,7 @@
 # TeamP-AiFeel
 You can login with the following info with prepopulated data
-Email: ericzhy0815@outlook.com
-Password: zhaohongyu0815
+- Email: ericzhy0815@outlook.com
+- Password: zhaohongyu0815
 
 ## Implemented Features
 ### Profile
