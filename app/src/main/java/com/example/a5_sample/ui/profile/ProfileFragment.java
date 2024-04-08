@@ -10,17 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-// import androidx.lifecycle.ViewModelProvider;
-
 import com.example.a5_sample.EditPal;
 import com.example.a5_sample.EditProfile;
 import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentProfileBinding;
-// import com.example.a5_sample.ui.profile.ProfileViewModel;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
 
@@ -74,7 +73,13 @@ public class ProfileFragment extends Fragment {
         myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
 
         // TODO: implement text initialization using firebase
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            name.setText(currentUser.getDisplayName());
+            email.setText(currentUser.getEmail());
+            //age.setText(currentUser.getAge());
+        }
 
         MainActivity myact = (MainActivity) getActivity();
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +97,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(launch);
             }
         });
+
         return root;
     }
 

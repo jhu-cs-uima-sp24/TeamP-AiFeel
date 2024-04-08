@@ -129,7 +129,7 @@ public class EditPal extends AppCompatActivity {
                 filteredList.add(personality);
                 count++;
             }
-            if (count == 3) { // Limit to 3 personalities
+            if (count == 30) { // Limit to 3 personalities
                 break;
             }
         }

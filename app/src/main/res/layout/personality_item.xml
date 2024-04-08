@@ -2,16 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@color/main_orange">
 
     <TextView
         android:id="@+id/personality_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:gravity="center_vertical" />
+        android:background="@color/light_gray"
+        android:layout_gravity="center_vertical"
+        android:padding="5dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/removeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:contentDescription="Add"
+        android:gravity="center"
+        android:padding="8dp"
+        android:src="@drawable/add_icon" />
 
 </LinearLayout>

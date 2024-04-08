@@ -29,12 +29,6 @@
         android:padding="8dp"
         android:src="@drawable/profile_default" />
 
-    <GridView
-        android:id="@+id/gridview_months"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="3" />
-
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -162,7 +156,8 @@
         android:layout_gravity="center"
         android:text="AI Pen-pal"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="300dp"
@@ -192,7 +187,7 @@
 
         <TextView
             android:id="@+id/nameChatDisplay"
-            android:layout_width="182dp"
+            android:layout_width="157dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@color/light_gray" />
@@ -226,8 +221,8 @@
             android:layout_width="55dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
             android:text="Gender: "
             android:textColor="@color/black" />
 
