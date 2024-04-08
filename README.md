@@ -4,7 +4,7 @@ You can login with the following info with prepopulated data
 - Password: zhaohongyu0815
 
 ## General State
-We have implemented most of the basic features that users interact with. For next sprint we'll work on AI and more advanced database storage. 
+We have implemented most of the basic features that users interact with--login/signup, starting a journal entry, customizing their profile, and calendar view. For next sprint we'll work on AI and more advanced database storage. 
 
 ## Implemented Features
 ### Login/Signup
