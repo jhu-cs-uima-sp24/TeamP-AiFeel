@@ -7,7 +7,8 @@
     android:background="#FFF0D9"
     android:backgroundTint="#FFF0D9"
     android:textAlignment="center"
-    tools:context=".ui.journalEntry.JournalEntryFragment">
+    android:id="@+id/old_fragment_journal_entry"
+    tools:context=".ui.oldJournalEntry.OldJournalEntryFragment">
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -60,7 +61,7 @@
     </HorizontalScrollView>
 
     <ImageButton
-        android:id="@+id/sendButton"
+        android:id="@+id/disabledSendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -70,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/send_icon" />
+        app:srcCompat="@drawable/disabled_send_icon" />
 
     <ImageButton
         android:id="@+id/mailButton"
