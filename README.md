@@ -4,6 +4,9 @@ You can login with the following info with prepopulated data
 - Password: zhaohongyu0815
 
 ## Implemented Features
+### Login/Signup
+### Journal Entry
+### Calendar
 ### Profile
 - User email, name, age, gender, notification setting, and pal data are prepopulated from firebase data
 - Edit profile button leads to edit profile activity
@@ -19,5 +22,8 @@ You can login with the following info with prepopulated data
 - Back button goes back without saving data
 
 ## Work in Progress
+### Login/Signup
+### Journal Entry
+### Calendar
 ### Profile
 For sprint 2, we'll also implement profile image upload
