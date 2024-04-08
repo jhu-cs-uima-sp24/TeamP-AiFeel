@@ -60,6 +60,7 @@ We have implemented most of the basic features that users interact with--login/s
 
 ## Work in Progress
 ### Login/Signup
+- store user profile image to firebase
 ### Journal Entry
  - Firebase connection to store all journal entries from past dates
  - Mavigation from the calendar view to see the current days' entry and past entries
