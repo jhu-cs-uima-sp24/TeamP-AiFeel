@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -39,6 +40,7 @@ public class OldJournalEntryFragment extends Fragment {
     private TextView date;
     private ImageButton send;
     private ImageButton mailbox;
+    private ImageButton back;
     private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,10 +48,11 @@ public class OldJournalEntryFragment extends Fragment {
         binding = OldFragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, diasbled send button, mail button, date
+        //assign journal entry, diasbled send button, mail button, back arrow, date
         journalEntry = binding.journalEntryText;
         send = binding.disabledSendButton;
         mailbox = binding.mailButton;
+        back = binding.backArrow;
         date = binding.dateText;
 
         //when the user opens the mailbox, empty it
@@ -64,7 +67,7 @@ public class OldJournalEntryFragment extends Fragment {
 
         });
 
-        send.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new HomeFragment();
@@ -73,6 +76,12 @@ public class OldJournalEntryFragment extends Fragment {
                 transaction.replace(R.id.fragment_home, fragment);
                 transaction.commit();
             }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Cannot send old journal entries",Toast.LENGTH_SHORT).show();            }
         });
 
         return root;
