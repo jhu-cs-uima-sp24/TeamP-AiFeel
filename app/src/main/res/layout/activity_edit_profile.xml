@@ -16,7 +16,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/round_frame"
             android:contentDescription="profile picture"

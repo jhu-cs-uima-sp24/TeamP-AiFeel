@@ -112,13 +112,17 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String nameVal = dataSnapshot.child("name").getValue(String.class);
-                    if (nameVal != null) {
-                        name.setText(nameVal);
+                    if (dataSnapshot.hasChild("name")) {
+                        String nameVal = dataSnapshot.child("name").getValue(String.class);
+                        if (nameVal != null) {
+                            name.setText(nameVal);
+                        }
                     }
-                    Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
-                    if (ageNum != null) {
-                        age.setText(String.valueOf(ageNum));
+                    if (dataSnapshot.hasChild("age")) {
+                        Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
+                        if (ageNum != null) {
+                            age.setText(String.valueOf(ageNum));
+                        }
                     }
 
                     if (dataSnapshot.hasChild("gender")) {
