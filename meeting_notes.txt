@@ -1,1 +1,42 @@
+Meeting Notes
+We'll frequently held meetings throughout the sprint to collaborate on design and code.
 
+
+March 15 Friday
+We discussed our ideas and vision for the app. During our meeting, professor Selinski pointed out that 1) our app involves 
+many different features and can be hard to implement, and 2) a lot of our planned features all depend on the user choosing 
+to turn on AI. After our discussion, we decided that it doesn't really make sense for the user to turn off AI feature, so 
+we removed this option. Also, we decided to move all the AI features to sprint 2, so that we can have a solid basis to build 
+the AI interactions upon.
+
+
+March 26 Tuesday
+We discussed about potential starting points for our app. Johnathan pushed into our repo with a basic template with a login,
+bottom navbar, and several pages. Also, we divided the workload:
+- Johnathan will mainly work on the home page, which has a calendar view and the streak feature. 
+- Eric will mainly work on user profile and AI profile, including creating the personality library and adapter
+- Lisa will mainly work on login and signup, as well as general configuring and authentication using firebase
+- Iris will mainly work on journaling, which has prompt suggestion feature and a journal entry
+
+
+March 29 Friday
+We discussed with our mentor about our current progress. We have each page setup, but implementing a lot of the features
+were challenging. We also ran into issues with git merge, as well as dependency issues related to google services. We
+worked on merging everything as a group, and updated our main branch to reflect our current progress. The main pending
+tasks include integrating firebase with our data storage, and integrating multiple parts, namely calendar and journal
+entries. We also ran into issues with the screen size, as we designed around Pixel 3, but it was difficult to fit all 
+the content into smaller screens such as those of Pixel 2. A potential solution is to decrease the gaps between elements
+to fit everything.
+
+
+April 2 Tuesday
+We had a small group meeting to catch up on our code and progress. The login feature is complete with firebase authentication.
+The calendar feature and the user profile were also complete, but still disconnected with firebase. The journal entry feature
+was able to provide prompts, display date, and allow text input. Also, the send message and receive message functions were
+also created. We all ran into the issue of a duplicated margin below the top action bar, but we were unable to solve it.
+
+
+April 5 Friday
+We met with our mentor. She helped us with solving the margin bug, along with many other issues. Lisa assissted everyone in setting
+firebase up for their independent parts, and also invited our collaboration on firebase, so we all can view the realtime databse.
+We set out to complete integrating firebase, as well as integrating our parts before the end of sprint.
