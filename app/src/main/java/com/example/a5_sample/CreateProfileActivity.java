@@ -9,11 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -61,7 +65,7 @@ public class CreateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ImagePicker.with(CreateProfileActivity.this)
-                        .crop(1f, 1f)	    			//Crop image(Optional), Check Customization for more option
+                        .crop(1f, 1f)	    			//crop image
                         .compress(1024)			//Final image size will be less than 1 MB(Optional)
                         .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                         .start();
@@ -79,7 +83,17 @@ public class CreateProfileActivity extends AppCompatActivity {
                 String re_password = retype_password_text.getText().toString();
 
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(name) ||TextUtils.isEmpty(password) || TextUtils.isEmpty(re_password)){
-                    Toast.makeText(CreateProfileActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                    Toast mToast = new Toast(getApplicationContext());
+
+                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                    txtMessage.setText("Please fill out all fields");
+
+                    mToast.setDuration(Toast.LENGTH_SHORT);
+                    mToast.setView(customToastLayout);
+                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                    mToast.show();
                 } else {
                     if(password.equals(re_password)){
                         mAuth.createUserWithEmailAndPassword(email, password)
@@ -117,7 +131,18 @@ public class CreateProfileActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        Toast.makeText(CreateProfileActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+                        LayoutInflater inflater = getLayoutInflater();
+                        View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                        Toast mToast = new Toast(getApplicationContext());
+
+                        TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                        txtMessage.setText("Passwords do not match");
+
+                        mToast.setDuration(Toast.LENGTH_SHORT);
+                        mToast.setView(customToastLayout);
+                        mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                        mToast.show();
                     }
 
                 }
