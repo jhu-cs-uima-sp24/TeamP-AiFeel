@@ -8,6 +8,21 @@ We have implemented most of the basic features that users interact with--login/s
 
 ## Implemented Features
 ### Login/Signup
+- login in with email and password using firebase authentication
+- Sent error message if email and password do not match/email not registered, email/password textfield is empty
+- Navigation to sign up/forgot password page
+- User can enter their email to send a reset password link if they have previously created an account
+- User can enter their email to create an account 
+-  if email format is incorrect, will display error message
+- User can sign up an account, with name, email, password
+- Implemented email password authentication—> the new email and password entry will be added to firebase authentication
+- Connected app to firebase realtime database —> user data is store on firebase
+- Error prevention:
+    - Display error message if password and retyped password do not match
+    - Display error message if text fields are empty
+    - Display error message if email format is incorrect
+- (Extra implementation not planned for Spring 1) User can customize profile picture with camera photos or photo album), this is only implemented in CreateProfile Activity and is not connected with firebase database yet.
+
 ### Journal Entry
 ### Calendar
 ### Profile
