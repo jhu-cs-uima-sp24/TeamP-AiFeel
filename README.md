@@ -25,6 +25,15 @@ We have implemented most of the basic features that users interact with--login/s
 - (Extra implementation not planned for Spring 1) User can customize profile picture with camera photos or photo album), this is only implemented in CreateProfile Activity and is not connected with firebase database yet.
 
 ### Journal Entry
+ - Today's journal entry pre-populated with today's date
+ - Allows for user input of the journal entry
+ - Constraints on the user input to fit the journal page
+ - Clicking the send button indicates a new message in the mailbox from the AI
+ - Clicking the mailbox button clears the inbox and opens a pop-up with the AI response
+ - Journal entry is saved automatically throughout the course of the day
+ - Mailbox status (new mail vs no new mail) is saved throughout the course of the day
+ - Navigatable from the NavBar
+
 ### Calendar
 - Created calendar xml file to display calendar on home page
 - Functioning calendar so that it is linked so that date layout corresponds to months/years
@@ -52,10 +61,18 @@ We have implemented most of the basic features that users interact with--login/s
 ## Work in Progress
 ### Login/Signup
 ### Journal Entry
+ - Firebase connection to store all journal entries from past dates
+ - Mavigation from the calendar view to see the current days' entry and past entries
+ - Disabling input for past day's entries
+ - Clearing the current journal entnry after the day has passed
+ - Ensuring the view fits on multiple screen sizes (Doesn't work on Pixel 2, works on 3 and higher)
+ - Connecting AI queries to user prompts and AI responses
+
 ### Calendar
 As a result of moving journal entry storage in database to sprint 2 (as given by instructor), the following will happen for sprint 2 in regard to the home page:
 1. Calendar boxes will directly bring user to journal entry. Calendar from sprint 1 is set up (since cells are already generated with onclicklisteners) to easily accomplish this and link to database.
 2. Calendar boxes will have mood emojis in background of cell. This can easily be done once database of journal entries are done and when AI parses the emoji.
 3. Streak will update based off how many journal entries are made in a row depending on database
+
 ### Profile
 For sprint 2, we'll also implement profile image upload
