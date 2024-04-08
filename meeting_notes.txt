@@ -13,7 +13,7 @@ the AI interactions upon.
 March 26 Tuesday
 We discussed about potential starting points for our app. Johnathan pushed into our repo with a basic template with a login,
 bottom navbar, and several pages. Also, we divided the workload:
-- Johnathan will mainly work on the home page, which has a calendar view and the streak feature. 
+- Jonathan will mainly work on the home page, which has a calendar view and the streak feature. 
 - Eric will mainly work on user profile and AI profile, including creating the personality library and adapter
 - Lisa will mainly work on login and signup, as well as general configuring and authentication using firebase
 - Iris will mainly work on journaling, which has prompt suggestion feature and a journal entry
@@ -37,6 +37,6 @@ also created. We all ran into the issue of a duplicated margin below the top act
 
 
 April 5 Friday
-We met with our mentor. She helped us with solving the margin bug, along with many other issues. Lisa assissted everyone in setting
+We met with our mentor. She helped us with solving the margin bug, along with many other issues. Lisa assisted everyone in setting
 firebase up for their independent parts, and also invited our collaboration on firebase, so we all can view the realtime databse.
 We set out to complete integrating firebase, as well as integrating our parts before the end of sprint.
