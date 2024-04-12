@@ -60,7 +60,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String userName = name.getText().toString().trim();
-                int userAge = Integer.parseInt(age.getText().toString().trim());
+                String userAge = age.getText().toString().trim();
                 String userGender = gender.getSelectedItem().toString();
                 String userNotification = notification.getSelectedItem().toString();
 
@@ -119,9 +119,9 @@ public class EditProfile extends AppCompatActivity {
                         }
                     }
                     if (dataSnapshot.hasChild("age")) {
-                        Integer ageNum = dataSnapshot.child("age").getValue(Integer.class);
+                        String ageNum = dataSnapshot.child("age").getValue(String.class);
                         if (ageNum != null) {
-                            age.setText(String.valueOf(ageNum));
+                            age.setText(ageNum);
                         }
                     }
 

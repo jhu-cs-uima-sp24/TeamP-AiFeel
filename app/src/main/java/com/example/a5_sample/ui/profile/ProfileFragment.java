@@ -127,9 +127,9 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                     if (dataSnapshot.hasChild("age")) {
-                        Long ageNum = dataSnapshot.child("age").getValue(Long.class);
+                        String ageNum = dataSnapshot.child("age").getValue(String.class);
                         if (ageNum != null) {
-                            age.setText(String.valueOf(ageNum));
+                            age.setText(ageNum);
                         }
                     }
                     if (dataSnapshot.hasChild("gender")) {
@@ -151,9 +151,9 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                     if (dataSnapshot.hasChild("palAge")) {
-                        Integer palAgeNum = dataSnapshot.child("palAge").getValue(Integer.class);
+                        String palAgeNum = dataSnapshot.child("palAge").getValue(String.class);
                         if (palAgeNum != null) {
-                            palAge.setText(String.valueOf(palAgeNum));
+                            palAge.setText(palAgeNum);
                         }
                     }
 

@@ -35,12 +35,14 @@ public class EditPal extends AppCompatActivity {
     private Spinner gender;
     private EditText name;
     private EditText age;
+    private boolean hasPopulated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pal);
 
+        hasPopulated = false;
         Button quit = findViewById(R.id.quit_btn);
         Button save = findViewById(R.id.save_btn);
         EditText search = findViewById(R.id.searchPersonas);
@@ -56,13 +58,15 @@ public class EditPal extends AppCompatActivity {
 
         save.setOnClickListener(view -> {
             String palName = name.getText().toString().trim();
-            int palAge = Integer.parseInt(age.getText().toString().trim());
+
             String palGender = gender.getSelectedItem().toString();
+            String palAge = age.getText().toString().trim();
 
             // Create a map to store profile information and personas
             Map<String, Object> updates = new HashMap<>();
-            updates.put("palName", palName);
+
             updates.put("palAge", palAge);
+            updates.put("palName", palName);
             updates.put("palGender", palGender);
 
             // Convert list of personas to a comma-separated string
@@ -212,9 +216,9 @@ public class EditPal extends AppCompatActivity {
                         }
                     }
                     if (dataSnapshot.hasChild("palAge")) {
-                        Integer ageNum = dataSnapshot.child("palAge").getValue(Integer.class);
+                        String ageNum = dataSnapshot.child("palAge").getValue(String.class);
                         if (ageNum != null) {
-                            age.setText(String.valueOf(ageNum));
+                            age.setText(ageNum);
                         }
                     }
 
@@ -231,9 +235,10 @@ public class EditPal extends AppCompatActivity {
 
                     if (dataSnapshot.exists() && dataSnapshot.hasChild("personas")) {
                         String personasString = dataSnapshot.child("personas").getValue(String.class);
-                        if (personasString != null && !personasString.isEmpty()) {
-                            personas = Arrays.asList(personasString.split(","));
+                        if (!hasPopulated && personasString != null && !personasString.isEmpty()) {
+                            personas.addAll(Arrays.asList(personasString.split(",")));
                             selectedAdapter.setPersonalities(personas); // Prepopulate the adapter with user's personas
+                            hasPopulated = true;
                         }
                     }
                 }
