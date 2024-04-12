@@ -18,10 +18,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.R;
+import com.example.a5_sample.ui.oldJournalEntry.OldJournalEntryFragment;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -174,7 +177,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     public void onItemClick(int position, String dayText) {
         if (!dayText.equals("")) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
-            Toast.makeText(getContext(), "Selected Date: " + date.toString(), Toast.LENGTH_SHORT).show();
+            Fragment fragment = new OldJournalEntryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("date", date.toString());
+            fragment.setArguments(bundle);
+            FragmentManager fm = getParentFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.fragment_home, fragment);
+            transaction.commit();
         }
     }
 }
