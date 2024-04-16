@@ -3,6 +3,7 @@ package com.example.a5_sample.ui.home;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private Button currentSelectedButton;
+    private boolean isJournalEntryOpen = false;
 
 
     @Override
@@ -175,7 +177,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
+        if (!dayText.equals("") && !isJournalEntryOpen) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
             Fragment fragment = new OldJournalEntryFragment();
             Bundle bundle = new Bundle();
@@ -184,7 +186,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             FragmentManager fm = getParentFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.fragment_home, fragment);
+            isJournalEntryOpen = true;
             transaction.commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isJournalEntryOpen = false;
     }
 }
