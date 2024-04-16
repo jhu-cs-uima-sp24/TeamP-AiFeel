@@ -101,8 +101,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
         nextYearButton.setOnClickListener(v -> {
-            selectedDate = selectedDate.plusYears(1);
-            yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            if (selectedDate.plusYears(1).getYear() <= LocalDate.now().getYear()){
+                selectedDate = selectedDate.plusYears(1);
+                yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            }
         });
 
         Map<Integer, Button> monthButtons = new HashMap<>();
@@ -126,13 +128,15 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 @Override
                 public void onClick(View v) {
                     int month = entry.getKey();
-                    selectedDate = selectedDate.withMonth(month);
+                    if(!selectedDate.withMonth(month).isAfter(LocalDate.now())) {
+                        selectedDate = selectedDate.withMonth(month);
 
-                    if (currentSelectedButton != null) {
-                        currentSelectedButton.setSelected(false);
+                        if (currentSelectedButton != null) {
+                            currentSelectedButton.setSelected(false);
+                        }
+                        button.setSelected(true);
+                        currentSelectedButton = button;
                     }
-                    button.setSelected(true);
-                    currentSelectedButton = button;
                 }
             });
         }
@@ -140,13 +144,19 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
-            setMonthView();
-            dialog.dismiss();
+            if (currentSelectedButton != null) {
+                setMonthView();
+                dialog.dismiss();
+                currentSelectedButton = null;
+            } else {
+                Toast.makeText(getContext(), "Please select a month first", Toast.LENGTH_SHORT).show();
+            }
         });
 
         Button cancelButton = dialogView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(v -> {
             dialog.dismiss();
+            currentSelectedButton = null;
         });
 
     }
