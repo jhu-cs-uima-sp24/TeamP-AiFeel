@@ -139,17 +139,28 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
 
         ImageButton previousYearButton = dialogView.findViewById(R.id.button_previous_year);
+        ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
+
         previousYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.minusYears(1);
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            nextYearButton.setImageResource(R.drawable.date_arrow);
             setMonthTextColor();
         });
 
-        ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
+        if (selectedDate.plusYears(1).getYear() > LocalDate.now().getYear()){
+            nextYearButton.setImageResource(R.drawable.date_arrow_gray);
+        }
         nextYearButton.setOnClickListener(v -> {
             if (selectedDate.plusYears(1).getYear() <= LocalDate.now().getYear()){
                 selectedDate = selectedDate.plusYears(1);
                 yearTextView.setText(String.valueOf(selectedDate.getYear()));
+                nextYearButton.setImageResource(R.drawable.date_arrow);
+                if (selectedDate.getYear() == (LocalDate.now().getYear())){
+                    nextYearButton.setImageResource(R.drawable.date_arrow_gray);
+                }
+            } else {
+                nextYearButton.setImageResource(R.drawable.date_arrow_gray);
             }
             setMonthTextColor();
         });

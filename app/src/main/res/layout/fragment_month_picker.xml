@@ -18,7 +18,7 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:padding="10dp"
-            android:src="@drawable/leftarrow" />
+            android:src="@drawable/date_arrow" />
 
         <TextView
             android:id="@+id/textview_year"
@@ -37,7 +37,7 @@
             android:rotation="180"
             android:background="@null"
             android:padding="10dp"
-            android:src="@drawable/leftarrow"/>
+            android:src="@drawable/date_arrow"/>
     </LinearLayout>
 
     <LinearLayout
