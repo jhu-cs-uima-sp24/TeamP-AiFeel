@@ -169,7 +169,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Nov" />
+                android:text="Dec" />
         </LinearLayout>
     </LinearLayout>
 
