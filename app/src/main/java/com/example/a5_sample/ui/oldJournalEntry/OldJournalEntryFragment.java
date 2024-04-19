@@ -25,18 +25,32 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.MainActivity;
+import com.example.a5_sample.PersonaAdapter;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.OldFragmentJournalEntryBinding;
 import com.example.a5_sample.ui.home.HomeFragment;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class OldJournalEntryFragment extends Fragment {
 
     private OldFragmentJournalEntryBinding binding;
+    private DatabaseReference databaseReference;
     private TextView journalEntry;
     private TextView date;
     private ImageButton send;
@@ -56,22 +70,33 @@ public class OldJournalEntryFragment extends Fragment {
         back = binding.backArrow;
         date = binding.dateText;
 
+        //write date to journal
         Bundle bundle = this.getArguments();
         String dateText = bundle.getString("date", "");
         date.setText(dateText);
 
-        //when the user opens the mailbox, empty it
+        //initialize firebase and get user ID
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child(""+ date +"").child(userId);
+
+        }
+
+        //when the user opens the mailbox, show AI message
         mailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.ai_response).setTitle(R.string.ai_response_title);
+                builder.setMessage("Old message").setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
 
         });
 
+        //return to calendar view
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +108,7 @@ public class OldJournalEntryFragment extends Fragment {
             }
         });
 
+        //disable sending for old entries
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,5 +131,29 @@ public class OldJournalEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    public void onStart() {
+        super.onStart();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            //retrieve and set old journal entry text
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild(""+ date +"")) {
+                        String entryText = dataSnapshot.child(""+ date +"").getValue(String.class);
+                        if (entryText != null) {
+                            journalEntry.setText(entryText);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
     }
 }
