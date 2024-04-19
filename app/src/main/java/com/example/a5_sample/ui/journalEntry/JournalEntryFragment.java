@@ -25,6 +25,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentJournalEntryBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +36,9 @@ import java.time.format.DateTimeFormatter;
 public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
+    private DatabaseReference databaseReference;
     private EditText journalEntry;
+    private String AIResponse;
     private LocalDate date;
     private TextView dateText;
     private ImageButton send;
@@ -53,6 +59,7 @@ public class JournalEntryFragment extends Fragment {
         date = LocalDate.now();
         dateText.setText(date.toString());
 
+        //retrieve previous journal entry and mailbox status and set
         Context context = getActivity().getApplicationContext();
         myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
         String temp1 = myPrefs.getString("journalEntry", "");
@@ -64,7 +71,15 @@ public class JournalEntryFragment extends Fragment {
             mailbox.setImageResource(R.drawable.new_mail_icon);
         }
 
-        //when user sends entry, trigger new AI message
+        //initialize firebase and get user ID
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        }
+
+        //when user sends journal entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,12 +99,12 @@ public class JournalEntryFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-
         });
 
         return root;
     }
 
+    //retrieve previous journal entry and mailbox status and set
     @Override
     public void onResume() {
         super.onResume();
@@ -105,6 +120,7 @@ public class JournalEntryFragment extends Fragment {
         }
     }
 
+    //save journal entry and mailbox status to memory before closing
     @Override
     public void onPause() {
         super.onPause();
@@ -114,6 +130,7 @@ public class JournalEntryFragment extends Fragment {
         myEdit.apply();
     }
 
+    //save journal entry and mailbox status to memory before closing
     @Override
     public void onDestroyView() {
         super.onDestroyView();

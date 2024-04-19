@@ -83,7 +83,7 @@ public class OldJournalEntryFragment extends Fragment {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         }
 
-        //read journal entry for the given date and write to screen
+        //read journal entry for the given date from database and write to screen
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -100,7 +100,7 @@ public class OldJournalEntryFragment extends Fragment {
             }
         });
 
-        //read AI response for the given date
+        //read AI response for the given date from database and write to screen
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -122,7 +122,7 @@ public class OldJournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(AIReponse).setTitle(R.string.ai_response_title);
+                builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
