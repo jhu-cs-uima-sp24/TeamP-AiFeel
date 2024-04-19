@@ -52,11 +52,11 @@ public class OldJournalEntryFragment extends Fragment {
     private OldFragmentJournalEntryBinding binding;
     private DatabaseReference databaseReference;
     private TextView journalEntry;
+    private String AIResponse;
     private TextView date;
     private ImageButton send;
     private ImageButton mailbox;
     private ImageButton back;
-    private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,16 +80,49 @@ public class OldJournalEntryFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            databaseReference = FirebaseDatabase.getInstance().getReference().child(""+ date +"").child(userId);
-
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         }
+
+        //read journal entry for the given date and write to screen
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child(""+date+"").hasChild("entry")) {
+                        String entryText = dataSnapshot.child(""+date+"").child("entry").getValue(String.class);
+                        journalEntry.setText(entryText);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
+
+        //read AI response for the given date
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child(""+date+"").hasChild("response")) {
+                        String responseText = dataSnapshot.child(""+date+"").child("response").getValue(String.class);
+                        AIResponse = responseText;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
 
         //when the user opens the mailbox, show AI message
         mailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Old message").setTitle(R.string.ai_response_title);
+                builder.setMessage(AIReponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -131,29 +164,5 @@ public class OldJournalEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    public void onStart() {
-        super.onStart();
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            //retrieve and set old journal entry text
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.hasChild(""+ date +"")) {
-                        String entryText = dataSnapshot.child(""+ date +"").getValue(String.class);
-                        if (entryText != null) {
-                            journalEntry.setText(entryText);
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors
-            }
-        });
     }
 }
