@@ -63,7 +63,7 @@ public class OldJournalEntryFragment extends Fragment {
         binding = OldFragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, diasbled send button, mail button, back arrow, date
+        //assign journal entry, disabled send button, mail button, back arrow, date
         journalEntry = binding.journalEntryText;
         send = binding.disabledSendButton;
         mailbox = binding.mailButton;
@@ -88,8 +88,8 @@ public class OldJournalEntryFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child(""+date+"").hasChild("entry")) {
-                        String entryText = dataSnapshot.child(""+date+"").child("entry").getValue(String.class);
+                    if (dataSnapshot.child(""+dateText+"").hasChild("entry")) {
+                        String entryText = dataSnapshot.child(""+dateText+"").child("entry").getValue(String.class);
                         journalEntry.setText(entryText);
                     }
                 }
@@ -105,8 +105,8 @@ public class OldJournalEntryFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child(""+date+"").hasChild("response")) {
-                        String responseText = dataSnapshot.child(""+date+"").child("response").getValue(String.class);
+                    if (dataSnapshot.child(""+dateText+"").hasChild("response")) {
+                        String responseText = dataSnapshot.child(""+dateText+"").child("response").getValue(String.class);
                         AIResponse = responseText;
                     }
                 }

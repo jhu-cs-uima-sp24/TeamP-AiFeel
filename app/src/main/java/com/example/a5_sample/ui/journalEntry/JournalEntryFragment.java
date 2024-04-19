@@ -27,24 +27,35 @@ import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentJournalEntryBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
     private DatabaseReference databaseReference;
     private EditText journalEntry;
+    private String journalEntryText;
     private String AIResponse;
-    private LocalDate date;
-    private TextView dateText;
+    private LocalDate getDate;
+    private TextView date;
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
     private SharedPreferences myPrefs;
+
+    public JournalEntryFragment(String journalEntryText, String AIResponse) {
+        this.journalEntryText = journalEntryText;
+        this.AIResponse = AIResponse;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,9 +66,10 @@ public class JournalEntryFragment extends Fragment {
         journalEntry = binding.journalEntryText;
         send = binding.sendButton;
         mailbox = binding.mailButton;
-        dateText = binding.dateText;
-        date = LocalDate.now();
-        dateText.setText(date.toString());
+        date = binding.dateText;
+        getDate = LocalDate.now();
+        String dateText = getDate.toString();
+        date.setText(dateText);
 
         //retrieve previous journal entry and mailbox status and set
         Context context = getActivity().getApplicationContext();
@@ -78,6 +90,11 @@ public class JournalEntryFragment extends Fragment {
             String userId = currentUser.getUid();
             databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         }
+
+        //write journal entry and AI response to database
+        Map<String, Object> userJournal = new HashMap<>();
+        userJournal.put(""+dateText+"", new JournalEntryFragment(journalEntry.toString(), AIResponse));
+        databaseReference.setValue(userJournal);
 
         //when user sends journal entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
