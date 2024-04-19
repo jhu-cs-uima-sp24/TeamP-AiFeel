@@ -2,6 +2,7 @@ package com.example.a5_sample.ui.home;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,8 +54,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
 
-        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction());
-        myview.findViewById(R.id.nextMonthButton).setOnClickListener(v -> nextMonthAction());
+        ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
+
+        if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
+            nextMonth.setImageResource(R.drawable.date_arrow_gray);
+        }
+
+        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction(nextMonth));
+        nextMonth.setOnClickListener(v -> nextMonthAction(nextMonth));
         myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction());
 
         setMonthView();
@@ -71,13 +78,22 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    private void previousMonthAction() {
+    private void previousMonthAction(ImageButton nextMonth) {
         selectedDate = selectedDate.minusMonths(1);
+        nextMonth.setImageResource(R.drawable.date_arrow);
         setMonthView();
     }
 
-    private void nextMonthAction() {
-        selectedDate = selectedDate.plusMonths(1);
+    private void nextMonthAction(ImageButton nextMonth) {
+        if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
+            nextMonth.setImageResource(R.drawable.date_arrow_gray);
+        } else {
+            selectedDate = selectedDate.plusMonths(1);
+            nextMonth.setImageResource(R.drawable.date_arrow);
+            if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())){
+                nextMonth.setImageResource(R.drawable.date_arrow_gray);
+            }
+        }
         setMonthView();
     }
 
@@ -85,6 +101,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         LocalDate currDay = LocalDate.now();
         LocalDate targetDate = LocalDate.of(year, month, 1);
         return targetDate.isAfter(currDay.withDayOfMonth(currDay.lengthOfMonth()));
+    }
+
+    private boolean isThisMonth(int month, int year) {
+        LocalDate currDay = LocalDate.now();
+        LocalDate targetDate = LocalDate.of(year, month, 1);
+        return targetDate.isEqual(currDay.withDayOfMonth(currDay.lengthOfMonth()));
     }
 
     private void initializeButtons(View dialogView) {
