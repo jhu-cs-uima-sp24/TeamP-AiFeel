@@ -3,6 +3,7 @@ package com.example.a5_sample.ui.home;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.R;
+import com.example.a5_sample.ui.oldJournalEntry.OldJournalEntryFragment;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -37,6 +41,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private Button currentSelectedButton;
+    private boolean isJournalEntryOpen = false;
 
 
     @Override
@@ -96,8 +101,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
         nextYearButton.setOnClickListener(v -> {
-            selectedDate = selectedDate.plusYears(1);
-            yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            if (selectedDate.plusYears(1).getYear() <= LocalDate.now().getYear()){
+                selectedDate = selectedDate.plusYears(1);
+                yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            }
         });
 
         Map<Integer, Button> monthButtons = new HashMap<>();
@@ -121,13 +128,15 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 @Override
                 public void onClick(View v) {
                     int month = entry.getKey();
-                    selectedDate = selectedDate.withMonth(month);
+                    if(!selectedDate.withMonth(month).isAfter(LocalDate.now())) {
+                        selectedDate = selectedDate.withMonth(month);
 
-                    if (currentSelectedButton != null) {
-                        currentSelectedButton.setSelected(false);
+                        if (currentSelectedButton != null) {
+                            currentSelectedButton.setSelected(false);
+                        }
+                        button.setSelected(true);
+                        currentSelectedButton = button;
                     }
-                    button.setSelected(true);
-                    currentSelectedButton = button;
                 }
             });
         }
@@ -135,13 +144,19 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
-            setMonthView();
-            dialog.dismiss();
+            if (currentSelectedButton != null) {
+                setMonthView();
+                dialog.dismiss();
+                currentSelectedButton = null;
+            } else {
+                Toast.makeText(getContext(), "Please select a month first", Toast.LENGTH_SHORT).show();
+            }
         });
 
         Button cancelButton = dialogView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(v -> {
             dialog.dismiss();
+            currentSelectedButton = null;
         });
 
     }
@@ -172,9 +187,23 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
+        if (!dayText.equals("") && !isJournalEntryOpen) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
-            Toast.makeText(getContext(), "Selected Date: " + date.toString(), Toast.LENGTH_SHORT).show();
+            Fragment fragment = new OldJournalEntryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("date", date.toString());
+            fragment.setArguments(bundle);
+            FragmentManager fm = getParentFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.fragment_home, fragment);
+            isJournalEntryOpen = true;
+            transaction.commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isJournalEntryOpen = false;
     }
 }

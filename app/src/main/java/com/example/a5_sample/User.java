@@ -5,7 +5,7 @@ public class User {
     private String userId; // Unique ID from Firebase Authentication
     private String email;
     private String name;
-    private int age;
+    private String age;
     private String gender;
     // Constructors, getters, and setters
     private String uid;
@@ -18,7 +18,7 @@ public class User {
     }
 
     //getters
-    public int getAge() { return age; }
+    public String getAge() { return age; }
 
     public String getUserId(){ return userId; }
 
@@ -30,7 +30,7 @@ public class User {
 
     //setters
 
-    public void setAge(int age) { this.age = age; }
+    public void setAge(String age) { this.age = age; }
 
     public void setEmail(String email){ this.email = email; }
 

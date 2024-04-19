@@ -34,6 +34,11 @@
             android:exported="true"
             android:theme="@style/Theme.A5_sample"/>
 
+        <activity android:name=".EditPal"
+            android:exported="true"
+            android:theme="@style/Theme.A5_sample"
+            android:windowSoftInputMode="adjustNothing" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan"

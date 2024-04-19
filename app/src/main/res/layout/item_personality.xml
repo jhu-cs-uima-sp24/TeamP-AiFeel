@@ -1,0 +1,27 @@
+<!-- item_personality.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_edittext_gray"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/personalityTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/removeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_remove"
+        android:padding="8dp"
+        android:contentDescription="@string/remove"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_gravity="start"/>
+</LinearLayout>

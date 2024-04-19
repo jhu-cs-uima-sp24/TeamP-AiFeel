@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,15 +49,33 @@ public class LoginActivity extends AppCompatActivity {
                 String password = password_text.getText().toString();
                 //error prevention for empty email or password
                 if (email == null || email.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                    Toast mToast = new Toast(getApplicationContext());
+
+                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                    txtMessage.setText("Please enter your email");
+
+                    mToast.setDuration(Toast.LENGTH_SHORT);
+                    mToast.setView(customToastLayout);
+                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                    mToast.show();
                     return;
                 }
                 if (password == null || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                    Toast mToast = new Toast(getApplicationContext());
+
+                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                    txtMessage.setText("Please enter your password");
+
+                    mToast.setDuration(Toast.LENGTH_SHORT);
+                    mToast.setView(customToastLayout);
+                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                    mToast.show();
                     return;
                 }
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() { // Fixed context
                             @Override
@@ -63,9 +85,17 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Email and Password combination are incorrect. ",
-                                            Toast.LENGTH_SHORT).show();
-                                    //TO-DO, show customized toaster
+                                    LayoutInflater inflater = getLayoutInflater();
+                                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                    Toast mToast = new Toast(getApplicationContext());
+
+                                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                    txtMessage.setText("Wrong email/password, or no account associated with the email");
+
+                                    mToast.setDuration(Toast.LENGTH_LONG);
+                                    mToast.setView(customToastLayout);
+                                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                    mToast.show();
                                 }
                             }
                         });
