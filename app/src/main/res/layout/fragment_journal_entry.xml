@@ -174,4 +174,17 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="53dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="18dp"
+        android:background="#00000000"
+        android:src="@drawable/save_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mailButton"
+        app:layout_constraintStart_toEndOf="@+id/sendButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

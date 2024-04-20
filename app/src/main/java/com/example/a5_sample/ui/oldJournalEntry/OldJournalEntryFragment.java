@@ -52,18 +52,18 @@ public class OldJournalEntryFragment extends Fragment {
     private OldFragmentJournalEntryBinding binding;
     private DatabaseReference databaseReference;
     private TextView journalEntry;
+    private String AIResponse;
     private TextView date;
     private ImageButton send;
     private ImageButton mailbox;
     private ImageButton back;
-    private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = OldFragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, diasbled send button, mail button, back arrow, date
+        //assign journal entry, disabled send button, mail button, back arrow, date
         journalEntry = binding.journalEntryText;
         send = binding.disabledSendButton;
         mailbox = binding.mailButton;
@@ -76,24 +76,37 @@ public class OldJournalEntryFragment extends Fragment {
         date.setText(dateText);
 
         //initialize firebase and get user ID
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            databaseReference = FirebaseDatabase.getInstance().getReference().child(""+ date +"").child(userId);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        }
+        //read journal entry for the given date from database and write to screen
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild(""+dateText+"")) {
+                        String temp1 = dataSnapshot.child(""+dateText+"").child("journalEntryText").getValue(String.class);
+                        String temp2 = dataSnapshot.child(""+dateText+"").child("AIResponse").getValue(String.class);
+                        journalEntry.setText(temp1);
+                        AIResponse = temp2;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
 
         //when the user opens the mailbox, show AI message
         mailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Old message").setTitle(R.string.ai_response_title);
+                builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-
         });
 
         //return to calendar view
@@ -131,29 +144,5 @@ public class OldJournalEntryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
-
-    public void onStart() {
-        super.onStart();
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            //retrieve and set old journal entry text
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.hasChild(""+ date +"")) {
-                        String entryText = dataSnapshot.child(""+ date +"").getValue(String.class);
-                        if (entryText != null) {
-                            journalEntry.setText(entryText);
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors
-            }
-        });
     }
 }
