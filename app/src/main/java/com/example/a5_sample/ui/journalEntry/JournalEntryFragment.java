@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.a5_sample.JournalEntry;
 import com.example.a5_sample.MainActivity;
 import com.example.a5_sample.R;
 import com.example.a5_sample.databinding.FragmentJournalEntryBinding;
@@ -43,19 +44,14 @@ public class JournalEntryFragment extends Fragment {
     private FragmentJournalEntryBinding binding;
     private DatabaseReference databaseReference;
     private EditText journalEntry;
-    private String journalEntryText;
     private String AIResponse;
     private LocalDate getDate;
     private TextView date;
+    private ImageButton save;
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
     private SharedPreferences myPrefs;
-
-    public JournalEntryFragment(String journalEntryText, String AIResponse) {
-        this.journalEntryText = journalEntryText;
-        this.AIResponse = AIResponse;
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +60,7 @@ public class JournalEntryFragment extends Fragment {
 
         //assign journal entry, send button, mail button, date
         journalEntry = binding.journalEntryText;
+        save = binding.saveButton;
         send = binding.sendButton;
         mailbox = binding.mailButton;
         date = binding.dateText;
@@ -83,18 +80,22 @@ public class JournalEntryFragment extends Fragment {
             mailbox.setImageResource(R.drawable.new_mail_icon);
         }
 
-        //initialize firebase and get user ID
+        //initialize firebase
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-        }
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         //write journal entry and AI response to database
-        Map<String, Object> userJournal = new HashMap<>();
-        userJournal.put(""+dateText+"", new JournalEntryFragment(journalEntry.toString(), AIResponse));
-        databaseReference.setValue(userJournal);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), "Hi!"));
+                userRef.updateChildren(updates);
+            }
+        });
 
         //when user sends journal entry, trigger new AI message
         send.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +113,7 @@ public class JournalEntryFragment extends Fragment {
                 mailbox.setImageResource(R.drawable.mail_icon);
                 emptyMailbox = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.ai_response).setTitle(R.string.ai_response_title);
+                builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
