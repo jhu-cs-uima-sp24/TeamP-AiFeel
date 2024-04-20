@@ -71,9 +71,11 @@ public class JournalEntryFragment extends Fragment {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         //initialize database with default values
-        Map<String, Object> updates = new HashMap<>();
-        updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true));
-        userRef.updateChildren(updates);
+        if (userRef.child(""+dateText+"") == null) {
+            Map<String, Object> updates = new HashMap<>();
+            updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true));
+            userRef.updateChildren(updates);
+        }
 
         //retrieve last journal entry, AI response, mailbox status from database
         userRef.addValueEventListener(new ValueEventListener() {
@@ -117,7 +119,7 @@ public class JournalEntryFragment extends Fragment {
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.new_mail_icon);
                 emptyMailbox = false;
-                //AIResponse = "HI";
+                AIResponse = "HI";
                 Map<String, Object> updates = new HashMap<>();
                 updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox));
                 userRef.updateChildren(updates);

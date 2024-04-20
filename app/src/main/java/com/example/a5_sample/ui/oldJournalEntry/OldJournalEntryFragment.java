@@ -76,38 +76,19 @@ public class OldJournalEntryFragment extends Fragment {
         date.setText(dateText);
 
         //initialize firebase and get user ID
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-        }
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         //read journal entry for the given date from database and write to screen
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child(""+dateText+"").hasChild("entry")) {
-                        String entryText = dataSnapshot.child(""+dateText+"").child("entry").getValue(String.class);
-                        journalEntry.setText(entryText);
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle any errors
-            }
-        });
-
-        //read AI response for the given date from database and write to screen
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child(""+dateText+"").hasChild("response")) {
-                        String responseText = dataSnapshot.child(""+dateText+"").child("response").getValue(String.class);
-                        AIResponse = responseText;
+                    if (dataSnapshot.hasChild(""+dateText+"")) {
+                        String temp1 = dataSnapshot.child(""+dateText+"").child("journalEntryText").getValue(String.class);
+                        String temp2 = dataSnapshot.child(""+dateText+"").child("AIResponse").getValue(String.class);
+                        journalEntry.setText(temp1);
+                        AIResponse = temp2;
                     }
                 }
             }
@@ -126,7 +107,6 @@ public class OldJournalEntryFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-
         });
 
         //return to calendar view
