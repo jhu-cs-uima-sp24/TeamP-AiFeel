@@ -51,7 +51,6 @@ public class JournalEntryFragment extends Fragment {
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
-    private SharedPreferences myPrefs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,18 +67,6 @@ public class JournalEntryFragment extends Fragment {
         String dateText = getDate.toString();
         date.setText(dateText);
 
-        //retrieve previous journal entry and mailbox status and set
-        Context context = getActivity().getApplicationContext();
-        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
-        String temp1 = myPrefs.getString("journalEntry", "");
-        String temp2 = myPrefs.getString("mailboxStatus", "");
-        journalEntry.setText(temp1);
-        if (temp2 == "true") {
-            mailbox.setImageResource(R.drawable.mail_icon);
-        } else if (temp2 == "false"){
-            mailbox.setImageResource(R.drawable.new_mail_icon);
-        }
-
         //initialize firebase
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -87,12 +74,38 @@ public class JournalEntryFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        //write journal entry and AI response to database
+        //retrieve last journal entry, AI response, mailbox status from database
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild(""+dateText+"")) {
+                        String temp1 = dataSnapshot.child(""+dateText+"").child("journalEntryText").getValue(String.class);
+                        String temp2 = dataSnapshot.child(""+dateText+"").child("AIResponse").getValue(String.class);
+                        boolean temp3 = dataSnapshot.child(""+dateText+"").child("mailboxStatus").getValue(boolean.class);
+                        journalEntry.setText(temp1);
+                        AIResponse = temp2;
+                        emptyMailbox = temp3;
+                        if (temp3 == true) {
+                            mailbox.setImageResource(R.drawable.mail_icon);
+                        } else if (temp3 == false){
+                            mailbox.setImageResource(R.drawable.new_mail_icon);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+            }
+        });
+
+        //write journal entry and AI response to database upon pressing save
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Map<String, Object> updates = new HashMap<>();
-                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), "Hi!"));
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), "Hi!", emptyMailbox));
                 userRef.updateChildren(updates);
             }
         });
@@ -106,7 +119,7 @@ public class JournalEntryFragment extends Fragment {
             }
         });
 
-        //when the user opens the mailbox, empty it
+        //when the user opens the mailbox, empty it and show AI message
         mailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,39 +135,18 @@ public class JournalEntryFragment extends Fragment {
         return root;
     }
 
-    //retrieve previous journal entry and mailbox status and set
     @Override
     public void onResume() {
         super.onResume();
-        Context context = getActivity().getApplicationContext();
-        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
-        String temp1 = myPrefs.getString("journalEntry", "");
-        String temp2 = myPrefs.getString("mailboxStatus", "");
-        journalEntry.setText(temp1);
-        if (temp2 == "true") {
-            mailbox.setImageResource(R.drawable.mail_icon);
-        } else if (temp2 == "false"){
-            mailbox.setImageResource(R.drawable.new_mail_icon);
-        }
     }
 
-    //save journal entry and mailbox status to memory before closing
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences.Editor myEdit = myPrefs.edit();
-        myEdit.putString("journalEntry", journalEntry.getText().toString());
-        myEdit.putString("mailboxStatus", String.valueOf(emptyMailbox));
-        myEdit.apply();
     }
 
-    //save journal entry and mailbox status to memory before closing
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        SharedPreferences.Editor myEdit = myPrefs.edit();
-        myEdit.putString("journalEntry", journalEntry.getText().toString());
-        myEdit.putString("mailboxStatus", String.valueOf(emptyMailbox));
-        myEdit.apply();
     }
 }
