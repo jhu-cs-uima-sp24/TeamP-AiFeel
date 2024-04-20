@@ -42,7 +42,6 @@ import java.util.Map;
 public class JournalEntryFragment extends Fragment {
 
     private FragmentJournalEntryBinding binding;
-    private DatabaseReference databaseReference;
     private EditText journalEntry;
     private String AIResponse;
     private LocalDate getDate;
@@ -68,11 +67,13 @@ public class JournalEntryFragment extends Fragment {
         date.setText(dateText);
 
         //initialize firebase
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+        //initialize database with default values
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true));
+        userRef.updateChildren(updates);
 
         //retrieve last journal entry, AI response, mailbox status from database
         userRef.addValueEventListener(new ValueEventListener() {
@@ -105,7 +106,7 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Map<String, Object> updates = new HashMap<>();
-                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), "Hi!", emptyMailbox));
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox));
                 userRef.updateChildren(updates);
             }
         });
@@ -116,6 +117,10 @@ public class JournalEntryFragment extends Fragment {
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.new_mail_icon);
                 emptyMailbox = false;
+                //AIResponse = "HI";
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox));
+                userRef.updateChildren(updates);
             }
         });
 
@@ -125,6 +130,9 @@ public class JournalEntryFragment extends Fragment {
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.mail_icon);
                 emptyMailbox = true;
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox));
+                userRef.updateChildren(updates);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
