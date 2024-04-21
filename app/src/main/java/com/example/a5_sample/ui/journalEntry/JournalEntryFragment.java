@@ -77,7 +77,7 @@ public class JournalEntryFragment extends Fragment {
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         //initialize database with default values when a new day starts
-        if (userRef.child(""+dateText+"") == null || Calendar.getInstance().getTime()) {
+        if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
             updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
             userRef.updateChildren(updates);
