@@ -170,7 +170,6 @@ public class ChatFragment extends Fragment {
         messageList.add(new Message("Typing... ", Message.SENT_BY_BOT));
 
 
-
         // Create JSON request body
         JSONArray messagesArray = new JSONArray();
         JSONObject userMessage = new JSONObject();

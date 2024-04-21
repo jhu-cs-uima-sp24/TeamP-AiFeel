@@ -1,7 +1,4 @@
 package com.example.a5_sample;
-import java.lang.String;
-import java.util.Random;
-
 
 public class JournalEntry {
 
@@ -9,9 +6,12 @@ public class JournalEntry {
     public String AIResponse;
     public boolean mailboxStatus;
 
-    public JournalEntry(String journalEntryText, String AIResponse, boolean mailboxStatus) {
+    public int mood; //scale of 1-5, 1 is the lowest
+
+    public JournalEntry(String journalEntryText, String AIResponse, boolean mailboxStatus, int mood) {
         this.journalEntryText = journalEntryText;
         this.AIResponse = AIResponse;
         this.mailboxStatus = mailboxStatus;
+        this.mood = mood;
     }
 }

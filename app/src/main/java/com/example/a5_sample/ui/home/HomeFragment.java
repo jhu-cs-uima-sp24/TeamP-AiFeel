@@ -52,9 +52,9 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             nextMonth.setImageResource(R.drawable.date_arrow_gray);
         }
 
-        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction(nextMonth));
+        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction(nextMonth)); //top left button
         nextMonth.setOnClickListener(v -> nextMonthAction(nextMonth));
-        myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction());
+        myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction()); // pop up button
 
         setMonthView();
         return myview;
