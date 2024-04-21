@@ -68,6 +68,7 @@ public class JournalEntryFragment extends Fragment {
         getDate = LocalDate.now();
         dateText = getDate.toString();
         date.setText(dateText);
+
         //initialize firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
@@ -75,7 +76,7 @@ public class JournalEntryFragment extends Fragment {
         //initialize database with default values
         if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
-            updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true, mood));
+            updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
             userRef.updateChildren(updates);
         }
 
@@ -122,16 +123,10 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String journalText = journalEntry.getText().toString();
-                classifyAndSaveMood(journalText);
-                getAIResponseAndSave(journalText);
                 mailbox.setImageResource(R.drawable.new_mail_icon);
                 emptyMailbox = false;
-//                AIResponse = "HI";
-//                Map<String, Object> updates = new HashMap<>();
-//                //should I call mood prediction here again?
-//                int mood = 0;
-//                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
-//                userRef.updateChildren(updates);
+                classifyAndSaveMood(journalText);
+                getAIResponseAndSave(journalText);
             }
         });
 
@@ -156,7 +151,7 @@ public class JournalEntryFragment extends Fragment {
 
     private void getAIResponseAndSave(String journalText) {
         String prompt = "You will receive a journal entry from the user, please read the journal and provide some response like a friend would do after listening to the content of the journal. " +
-                "Keep your response in one paragraph. You are an intimate friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
+                "Keep your response limited to a few lines You are an intimate friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
                 "Your purpose is to create a supportive and comforting environment where the user feels valued, understood, and cared for.  " +
                 "Using language that fosters intimacy, empathy, and emotional connection, you aim to build rapport with the user and provide a safe space for them to express their thoughts, " +
                 "feelings, and concerns. Here is the journal content: " + journalText;
@@ -192,9 +187,9 @@ public class JournalEntryFragment extends Fragment {
                         //get the prediction from gpt
                         String responseData = response.body().string();
                         JSONObject jsonObject = new JSONObject(responseData);
-                        String AIresponse = jsonObject.getJSONArray("choices").getJSONObject(0).getString("text").trim();
+                        AIResponse = jsonObject.getJSONArray("choices").getJSONObject(0).getString("text").trim();
                         //after receiving the mood classification from gpt, save it to firebase
-                        saveJournalEntryWithAIReponse(journalText, AIresponse);
+                        saveJournalEntryWithAIReponse(journalText, AIResponse);
 
                     } catch (Exception e) {
                         e.printStackTrace();
