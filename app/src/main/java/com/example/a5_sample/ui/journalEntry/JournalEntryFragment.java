@@ -39,6 +39,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class JournalEntryFragment extends Fragment {
     private final String API_KEY = "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";
     private final OkHttpClient client = new OkHttpClient();
@@ -51,7 +54,7 @@ public class JournalEntryFragment extends Fragment {
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
-    private int user_mood = 3; //assume neutral moods
+    private int mood = 3; //assume neutral moods
     private String dateText;
     private DatabaseReference userRef;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -68,14 +71,15 @@ public class JournalEntryFragment extends Fragment {
         getDate = LocalDate.now();
         dateText = getDate.toString();
         date.setText(dateText);
+
         //initialize firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        //initialize database with default values
+        //initialize database with default values when a new day starts
         if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
-            updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true, user_mood));
+            updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
             userRef.updateChildren(updates);
         }
 
@@ -88,14 +92,14 @@ public class JournalEntryFragment extends Fragment {
                         String new_journalentry = dataSnapshot.child(""+dateText+"").child("journalEntryText").getValue(String.class);
                         String new_AIResponse = dataSnapshot.child(""+dateText+"").child("AIResponse").getValue(String.class);
                         boolean is_empty = dataSnapshot.child(""+dateText+"").child("mailboxStatus").getValue(boolean.class);
-                        int temp4 = dataSnapshot.child(""+dateText+"").child("mood").getValue(int.class); //retrive mood
+                        int user_mood = dataSnapshot.child(""+dateText+"").child("mood").getValue(int.class); //retrive mood
                         journalEntry.setText(new_journalentry);
                         AIResponse = new_AIResponse;
                         emptyMailbox = is_empty;
-                        user_mood = temp4;
-                        if (is_empty == true) {
+                        mood = user_mood;
+                        if (emptyMailbox == true) {
                             mailbox.setImageResource(R.drawable.mail_icon);
-                        } else if (is_empty == false){
+                        } else if (emptyMailbox == false){
                             mailbox.setImageResource(R.drawable.new_mail_icon);
                         }
                     }
@@ -122,18 +126,10 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String journalText = journalEntry.getText().toString();
-                classifyAndSaveMood(journalText);
-                getAIResponseAndSave(journalText);
                 mailbox.setImageResource(R.drawable.new_mail_icon);
                 emptyMailbox = false;
-//                AIResponse = "HI";
-//                Map<String, Object> updates = new HashMap<>();
-//                //should I call mood prediction here again?
-//                int mood = 0;
-//                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
-//                userRef.updateChildren(updates);
-
-
+                classifyAndSaveMood(journalText);
+                getAIResponseAndSave(journalText);
             }
         });
 
@@ -144,7 +140,7 @@ public class JournalEntryFragment extends Fragment {
                 mailbox.setImageResource(R.drawable.mail_icon);
                 emptyMailbox = true;
                 Map<String, Object> updates = new HashMap<>();
-                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, user_mood));
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
                 userRef.updateChildren(updates);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
@@ -158,7 +154,7 @@ public class JournalEntryFragment extends Fragment {
 
     private void getAIResponseAndSave(String journalText) {
         String prompt = "You will receive a journal entry from the user, please read the journal and provide some response like a friend would do after listening to the content of the journal. " +
-                "Keep your response in one paragraph. You are an intimate friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
+                "Keep your response limited to a few lines You are an intimate friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
                 "Your purpose is to create a supportive and comforting environment where the user feels valued, understood, and cared for.  " +
                 "Using language that fosters intimacy, empathy, and emotional connection, you aim to build rapport with the user and provide a safe space for them to express their thoughts, " +
                 "feelings, and concerns. Here is the journal content: " + journalText;
@@ -194,9 +190,9 @@ public class JournalEntryFragment extends Fragment {
                         //get the prediction from gpt
                         String responseData = response.body().string();
                         JSONObject jsonObject = new JSONObject(responseData);
-                        String AIresponse = jsonObject.getJSONArray("choices").getJSONObject(0).getString("text").trim();
+                        AIResponse = jsonObject.getJSONArray("choices").getJSONObject(0).getString("text").trim();
                         //after receiving the mood classification from gpt, save it to firebase
-                        saveJournalEntryWithAIReponse(journalText, AIresponse);
+                        saveJournalEntryWithAIReponse(journalText, AIResponse);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -213,7 +209,7 @@ public class JournalEntryFragment extends Fragment {
         AIResponse = new_AIResponse;
         emptyMailbox = false;
         Map<String, Object> updates = new HashMap<>();
-        updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, user_mood));
+        updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, mood));
         userRef.updateChildren(updates);
     }
 
@@ -273,8 +269,8 @@ public class JournalEntryFragment extends Fragment {
     }
 
 
-    private void saveJournalEntryWithMood(String journalText, int mood) {
-        user_mood = mood;
+    private void saveJournalEntryWithMood(String journalText, int user_mood) {
+        mood = user_mood;
         Map<String, Object> updates = new HashMap<>();
         updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, user_mood));
         userRef.updateChildren(updates);

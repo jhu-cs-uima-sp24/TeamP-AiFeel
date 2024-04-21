@@ -20,22 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.R;
 import com.example.a5_sample.ui.oldJournalEntry.OldJournalEntryFragment;
-
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +27,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
@@ -54,7 +45,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private boolean isJournalEntryOpen = false;
     private Map<Integer, Button> monthButtons;
     private DatabaseReference userRef;
-    private LineChart moodLineChart;
+    private Map<String, Integer> moodData = new HashMap<>();
+//    private LineChart moodLineChart;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
@@ -62,13 +54,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
-        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
+//        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
 
         //initialize firebase for retrieving mood data
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
+        retrieveMoodDataForMonth(selectedDate.getYear(), selectedDate.getMonthValue() );
         if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
             nextMonth.setImageResource(R.drawable.date_arrow_gray);
         }
@@ -81,15 +74,52 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         return myview;
     }
 
-    /**
-    private ArrayList<Entry> retriveMoodData(){
-        int year = selectedDate.getYear();
-        int month = selectedDate.getMonthValue();
-        String date_format = year+"-"+month;
-        ArrayList<Entry> entries = new ArrayList<Entry>();
 
+//    private ArrayList<Entry> retrieveMoodData(){
+//        int year = selectedDate.getYear();
+//        int month = selectedDate.getMonthValue();
+//        String date_format = year+"-"+month;
+//        ArrayList<Entry> entries = new ArrayList<Entry>();
+//
+//
+//    }
+    public void retrieveMoodDataForMonth(int year, int month) {
 
-    }**/
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1);
+        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int[] completedCount = new int[1]; // to count if all data is retrieved
+        Map<String, Integer> localMoodData = new HashMap<>(); // temporary storage
+
+        for (int day = 1; day <= daysInMonth; day++) {
+            String dateKey = String.format("%d-%02d-%02d", year, month, day);
+            DatabaseReference dateRef = userRef.child(dateKey);
+            dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Integer mood = dataSnapshot.child("mood").getValue(Integer.class);
+                    if (mood != null) {
+                        localMoodData.put(dateKey, mood);
+                    } else {
+                        localMoodData.put(dateKey, 0); // default mood value is 0 if data is missing
+                    }
+                    completedCount[0]++;
+                    if (completedCount[0] == daysInMonth) {
+                        moodData.clear();
+                        moodData.putAll(localMoodData); // copy all fetched data to the main map
+                        //update your calendar here
+                        //update the graph here
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("Error fetching data: " + databaseError.getMessage());
+                }
+            });
+        }
+    }
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));

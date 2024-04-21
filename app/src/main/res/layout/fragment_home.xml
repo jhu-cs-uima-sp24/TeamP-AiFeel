@@ -138,88 +138,107 @@
                         tools:layout_editor_absoluteX="0dp" />
                 </LinearLayout>
 
-
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
                     android:weightSum="7"
                     android:layout_gravity="center">
 
-                    <View
+                    <ImageView
                         android:id="@+id/sunFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/monFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/tuesFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/wedFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/thurFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/friFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
+                        android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/satFilledCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:src="@drawable/fire_emoji"
                         android:background="@drawable/fire_circle"
-                        android:layout_marginEnd="10dp"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
                         android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
