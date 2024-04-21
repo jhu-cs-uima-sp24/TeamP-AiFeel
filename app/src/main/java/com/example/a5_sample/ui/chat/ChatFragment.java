@@ -30,7 +30,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Call;
@@ -55,49 +54,7 @@ public class ChatFragment extends Fragment {
     private String persona;
     private DatabaseReference databaseReference;
 
-    private String journalExample = "Date: April 10, 2024\n" +
-            "\n" +
-            "Morning:\n" +
-            "\n" +
-            "Woke up at 7:00 AM feeling refreshed after a good night's sleep. Checked my phone for any important notifications and then proceeded to get ready for the day. Had a quick breakfast consisting of scrambled eggs and toast while skimming through the news headlines.\n" +
-            "\n" +
-            "8:30 AM - 10:00 AM: Computer Networking Lecture\n" +
-            "\n" +
-            "Attended the computer networking lecture by Professor Smith. Took detailed notes on topics such as TCP/IP protocols, subnetting, and network topologies. Engaged in discussions with classmates about the practical applications of networking concepts in real-world scenarios.\n" +
-            "\n" +
-            "10:00 AM - 12:00 PM: Study Session at the Library\n" +
-            "\n" +
-            "Headed to the library with a group of friends to work on our group project for the software engineering course. Discussed the project requirements and divided tasks among team members. Spent the majority of the time brainstorming ideas for the project and creating a project timeline.\n" +
-            "\n" +
-            "Afternoon:\n" +
-            "\n" +
-            "Grabbed a quick lunch from the campus cafeteria – a turkey sandwich and a side of fruit salad. Took a short break to relax and recharge before diving back into studying.\n" +
-            "\n" +
-            "1:30 PM - 3:00 PM: Data Structures and Algorithms Lab\n" +
-            "\n" +
-            "Attended the lab session led by Teaching Assistant Sarah. Worked on implementing various data structures such as stacks, queues, and linked lists in Python. Collaborated with classmates to solve programming challenges related to sorting algorithms and tree traversal.\n" +
-            "\n" +
-            "3:00 PM - 5:00 PM: Personal Coding Project\n" +
-            "\n" +
-            "Dedicated some time to work on my personal coding project – a web-based chat application using Node.js and WebSocket technology. Made significant progress on implementing the chat interface and integrating real-time messaging functionality.\n" +
-            "\n" +
-            "Evening:\n" +
-            "\n" +
-            "Took a break from studying to relax and unwind. Went for a jog around campus to get some exercise and clear my mind. Enjoyed the fresh air and beautiful scenery as the sun began to set.\n" +
-            "\n" +
-            "7:00 PM - 9:00 PM: Dinner and Study Group\n" +
-            "\n" +
-            "Met up with my study group at a local café to review course material and prepare for an upcoming midterm exam in computer architecture. Discussed challenging topics such as pipelining, memory hierarchy, and CPU scheduling algorithms. Helped each other work through practice problems and clarify concepts.\n" +
-            "\n" +
-            "9:00 PM - 11:00 PM: Review Session and Assignment Completion\n" +
-            "\n" +
-            "Reviewed lecture notes and textbook chapters to reinforce understanding of key concepts covered throughout the day. Completed a few practice problems and worked on coding assignments for the algorithms course. Made sure to double-check my solutions for accuracy and efficiency.\n" +
-            "\n" +
-            "Late Night:\n" +
-            "\n" +
-            "Wrapped up studying around 11:00 PM and headed back to my dorm room. Took a hot shower to relax before getting ready for bed. Set my alarm for the next day and spent some time unwinding with a book before turning in for the night.\n" +
-            "\n" +
-            "Overall, it was a productive and fulfilling day filled with learning, collaboration, and progress towards my academic and personal goals in computer science.";
+    private String journalExample;
 
     @Nullable
     @Override
@@ -164,12 +121,11 @@ public class ChatFragment extends Fragment {
         addToChat(response, Message.SENT_BY_BOT);
     }
 
+
     // Method to make the API call
     private void callAPI(String question) {
         // Add a "Typing..." message to the chat
         messageList.add(new Message("Typing... ", Message.SENT_BY_BOT));
-
-
 
         // Create JSON request body
         JSONArray messagesArray = new JSONArray();
@@ -192,14 +148,16 @@ public class ChatFragment extends Fragment {
             }
         }
 
-        try {
-            JSONObject journal = new JSONObject();
-            journal.put("role", "user");
-            journal.put("content", journalExample);
-            messagesArray.put(journal);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        /**
+         *         try {
+         *             JSONObject journal = new JSONObject();
+         *             journal.put("role", "user");
+         *             journal.put("content", journalExample);
+         *             messagesArray.put(journal);
+         *         } catch (JSONException e) {
+         *             e.printStackTrace();
+         *         }
+         **/
 
         try {
             systemMessage.put("role", "system");
@@ -222,6 +180,8 @@ public class ChatFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.e("ERROR", jsonBody.toString());
 
         // Create the API request
         RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
@@ -273,6 +233,7 @@ public class ChatFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     // default characteristics
                     String name = "Melissa", age = "20", gender = "Female", personas = "Kind, Careful, Cheerful";
+                    String user_name = "", user_age = "", user_gender = "";
                     if (dataSnapshot.hasChild("palName")) {
                         String nameVal = dataSnapshot.child("palName").getValue(String.class);
                         if (nameVal != null) {
@@ -285,27 +246,38 @@ public class ChatFragment extends Fragment {
                             age = palAgeNum;
                         }
                     }
-
                     if (dataSnapshot.hasChild("palGender")) {
                         String genderVal = dataSnapshot.child("palGender").getValue(String.class);
                         if (genderVal != null) {
                             gender = genderVal;
                         }
                     }
-                    // Retrieve personas from Firebase
                     if (dataSnapshot.hasChild("personas")) {
                         String personasString = dataSnapshot.child("personas").getValue(String.class);
                         if (personasString != null) {
                             personas = personasString;
                         }
                     }
-                    persona = "You are an Intimate Friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
-                            "Your purpose is to create a supportive and comforting environment where the user feels valued, understood, and cared for. " +
-                            "Using language that fosters intimacy, empathy, and emotional connection, you aim to build rapport with the user and provide a safe space for them to express their thoughts, feelings, and concerns. " +
-                            "Whether they need someone to talk to, seek advice, or simply want to share their experiences, you are here to listen, support, and offer genuine companionship. " +
-                            "As your Insightful Journal Companion, I'm here to provide personalized support and guidance based on a deep understanding of your thoughts, experiences, and aspirations. With access to your entire journal history, I have insights into your past experiences, challenges, and triumphs, allowing me to offer tailored advice and assistance."+
-                            "You should especially respond to them with these extremely important qualities: " + personas +
-                            " and you name is " + name + ", and you are a " + age + " year old " + gender;
+                    if (dataSnapshot.hasChild("name")) {
+                        String nameVal = dataSnapshot.child("name").getValue(String.class);
+                        if (nameVal != null) {
+                            user_name = nameVal;
+                        }
+                    }
+                    if (dataSnapshot.hasChild("age")) {
+                        String palAgeNum = dataSnapshot.child("age").getValue(String.class);
+                        if (palAgeNum != null) {
+                            user_age = palAgeNum;
+                        }
+                    }
+                    if (dataSnapshot.hasChild("gender")) {
+                        String genderVal = dataSnapshot.child("gender").getValue(String.class);
+                        if (genderVal != null) {
+                            user_gender = genderVal;
+                        }
+                    }
+                    PersonaBuilder pb = new PersonaBuilder();
+                    persona = pb.createPersona(name, age, gender, personas, user_name, user_age, user_gender);
                 }
             }
 
