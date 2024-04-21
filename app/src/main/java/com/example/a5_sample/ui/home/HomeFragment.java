@@ -88,21 +88,29 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, 1);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int[] completedCount = new int[1]; // to count if all data is retrieved
+        Map<String, Integer> localMoodData = new HashMap<>(); // temporary storage
 
         for (int day = 1; day <= daysInMonth; day++) {
-            String dateKey = String.format("%d-%02d-%02d", year, month, day); // Month is zero-indexed in Calendar
+            String dateKey = String.format("%d-%02d-%02d", year, month, day);
             DatabaseReference dateRef = userRef.child(dateKey);
             dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Integer mood = dataSnapshot.child("mood").getValue(Integer.class);
                     if (mood != null) {
-                        moodData.put(dateKey, mood);
+                        localMoodData.put(dateKey, mood);
                     } else {
-                        moodData.put(dateKey, 0); // default mood value if data is missing
+                        localMoodData.put(dateKey, 0); // default mood value is 0 if data is missing
                     }
-                    //update your calendar here
-                    //update the graph here
+                    completedCount[0]++;
+                    if (completedCount[0] == daysInMonth) {
+                        moodData.clear();
+                        moodData.putAll(localMoodData); // copy all fetched data to the main map
+                        //update your calendar here
+                        //update the graph here
+                    }
+
                 }
 
                 @Override
