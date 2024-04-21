@@ -54,6 +54,7 @@
             android:textColor="@color/white"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="#7CB342"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:padding="8dp"
             android:layout_marginEnd="8dp" />

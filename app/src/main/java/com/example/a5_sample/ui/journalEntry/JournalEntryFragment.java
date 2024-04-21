@@ -132,6 +132,8 @@ public class JournalEntryFragment extends Fragment {
 //                int mood = 0;
 //                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
 //                userRef.updateChildren(updates);
+
+
             }
         });
 
