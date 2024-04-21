@@ -39,6 +39,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class JournalEntryFragment extends Fragment {
     private final String API_KEY = "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";
     private final OkHttpClient client = new OkHttpClient();
@@ -73,8 +76,8 @@ public class JournalEntryFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        //initialize database with default values
-        if (userRef.child(""+dateText+"") == null) {
+        //initialize database with default values when a new day starts
+        if (userRef.child(""+dateText+"") == null || Calendar.getInstance().getTime()) {
             Map<String, Object> updates = new HashMap<>();
             updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
             userRef.updateChildren(updates);
