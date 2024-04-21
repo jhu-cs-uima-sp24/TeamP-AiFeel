@@ -27,6 +27,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -36,8 +53,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private Button currentSelectedButton;
     private boolean isJournalEntryOpen = false;
     private Map<Integer, Button> monthButtons;
-
-
+    private DatabaseReference userRef;
+    private LineChart moodLineChart;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
@@ -45,8 +62,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
-
+        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
+
+        //initialize firebase for retrieving mood data
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
             nextMonth.setImageResource(R.drawable.date_arrow_gray);
@@ -60,6 +81,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         return myview;
     }
 
+    private ArrayList<Entry> retriveMoodData(){
+        int year = selectedDate.getYear();
+        int month = selectedDate.getMonthValue();
+        String date_format = year+"-"+month;
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+
+    }
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
