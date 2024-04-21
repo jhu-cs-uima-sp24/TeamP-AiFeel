@@ -1,17 +1,12 @@
 package com.example.a5_sample.ui.home;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +21,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a5_sample.R;
 import com.example.a5_sample.ui.oldJournalEntry.OldJournalEntryFragment;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -40,8 +51,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private Button currentSelectedButton;
-
-
+    private boolean isJournalEntryOpen = false;
+    private Map<Integer, Button> monthButtons;
+    private DatabaseReference userRef;
+    private LineChart moodLineChart;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
@@ -49,14 +62,34 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
+        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
+        ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
 
-        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction());
-        myview.findViewById(R.id.nextMonthButton).setOnClickListener(v -> nextMonthAction());
-        myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction());
+        //initialize firebase for retrieving mood data
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+        if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
+            nextMonth.setImageResource(R.drawable.date_arrow_gray);
+        }
+
+        myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction(nextMonth)); //top left button
+        nextMonth.setOnClickListener(v -> nextMonthAction(nextMonth));
+        myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction()); // pop up button
 
         setMonthView();
         return myview;
     }
+
+    /**
+    private ArrayList<Entry> retriveMoodData(){
+        int year = selectedDate.getYear();
+        int month = selectedDate.getMonthValue();
+        String date_format = year+"-"+month;
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+
+
+    }**/
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
@@ -68,13 +101,63 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    private void previousMonthAction() {
+    private boolean isMonthInFuture(int month, int year) {
+        LocalDate currDay = LocalDate.now();
+        LocalDate targetDate = LocalDate.of(year, month, 1);
+        return targetDate.isAfter(currDay.withDayOfMonth(currDay.lengthOfMonth()));
+    }
+
+    private void initializeButtons(View dialogView) {
+        monthButtons = new HashMap<>();
+        monthButtons.put(1, dialogView.findViewById(R.id.button_jan));
+        monthButtons.put(2, dialogView.findViewById(R.id.button_feb));
+        monthButtons.put(3, dialogView.findViewById(R.id.button_mar));
+        monthButtons.put(4, dialogView.findViewById(R.id.button_apr));
+        monthButtons.put(5, dialogView.findViewById(R.id.button_may));
+        monthButtons.put(6, dialogView.findViewById(R.id.button_jun));
+        monthButtons.put(7, dialogView.findViewById(R.id.button_jul));
+        monthButtons.put(8, dialogView.findViewById(R.id.button_aug));
+        monthButtons.put(9, dialogView.findViewById(R.id.button_sep));
+        monthButtons.put(10, dialogView.findViewById(R.id.button_oct));
+        monthButtons.put(11, dialogView.findViewById(R.id.button_nov));
+        monthButtons.put(12, dialogView.findViewById(R.id.button_dec));
+    }
+
+    private void setMonthTextColor() {
+        for (Map.Entry<Integer, Button> entry : monthButtons.entrySet()) {
+            Button button = entry.getValue();
+
+            if (isMonthInFuture(entry.getKey(), selectedDate.getYear())) {
+                button.setTextColor(ContextCompat.getColor(getContext(), R.color.light_gray));
+                if (button.equals(currentSelectedButton)) {
+                    currentSelectedButton.setSelected(false);
+                }
+            } else {
+                if (button.equals(currentSelectedButton)) {
+                    currentSelectedButton.setSelected(true);
+                }
+                button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.month_selection_circles));
+                button.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            }
+        }
+    }
+
+    private void previousMonthAction(ImageButton nextMonth) {
         selectedDate = selectedDate.minusMonths(1);
+        nextMonth.setImageResource(R.drawable.date_arrow);
         setMonthView();
     }
 
-    private void nextMonthAction() {
-        selectedDate = selectedDate.plusMonths(1);
+    private void nextMonthAction(ImageButton nextMonth) {
+        if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
+            nextMonth.setImageResource(R.drawable.date_arrow_gray);
+        } else {
+            selectedDate = selectedDate.plusMonths(1);
+            nextMonth.setImageResource(R.drawable.date_arrow);
+            if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())){
+                nextMonth.setImageResource(R.drawable.date_arrow_gray);
+            }
+        }
         setMonthView();
     }
 
@@ -90,47 +173,53 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         TextView yearTextView = dialogView.findViewById(R.id.textview_year);
         yearTextView.setText(String.valueOf(selectedDate.getYear()));
 
+        initializeButtons(dialogView);
+        setMonthTextColor();
 
         ImageButton previousYearButton = dialogView.findViewById(R.id.button_previous_year);
+        ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
+
         previousYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.minusYears(1);
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            nextYearButton.setImageResource(R.drawable.date_arrow);
+            setMonthTextColor();
         });
 
-        ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
+        if (selectedDate.plusYears(1).getYear() > LocalDate.now().getYear()){
+            nextYearButton.setImageResource(R.drawable.date_arrow_gray);
+        }
         nextYearButton.setOnClickListener(v -> {
-            selectedDate = selectedDate.plusYears(1);
-            yearTextView.setText(String.valueOf(selectedDate.getYear()));
+            if (selectedDate.plusYears(1).getYear() <= LocalDate.now().getYear()){
+                selectedDate = selectedDate.plusYears(1);
+                yearTextView.setText(String.valueOf(selectedDate.getYear()));
+                nextYearButton.setImageResource(R.drawable.date_arrow);
+                if (selectedDate.getYear() == (LocalDate.now().getYear())){
+                    nextYearButton.setImageResource(R.drawable.date_arrow_gray);
+                }
+            } else {
+                nextYearButton.setImageResource(R.drawable.date_arrow_gray);
+            }
+            setMonthTextColor();
         });
-
-        Map<Integer, Button> monthButtons = new HashMap<>();
-        monthButtons.put(1, dialogView.findViewById(R.id.button_jan));
-        monthButtons.put(2, dialogView.findViewById(R.id.button_feb));
-        monthButtons.put(3, dialogView.findViewById(R.id.button_mar));
-        monthButtons.put(4, dialogView.findViewById(R.id.button_apr));
-        monthButtons.put(5, dialogView.findViewById(R.id.button_may));
-        monthButtons.put(6, dialogView.findViewById(R.id.button_jun));
-        monthButtons.put(7, dialogView.findViewById(R.id.button_jul));
-        monthButtons.put(8, dialogView.findViewById(R.id.button_aug));
-        monthButtons.put(9, dialogView.findViewById(R.id.button_sep));
-        monthButtons.put(10, dialogView.findViewById(R.id.button_oct));
-        monthButtons.put(11, dialogView.findViewById(R.id.button_nov));
-        monthButtons.put(12, dialogView.findViewById(R.id.button_dec));
 
         for (Map.Entry<Integer, Button> entry : monthButtons.entrySet()) {
             Button button = entry.getValue();
             button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.month_selection_circles));
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int month = entry.getKey();
-                    selectedDate = selectedDate.withMonth(month);
+                    if(!selectedDate.withMonth(month).isAfter(LocalDate.now())) {
+                        selectedDate = selectedDate.withMonth(month);
 
-                    if (currentSelectedButton != null) {
-                        currentSelectedButton.setSelected(false);
+                        if (currentSelectedButton != null) {
+                            currentSelectedButton.setSelected(false);
+                        }
+                        button.setSelected(true);
+                        currentSelectedButton = button;
                     }
-                    button.setSelected(true);
-                    currentSelectedButton = button;
                 }
             });
         }
@@ -138,15 +227,20 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
-            setMonthView();
-            dialog.dismiss();
+            if (currentSelectedButton != null) {
+                setMonthView();
+                dialog.dismiss();
+                currentSelectedButton = null;
+            } else {
+                Toast.makeText(getContext(), "Please select a month first", Toast.LENGTH_SHORT).show();
+            }
         });
 
         Button cancelButton = dialogView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(v -> {
             dialog.dismiss();
+            currentSelectedButton = null;
         });
-
     }
 
 
@@ -175,7 +269,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     @Override
     public void onItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
+        if (!dayText.equals("") && !isJournalEntryOpen) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
             Fragment fragment = new OldJournalEntryFragment();
             Bundle bundle = new Bundle();
@@ -184,7 +278,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             FragmentManager fm = getParentFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.fragment_home, fragment);
+            isJournalEntryOpen = true;
             transaction.commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isJournalEntryOpen = false;
     }
 }
