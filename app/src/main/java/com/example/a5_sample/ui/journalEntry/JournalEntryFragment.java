@@ -76,11 +76,26 @@ public class JournalEntryFragment extends Fragment {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        //initialize database with default values when a new day starts
+        //set up time checker
+        Calendar c = Calendar.getInstance();
+        int hours = c.get(Calendar.HOUR_OF_DAY);
+        int minutes = c.get(Calendar.MINUTE);
+        int seconds = c.get(Calendar.SECOND);
+
+        //initialize database with default values
         if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
             updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
             userRef.updateChildren(updates);
+        }
+
+        //clears page if new day
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+            journalEntry.setText("");
+            AIResponse = "No response yet";
+            emptyMailbox = true;
+            mood = 3;
+            mailbox.setImageResource(R.drawable.mail_icon);
         }
 
         //retrieve last journal entry, AI response, mailbox status from database
