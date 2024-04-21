@@ -51,7 +51,7 @@ public class JournalEntryFragment extends Fragment {
     private ImageButton send;
     private ImageButton mailbox;
     private boolean emptyMailbox;
-    private int user_mood = 3; //assume neutral moods
+    private int mood = 3; //assume neutral moods
     private String dateText;
     private DatabaseReference userRef;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,7 +75,7 @@ public class JournalEntryFragment extends Fragment {
         //initialize database with default values
         if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
-            updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true, user_mood));
+            updates.put(""+dateText+"", new JournalEntry(null, "No response yet", true, mood));
             userRef.updateChildren(updates);
         }
 
@@ -88,14 +88,14 @@ public class JournalEntryFragment extends Fragment {
                         String new_journalentry = dataSnapshot.child(""+dateText+"").child("journalEntryText").getValue(String.class);
                         String new_AIResponse = dataSnapshot.child(""+dateText+"").child("AIResponse").getValue(String.class);
                         boolean is_empty = dataSnapshot.child(""+dateText+"").child("mailboxStatus").getValue(boolean.class);
-                        int temp4 = dataSnapshot.child(""+dateText+"").child("mood").getValue(int.class); //retrive mood
+                        int user_mood = dataSnapshot.child(""+dateText+"").child("mood").getValue(int.class); //retrive mood
                         journalEntry.setText(new_journalentry);
                         AIResponse = new_AIResponse;
                         emptyMailbox = is_empty;
-                        user_mood = temp4;
-                        if (is_empty == true) {
+                        mood = user_mood;
+                        if (emptyMailbox == true) {
                             mailbox.setImageResource(R.drawable.mail_icon);
-                        } else if (is_empty == false){
+                        } else if (emptyMailbox == false){
                             mailbox.setImageResource(R.drawable.new_mail_icon);
                         }
                     }
@@ -142,7 +142,7 @@ public class JournalEntryFragment extends Fragment {
                 mailbox.setImageResource(R.drawable.mail_icon);
                 emptyMailbox = true;
                 Map<String, Object> updates = new HashMap<>();
-                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, user_mood));
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
                 userRef.updateChildren(updates);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
@@ -211,7 +211,7 @@ public class JournalEntryFragment extends Fragment {
         AIResponse = new_AIResponse;
         emptyMailbox = false;
         Map<String, Object> updates = new HashMap<>();
-        updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, user_mood));
+        updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, mood));
         userRef.updateChildren(updates);
     }
 
@@ -271,8 +271,8 @@ public class JournalEntryFragment extends Fragment {
     }
 
 
-    private void saveJournalEntryWithMood(String journalText, int mood) {
-        user_mood = mood;
+    private void saveJournalEntryWithMood(String journalText, int user_mood) {
+        mood = user_mood;
         Map<String, Object> updates = new HashMap<>();
         updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, user_mood));
         userRef.updateChildren(updates);
