@@ -144,7 +144,7 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String journalText = journalEntry.getText().toString();
-                if (!journalText.matches(".*[a-z].*") && !journalText.matches(".*[A-Z].*")) {
+                if (journalText == "") {
                     AIResponse = "No response yet";
                     mood = 3;
                     Map<String, Object> updates = new HashMap<>();
@@ -166,13 +166,13 @@ public class JournalEntryFragment extends Fragment {
             public void onClick(View v) {
                 mailbox.setImageResource(R.drawable.mail_icon);
                 emptyMailbox = true;
-                Map<String, Object> updates = new HashMap<>();
-                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
-                userRef.updateChildren(updates);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(AIResponse).setTitle(R.string.ai_response_title);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
+                userRef.updateChildren(updates);
             }
         });
 
