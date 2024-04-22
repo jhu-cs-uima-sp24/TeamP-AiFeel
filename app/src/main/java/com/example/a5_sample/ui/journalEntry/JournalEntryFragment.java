@@ -181,7 +181,9 @@ public class JournalEntryFragment extends Fragment {
 
     private void getAIResponseAndSave(String journalText) {
         String prompt = "You will receive a message from the user, please read the message and provide a response like a friend would do after listening to the content. " +
-                "Keep your response limited to a few lines. Respond with the message in a warm, friendly, and intimate manner, much like a close friend or confidant would. " + "Here is the message: " + journalText + ".";
+                "Keep your response limited to a few lines. Respond with the message in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
+                "If the user's message is not comprehensible, respond instead by asking the user to send a new, comprehensible message." +
+                "Here is the user's message: " + journalText + ".";
 
         JSONObject jsonBody = new JSONObject();
         try {
