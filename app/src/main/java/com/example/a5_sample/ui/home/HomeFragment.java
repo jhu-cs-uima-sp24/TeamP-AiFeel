@@ -2,11 +2,13 @@ package com.example.a5_sample.ui.home;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,15 +39,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.lang.StringBuilder;
+
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -53,10 +59,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private Button currentSelectedButton;
+    private TextView streakCountText;
     private boolean isJournalEntryOpen = false;
     private Map<Integer, Button> monthButtons;
     private DatabaseReference userRef;
     private Map<String, Integer> moodData = new HashMap<>();
+    private Map<Integer, ImageView> streakCircles = new HashMap<>();
     private int cur_month, cur_year;
     private LineChart moodLineChart;
     //private PieChart moodPieChart;
@@ -66,12 +74,17 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
+        streakCountText = myview.findViewById(R.id.StreakText);
         selectedDate = LocalDate.now();
 
+        updateStreakCount();
+        createStreaks(myview);
+        updateStreakCircles();
         moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         //moodPieChart = (PieChart) myview.findViewById(R.id.pieChart);
 
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
+
 
         //initialize firebase for retrieving mood data
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -87,6 +100,16 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         setMonthView();
         return myview;
+    }
+
+    private void createStreaks(View myview){
+        streakCircles.put(0, myview.findViewById(R.id.sunFilledCircle));
+        streakCircles.put(1, myview.findViewById(R.id.monFilledCircle));
+        streakCircles.put(2, myview.findViewById(R.id.tuesFilledCircle));
+        streakCircles.put(3, myview.findViewById(R.id.wedFilledCircle));
+        streakCircles.put(4, myview.findViewById(R.id.thurFilledCircle));
+        streakCircles.put(5, myview.findViewById(R.id.friFilledCircle));
+        streakCircles.put(6, myview.findViewById(R.id.satFilledCircle));
     }
 
     public void retrieveMoodDataForMonth() {
@@ -116,6 +139,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
                         //update your calendar here
                         //update the graph here
+                        updateStreakCount();
+                        updateStreakCircles();
                         createLineChart();
                         createPieChart();
                     }
@@ -127,6 +152,46 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                     System.out.println("Error fetching data: " + databaseError.getMessage());
                 }
             });
+        }
+    }
+
+    private void updateStreakCount() {
+
+        int streakCount = 0;
+        LocalDate today = LocalDate.now();
+        while (true) {
+            String dateKey = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) {
+                streakCount++;
+            } else {
+                break;
+            }
+            today = today.minusDays(1);
+        }
+
+        StringBuilder streakText = new StringBuilder();
+        streakText.append("You've been on a ");
+        streakText.append(streakCount);
+        streakText.append("-day streak of journaling.");
+        Log.d("streak", streakText.toString());
+
+        streakCountText.setText(streakText.toString());
+    }
+
+    private void updateStreakCircles() {
+        LocalDate today = LocalDate.now();
+        LocalDate streakStart = today.minusDays(today.getDayOfWeek().getValue() % 7);
+        HashMap<ImageView, LocalDate> dayMap = new HashMap<>();
+        int streakIndex = 0;
+        while (streakStart.isBefore(today) || streakStart.isEqual(today)) {
+            String dateKey = streakStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) {
+                streakCircles.get(streakIndex).setVisibility(View.VISIBLE);
+            } else {
+                streakCircles.get(streakIndex).setVisibility(View.INVISIBLE);
+            }
+            streakIndex++;
+            streakStart = streakStart.plusDays(1);
         }
     }
 
