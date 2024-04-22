@@ -90,13 +90,16 @@ public class JournalEntryFragment extends Fragment {
         }
 
         //clears page if new day
-        if (hours == 0 && minutes == 0 && seconds == 0) {
-            journalEntry.setText("");
-            AIResponse = "No response yet";
-            emptyMailbox = true;
-            mood = 3;
-            mailbox.setImageResource(R.drawable.mail_icon);
-        }
+        //if (hours == 0 && minutes == 0 && seconds == 0) {
+        //    journalEntry.setText("");
+        //    AIResponse = "No response yet";
+        //    emptyMailbox = true;
+        //    mood = 3;
+        //    mailbox.setImageResource(R.drawable.mail_icon);
+        //    Map<String, Object> updates = new HashMap<>();
+        //    updates.put(""+dateText+"", new JournalEntry(journalEntry.getText().toString(), AIResponse, emptyMailbox, mood));
+        //    userRef.updateChildren(updates);
+        //}
 
         //retrieve last journal entry, AI response, mailbox status from database
         userRef.addValueEventListener(new ValueEventListener() {
