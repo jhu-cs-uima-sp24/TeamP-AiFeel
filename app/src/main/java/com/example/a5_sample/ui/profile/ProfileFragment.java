@@ -1,6 +1,7 @@
 package com.example.a5_sample.ui.profile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,6 +133,18 @@ public class ProfileFragment extends Fragment {
                             age.setText(ageNum);
                         }
                     }
+                    if (dataSnapshot.hasChild("profile_picture")) {
+                        Uri pic = Uri.parse(dataSnapshot.child("profile_picture").getValue(String.class));
+                        if (pic != null) {
+                            userProfile.setImageURI(pic);
+                        }
+                    }
+                    if (dataSnapshot.hasChild("pal_picture")) {
+                        Uri pic = Uri.parse(dataSnapshot.child("pal_picture").getValue(String.class));
+                        if (pic != null) {
+                            palProfile.setImageURI(pic);
+                        }
+                    }
                     if (dataSnapshot.hasChild("gender")) {
                         String genderVal = dataSnapshot.child("gender").getValue(String.class);
                         if (genderVal != null) {
@@ -173,6 +186,7 @@ public class ProfileFragment extends Fragment {
                             personasAdapter.notifyDataSetChanged();
                         }
                     }
+
 
                 }
             }

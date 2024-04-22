@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp">
 
     <!-- Left chat view -->
@@ -14,13 +15,14 @@
         android:padding="8dp">
 
         <!-- Profile image for left chat -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/left_profile_image"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ai_default"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="8dp"
+            app:shapeAppearanceOverlay="@style/ImageView.Circle"/>
 
         <!-- Chat message text for left chat -->
         <TextView
@@ -60,13 +62,14 @@
             android:layout_marginEnd="8dp" />
 
         <!-- Profile image for right chat -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/right_profile_image"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/profile_default"
             android:scaleType="centerCrop"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            app:shapeAppearanceOverlay="@style/ImageView.Circle"/>
 
     </LinearLayout>
 

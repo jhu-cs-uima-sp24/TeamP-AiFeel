@@ -1,5 +1,6 @@
 package com.example.a5_sample.ui.chat;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +47,6 @@ import okhttp3.Response;
 
 public class ChatFragment extends Fragment {
     private final String API_KEY = "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";
-    // Declare variables
     private RecyclerView recyclerView;
     private EditText messageEditText;
     private ImageButton sendButton;
@@ -55,7 +57,6 @@ public class ChatFragment extends Fragment {
     private String persona;
     private DatabaseReference databaseReference;
     private List<String> pastJournal;
-
 
     @Nullable
     @Override
@@ -70,11 +71,6 @@ public class ChatFragment extends Fragment {
         // Initialize message list and adapter
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList);
-        recyclerView.setAdapter(messageAdapter);
-        LinearLayoutManager llm = new LinearLayoutManager(requireContext());
-        llm.setStackFromEnd(true);
-        recyclerView.setLayoutManager(llm);
-
 
         // initialize firebase
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -83,12 +79,19 @@ public class ChatFragment extends Fragment {
             String userId = currentUser.getUid();
             // Now you have the UID of the current user
             databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+            fetchProfilePictures();
             pastJournal = loadPastJournals();
         }
+
+        recyclerView.setAdapter(messageAdapter);
+        LinearLayoutManager llm = new LinearLayoutManager(requireContext());
+        llm.setStackFromEnd(true);
+        recyclerView.setLayoutManager(llm);
 
         // Set click listener for send button
         sendButton.setOnClickListener(v -> {
             String question = messageEditText.getText().toString().trim();
+            if (question.isEmpty()) return;
             addToChat(question, Message.SENT_BY_ME);
             messageEditText.setText("");
             try {
@@ -101,11 +104,37 @@ public class ChatFragment extends Fragment {
         return rootView;
     }
 
+    private void fetchProfilePictures() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("pal_picture")) {
+                    Uri palPicUri = Uri.parse(dataSnapshot.child("pal_picture").getValue(String.class));
+                    if (palPicUri != null) {
+                        Log.e("hi", "hi");
+                        messageAdapter.setPalImage(palPicUri);
+                        messageAdapter.notifyDataSetChanged();
+                    }
+                }
+                if (dataSnapshot.hasChild("profile_picture")) {
+                    Uri picUri = Uri.parse(dataSnapshot.child("profile_picture").getValue(String.class));
+                    if (picUri != null) {
+                        messageAdapter.setImage(picUri);
+                        messageAdapter.notifyDataSetChanged();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+                Log.e("ChatFragment", "Failed to fetch profile pictures: " + databaseError.getMessage());
+            }
+        });
+    }
     private List<String> loadPastJournals() {
         List<String> pastJournals = new ArrayList<>();
-
-        // Add a listener to retrieve data
-        Log.e("hi", "start");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -116,7 +145,6 @@ public class ChatFragment extends Fragment {
                         String date = dateSnapshot.getKey();
                         String journalEntryText = dateSnapshot.child("journalEntryText").getValue(String.class);
                         pastJournals.add(date + ": " + journalEntryText);
-                        Log.e("hi", "loading1");
                     }
                 }
             }
@@ -237,13 +265,11 @@ public class ChatFragment extends Fragment {
             jsonBody.put("messages", messagesArray);
             jsonBody.put("model", "gpt-3.5-turbo");
             jsonBody.put("max_tokens", 4000);
-            jsonBody.put("temperature", 0);
+            jsonBody.put("temperature", 1);
             jsonBody.put("stop", "\n");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.e("ERROR", jsonBody.toString());
 
         // Create the API request
         RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
@@ -268,13 +294,16 @@ public class ChatFragment extends Fragment {
                         // Parse the response and add messages to the chat
                         JSONObject jsonObject = new JSONObject(response.body().string());
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
-                        Log.d("tag", jsonObject.toString());
+                        StringBuilder allResponsesBuilder = new StringBuilder();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject json = jsonArray.getJSONObject(i);
                             JSONObject messageObject = json.getJSONObject("message");
                             String content = messageObject.getString("content");
-                            addResponse(content);
+                            allResponsesBuilder.append(content);
+                            if (i != jsonArray.length() - 1) allResponsesBuilder.append("\n"); // Append each response
                         }
+                        String allResponses = allResponsesBuilder.toString();
+                        addResponse(allResponses); // Add all responses as a single message
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -319,7 +348,7 @@ public class ChatFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // default characteristics
-                    String name = "Melissa", age = "20", gender = "Female", personas = "Kind, Careful, Cheerful";
+                    String name = "", age = "", gender = "", personas = "";
                     String user_name = "", user_age = "", user_gender = "";
                     if (dataSnapshot.hasChild("palName")) {
                         String nameVal = dataSnapshot.child("palName").getValue(String.class);
@@ -355,6 +384,18 @@ public class ChatFragment extends Fragment {
                         String palAgeNum = dataSnapshot.child("age").getValue(String.class);
                         if (palAgeNum != null) {
                             user_age = palAgeNum;
+                        }
+                    }
+                    if (dataSnapshot.hasChild("profile_picture")) {
+                        Uri pic = Uri.parse(dataSnapshot.child("profile_picture").getValue(String.class));
+                        if (pic != null) {
+                            messageAdapter.setImage(pic);
+                        }
+                    }
+                    if (dataSnapshot.hasChild("pal_picture")) {
+                        Uri pic = Uri.parse(dataSnapshot.child("pal_picture").getValue(String.class));
+                        if (pic != null) {
+                            messageAdapter.setPalImage(pic);
                         }
                     }
                     if (dataSnapshot.hasChild("gender")) {
