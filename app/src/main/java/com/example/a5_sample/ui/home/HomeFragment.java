@@ -147,10 +147,9 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         LineDataSet dataSet = new LineDataSet(entries, null);
         dataSet.setColor(getContext().getResources().getColor(R.color.black));
         dataSet.setDrawValues(false);
-        // Styling the dataset
-        dataSet.setLineWidth(2f);
-        dataSet.setCircleRadius(0.5f);
-        dataSet.setCircleColor(getContext().getResources().getColor(R.color.black));
+        dataSet.setDrawCircles(false);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setLineWidth(1.5f);
 
         LineData lineData = new LineData(dataSet);
         //LineChart moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
@@ -158,7 +157,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         moodLineChart.getDescription().setEnabled(false);
         moodLineChart.getAxisLeft().setDrawGridLines(false);
         moodLineChart.getAxisLeft().setAxisMinimum(0);
-        moodLineChart.getAxisLeft().setAxisMaximum(5f);
+        moodLineChart.getAxisLeft().setAxisMaximum(5.5f);
         moodLineChart.getAxisLeft().setGranularity(1f);
         moodLineChart.getAxisLeft().setGranularityEnabled(true);
         moodLineChart.getAxisLeft().setTextSize(14f);
@@ -228,7 +227,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         }
 
 
-        PieDataSet dataSet = new PieDataSet(entries, "Mood Distribution");
+        PieDataSet dataSet = new PieDataSet(entries, null);
         dataSet.setColors(colors);
         dataSet.setDrawValues(false);
         PieData pieData = new PieData(dataSet);
@@ -236,8 +235,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         pieChart.setData(pieData);
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setEntryLabelColor(android.graphics.Color.BLACK);
-        pieChart.setEntryLabelTextSize(12f);
+        pieChart.getLegend().setTextSize(14f);
+        pieChart.setDrawEntryLabels(false);
+//        pieChart.setEntryLabelColor(android.graphics.Color.BLACK);
+//        pieChart.setEntryLabelTextSize(12f);
         pieChart.animateY(1400, com.github.mikephil.charting.animation.Easing.EaseInOutQuad);
 
         pieChart.invalidate(); // refresh the chart
