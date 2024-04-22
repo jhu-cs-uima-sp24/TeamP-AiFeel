@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +38,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -57,6 +60,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private Map<Integer, Button> monthButtons;
     private DatabaseReference userRef;
     private Map<String, Integer> moodData = new HashMap<>();
+    private Map<String, ImageView> streakCircles = new HashMap<>();
     private int cur_month, cur_year;
     private LineChart moodLineChart;
     //private PieChart moodPieChart;
@@ -87,6 +91,16 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         setMonthView();
         return myview;
+    }
+
+    private void createStreaks(View myview){
+        streakCircles.put("sun", myview.findViewById(R.id.sunFilledCircle));
+        streakCircles.put("mon", myview.findViewById(R.id.monFilledCircle));
+        streakCircles.put("tues", myview.findViewById(R.id.tuesFilledCircle));
+        streakCircles.put("wed", myview.findViewById(R.id.wedFilledCircle));
+        streakCircles.put("thur", myview.findViewById(R.id.thurFilledCircle));
+        streakCircles.put("fri", myview.findViewById(R.id.friFilledCircle));
+        streakCircles.put("sat", myview.findViewById(R.id.satFilledCircle));
     }
 
     public void retrieveMoodDataForMonth() {
@@ -127,6 +141,30 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                     System.out.println("Error fetching data: " + databaseError.getMessage());
                 }
             });
+        }
+    }
+
+    private void updateStreakCircles() {
+        LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        HashMap<ImageView, LocalDate> dayMap = new HashMap<>();
+        /*
+        dayMap.put(monFilledCircle, startOfWeek);
+        dayMap.put(tueFilledCircle, startOfWeek.plusDays(1));
+        dayMap.put(wedFilledCircle, startOfWeek.plusDays(2));
+
+         */
+        // Continue mapping for other days of the week
+
+        for (Map.Entry<ImageView, LocalDate> entry : dayMap.entrySet()) {
+            ImageView dayCircle = entry.getKey();
+            LocalDate date = entry.getValue();
+            String dateKey = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) { // Ensure there's an entry and it's not default 0
+                dayCircle.setVisibility(View.VISIBLE);
+            } else {
+                dayCircle.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
