@@ -157,6 +157,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
                         createLineChart();
                         createPieChart();
+                        calendarRecyclerView.getAdapter().notifyDataSetChanged();
+
                     }
 
                 }
@@ -348,7 +350,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         retrieveMoodDataForMonth();
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, moodData, selectedDate, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
