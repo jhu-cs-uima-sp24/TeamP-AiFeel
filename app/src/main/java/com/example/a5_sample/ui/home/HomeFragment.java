@@ -50,6 +50,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.lang.StringBuilder;
+
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -57,6 +59,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private Button currentSelectedButton;
+    private TextView streakCountText;
     private boolean isJournalEntryOpen = false;
     private Map<Integer, Button> monthButtons;
     private DatabaseReference userRef;
@@ -71,14 +74,17 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
+        streakCountText = myview.findViewById(R.id.StreakText);
         selectedDate = LocalDate.now();
 
+        updateStreakCount();
         createStreaks(myview);
         updateStreakCircles();
         moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         //moodPieChart = (PieChart) myview.findViewById(R.id.pieChart);
 
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
+
 
         //initialize firebase for retrieving mood data
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -133,6 +139,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
                         //update your calendar here
                         //update the graph here
+                        updateStreakCount();
                         updateStreakCircles();
                         createLineChart();
                         createPieChart();
@@ -146,6 +153,29 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 }
             });
         }
+    }
+
+    private void updateStreakCount() {
+
+        int streakCount = 0;
+        LocalDate today = LocalDate.now();
+        while (true) {
+            String dateKey = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) {
+                streakCount++;
+            } else {
+                break;
+            }
+            today = today.minusDays(1);
+        }
+
+        StringBuilder streakText = new StringBuilder();
+        streakText.append("You've been on a ");
+        streakText.append(streakCount);
+        streakText.append("-day streak of journaling.");
+        Log.d("streak", streakText.toString());
+
+        streakCountText.setText(streakText.toString());
     }
 
     private void updateStreakCircles() {
