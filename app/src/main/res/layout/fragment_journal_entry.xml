@@ -126,7 +126,7 @@
         android:layout_width="102dp"
         android:layout_height="37dp"
         android:fontFamily="@font/josefin_sans"
-        android:text="Tell me about the game"
+        android:text="What are you grateful for?"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView2"
         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView2"
