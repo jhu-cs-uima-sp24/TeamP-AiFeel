@@ -65,7 +65,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
         android:layout_marginTop="18dp"
-        android:layout_marginBottom="72dp"
         android:background="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +78,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="72dp"
         android:background="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/mail_icon" />
 
     <ImageView
@@ -127,7 +126,7 @@
         android:layout_width="102dp"
         android:layout_height="37dp"
         android:fontFamily="@font/josefin_sans"
-        android:text="Tell me about the game"
+        android:text="What are you grateful for?"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView2"
         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView2"

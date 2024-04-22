@@ -30,7 +30,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,7 +46,6 @@ public class ChatFragment extends Fragment {
     private final String API_KEY = "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";
     // Declare variables
     private RecyclerView recyclerView;
-    private TextView welcomeTextView;
     private EditText messageEditText;
     private ImageButton sendButton;
     private List<Message> messageList;
@@ -53,8 +54,8 @@ public class ChatFragment extends Fragment {
     private final OkHttpClient client = new OkHttpClient();
     private String persona;
     private DatabaseReference databaseReference;
+    private List<String> pastJournal;
 
-    private String journalExample;
 
     @Nullable
     @Override
@@ -63,7 +64,6 @@ public class ChatFragment extends Fragment {
 
         // Initialize views
         recyclerView = rootView.findViewById(R.id.recycler_view);
-        welcomeTextView = rootView.findViewById(R.id.welcome_text);
         messageEditText = rootView.findViewById(R.id.message_edit_text);
         sendButton = rootView.findViewById(R.id.send_btn);
 
@@ -83,7 +83,7 @@ public class ChatFragment extends Fragment {
             String userId = currentUser.getUid();
             // Now you have the UID of the current user
             databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-
+            pastJournal = loadPastJournals();
         }
 
         // Set click listener for send button
@@ -91,12 +91,45 @@ public class ChatFragment extends Fragment {
             String question = messageEditText.getText().toString().trim();
             addToChat(question, Message.SENT_BY_ME);
             messageEditText.setText("");
-            callAPI(question);
-            welcomeTextView.setVisibility(View.GONE);
+            try {
+                callAPI(question);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         return rootView;
     }
+
+    private List<String> loadPastJournals() {
+        List<String> pastJournals = new ArrayList<>();
+
+        // Add a listener to retrieve data
+        Log.e("hi", "start");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Iterate through the dataSnapshot to retrieve past journals
+                for (DataSnapshot dateSnapshot : dataSnapshot.getChildren()) {
+                    // Get the journal entry text for each date and add it to the list
+                    if (dateSnapshot.hasChild("journalEntryText")) {
+                        String date = dateSnapshot.getKey();
+                        String journalEntryText = dateSnapshot.child("journalEntryText").getValue(String.class);
+                        pastJournals.add(date + ": " + journalEntryText);
+                        Log.e("hi", "loading1");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors that occur during the data retrieval
+                Log.e("loadPastJournals", "Failed to load past journals: " + databaseError.getMessage());
+            }
+        });
+        return pastJournals;
+    }
+
 
     // Method to add a message to the chat
     void addToChat(String message, String sentBy) {
@@ -104,29 +137,48 @@ public class ChatFragment extends Fragment {
             @Override
             public void run() {
                 // Add message to list
-                messageList.add(new Message(message, sentBy));
+                Message msg = new Message(message, sentBy);
+                messageList.add(msg);
+
                 // Notify adapter of data change
                 messageAdapter.notifyDataSetChanged();
+
                 // Scroll to the last item in the list
                 recyclerView.smoothScrollToPosition(messageAdapter.getItemCount());
+
+                // Generate a unique key for the message
+                String messageId = databaseReference.child("messages").push().getKey();
+
+                // Create a Map containing the message details
+                Map<String, Object> messageValues = new HashMap<>();
+                messageValues.put("content", msg.getMessage());
+                messageValues.put("sentBy", msg.getSentBy());
+
+                // Create a Map to hold the updates
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("/messages/" + messageId, messageValues);
+
+                // Update the database with the new message
+                databaseReference.updateChildren(updates)
+                        .addOnSuccessListener(aVoid -> {
+                            // Message added successfully
+                        })
+                        .addOnFailureListener(e -> {
+                            // Failed to add message
+                            Log.e("ChatFragment", "Failed to add message: " + e.getMessage());
+                        });
             }
         });
     }
 
     // Method to handle the response from the API
     private void addResponse(String response) {
-        // Remove the "Typing..." message from the list
-        messageList.remove(messageList.size() - 1);
-        // Add the response to the chat
         addToChat(response, Message.SENT_BY_BOT);
     }
 
 
     // Method to make the API call
-    private void callAPI(String question) {
-        // Add a "Typing..." message to the chat
-        messageList.add(new Message("Typing... ", Message.SENT_BY_BOT));
-
+    private void callAPI(String question) throws JSONException {
         // Create JSON request body
         JSONArray messagesArray = new JSONArray();
         JSONObject userMessage = new JSONObject();
@@ -138,7 +190,7 @@ public class ChatFragment extends Fragment {
             try {
                 String role = "user";
                 if (!message.getSentBy().equals("me")){
-                    role = "system";
+                    role = "assistant";
                 }
                 messageObject.put("role", role);
                 messageObject.put("content", message.getMessage());
@@ -147,17 +199,27 @@ public class ChatFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        try {
+            JSONObject journalReader = new JSONObject();
+            journalReader.put("role", "system");
+            journalReader.put("content", "You are reading through the user's past journals. " +
+                    "If he asks you about a date that doesn't exist in the journal, answer that you don't know.");
+            messagesArray.put(journalReader);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        /**
-         *         try {
-         *             JSONObject journal = new JSONObject();
-         *             journal.put("role", "user");
-         *             journal.put("content", journalExample);
-         *             messagesArray.put(journal);
-         *         } catch (JSONException e) {
-         *             e.printStackTrace();
-         *         }
-         **/
+        for (String journal : pastJournal) {
+            JSONObject journalObject = new JSONObject();
+            try {
+                String role = "user";
+                journalObject.put("role", role);
+                journalObject.put("content", "past journal "+journal);
+                messagesArray.put(journalObject);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         try {
             systemMessage.put("role", "system");
@@ -227,6 +289,31 @@ public class ChatFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        DatabaseReference messagesRef = databaseReference.child("messages");
+        messagesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                messageList.clear();
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    // Retrieve each message from the snapshot
+                    String content = messageSnapshot.child("content").getValue(String.class);
+                    String sentBy = messageSnapshot.child("sentBy").getValue(String.class);
+                    Message message = new Message(content, sentBy);
+                    messageList.add(message);
+                }
+                // Update the UI with the loaded messages
+                messageAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messageAdapter.getItemCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
+                Log.e("ChatFragment", "Failed to read messages: " + databaseError.getMessage());
+            }
+        });
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -180,6 +180,7 @@ public class EditPal extends AppCompatActivity {
         personalities.add("Empathetic");
         personalities.add("Enthusiastic");
         personalities.add("Friendly");
+        personalities.add("Funny");
         personalities.add("Helpful");
         personalities.add("Honest");
         personalities.add("Independent");
@@ -190,14 +191,11 @@ public class EditPal extends AppCompatActivity {
         personalities.add("Persistent");
         personalities.add("Practical");
         personalities.add("Reliable");
-        personalities.add("Resilient");
-        personalities.add("Resourceful");
         personalities.add("Sociable");
+        personalities.add("Serious");
         personalities.add("Supportive");
         personalities.add("Thoughtful");
         personalities.add("Tolerant");
-        personalities.add("Versatile");
-        personalities.add("Visionary");
 
         return personalities;
     }

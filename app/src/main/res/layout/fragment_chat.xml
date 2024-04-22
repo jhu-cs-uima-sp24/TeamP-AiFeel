@@ -15,16 +15,6 @@
         />
 
 
-    <TextView
-        android:id="@+id/welcome_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Welcome to Easy ChatGPT\nTry it out now"
-        android:gravity="center"
-        android:textSize="28dp"
-        android:visibility="gone" />
-
     <RelativeLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
@@ -35,19 +25,19 @@
 
         <EditText
             android:id="@+id/message_edit_text"
-            android:layout_width="match_parent"
+            android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/rounded_corner"
             android:hint="Write here"
             android:padding="16dp" />
 
         <ImageButton
             android:id="@+id/send_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:padding="8dp"
