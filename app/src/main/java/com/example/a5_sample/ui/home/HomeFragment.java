@@ -20,12 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a5_sample.R;
 import com.example.a5_sample.ui.oldJournalEntry.OldJournalEntryFragment;
-
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeFragment extends Fragment implements CalendarAdapter.OnItemListener {
@@ -54,6 +59,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private Map<String, Integer> moodData = new HashMap<>();
     private int cur_month, cur_year;
     private LineChart moodLineChart;
+    //private PieChart moodPieChart;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
@@ -63,6 +69,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         selectedDate = LocalDate.now();
 
         moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
+        //moodPieChart = (PieChart) myview.findViewById(R.id.pieChart);
+
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
 
         //initialize firebase for retrieving mood data
@@ -109,6 +117,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         //update your calendar here
                         //update the graph here
                         createLineChart();
+                        createPieChart();
                     }
 
                 }
@@ -135,31 +144,128 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             }
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Daily Mood");
-//        dataSet.setColor(getContext().getResources().getColor(R.color.design_default_color_primary));
-//        dataSet.setValueTextColor(getContext().getResources().getColor(R.color.design_default_color_primary_dark));
-
+        LineDataSet dataSet = new LineDataSet(entries, null);
+        dataSet.setColor(getContext().getResources().getColor(R.color.black));
+        dataSet.setDrawValues(false);
         // Styling the dataset
-//        dataSet.setLineWidth(2.5f);
-//        dataSet.setCircleRadius(4.5f);
-//        dataSet.setCircleColor(getContext().getResources().getColor(R.color.design_default_color_primary));
-//        dataSet.setHighLightColor(getContext().getResources().getColor(R.color.design_default_color_secondary));
-//        dataSet.setDrawValues(true);
+        dataSet.setLineWidth(2f);
+        dataSet.setCircleRadius(0.5f);
+        dataSet.setCircleColor(getContext().getResources().getColor(R.color.black));
 
         LineData lineData = new LineData(dataSet);
+        //LineChart moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         moodLineChart.setData(lineData);
-//        moodLineChart.getDescription().setEnabled(false);
-//        moodLineChart.getAxisLeft().setDrawGridLines(false);
-//        moodLineChart.getXAxis().setDrawGridLines(false);
-//        moodLineChart.getAxisRight().setEnabled(false);
-//        moodLineChart.getXAxis().setEnabled(true);
-//        moodLineChart.getXAxis().setGranularity(1f); // Only integers in X-axis
-//        moodLineChart.getXAxis().setPosition(com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM);
+        moodLineChart.getDescription().setEnabled(false);
+        moodLineChart.getAxisLeft().setDrawGridLines(false);
+        moodLineChart.getAxisLeft().setAxisMinimum(0);
+        moodLineChart.getAxisLeft().setAxisMaximum(5f);
+        moodLineChart.getAxisLeft().setGranularity(1f);
+        moodLineChart.getAxisLeft().setGranularityEnabled(true);
+        moodLineChart.getAxisLeft().setTextSize(14f);
+        moodLineChart.getXAxis().setDrawGridLines(false);
+        moodLineChart.getXAxis().setTextSize(14f);
+        moodLineChart.getLegend().setEnabled(false);
+        moodLineChart.getAxisRight().setEnabled(false);
+
+        moodLineChart.getXAxis().setEnabled(true);
+        moodLineChart.getXAxis().setGranularity(1f);
+        moodLineChart.getXAxis().setGranularityEnabled(true);
+        moodLineChart.getXAxis().setAxisMinimum(1);
+
+        moodLineChart.getXAxis().setPosition(com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM);
+        moodLineChart.getXAxis().setValueFormatter(new DateValueFormatter(year, month, 7));
+        moodLineChart.getXAxis().setLabelCount(daysInMonth / 7 + 1, true); // Ensure enough labels are generated
+
         moodLineChart.invalidate();
+    }
+
+    private void createPieChart() {
+        Map<Integer, Integer> moodCounts = new HashMap<>();
+        // Calculate the count of each mood
+        for (Integer mood : moodData.values()) {
+            if (mood != 0) {
+                if (!moodCounts.containsKey(mood)) {
+                    moodCounts.put(mood, 0);
+                }
+                moodCounts.put(mood, moodCounts.get(mood) + 1);
+            }
+        }
+
+        List<PieEntry> entries = new ArrayList<>();
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : moodCounts.entrySet()) {
+            int key = entry.getKey();
+            String label;
+            int color;
+            switch (key) {
+                case 1:
+                    label = getContext().getResources().getString(R.string.mood1);
+                    color = getContext().getResources().getColor(R.color.mood1);
+                    break;
+                case 2:
+                    label = getContext().getResources().getString(R.string.mood2);
+                    color = getContext().getResources().getColor(R.color.mood2);
+                    break;
+                case 3:
+                    label = getContext().getResources().getString(R.string.mood3);
+                    color = getContext().getResources().getColor(R.color.mood3);
+                    break;
+                case 4:
+                    label = getContext().getResources().getString(R.string.mood4);
+                    color = getContext().getResources().getColor(R.color.mood4);
+                    break;
+                case 5:
+                    label = getContext().getResources().getString(R.string.mood5);
+                    color = getContext().getResources().getColor(R.color.mood5);
+                    break;
+                default:
+                    label = "Unknown Mood";
+                    color = getContext().getResources().getColor(R.color.black);
+            }
+
+            entries.add(new PieEntry(entry.getValue(), label));
+            colors.add(color);
+        }
+
+
+        PieDataSet dataSet = new PieDataSet(entries, "Mood Distribution");
+        dataSet.setColors(colors);
+        dataSet.setDrawValues(false);
+        PieData pieData = new PieData(dataSet);
+        PieChart pieChart = getView().findViewById(R.id.pieChart);
+        pieChart.setData(pieData);
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setEntryLabelColor(android.graphics.Color.BLACK);
+        pieChart.setEntryLabelTextSize(12f);
+        pieChart.animateY(1400, com.github.mikephil.charting.animation.Easing.EaseInOutQuad);
+
+        pieChart.invalidate(); // refresh the chart
+    }
+
+    private class DateValueFormatter extends ValueFormatter {
+        private final Calendar calendar;
+        private final SimpleDateFormat dateFormat;
+        private final int interval;
+
+        public DateValueFormatter(int year, int month, int interval) {
+            this.interval = interval;
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month - 1); // Month is zero-indexed in Calendar
+            dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            calendar.set(Calendar.DAY_OF_MONTH, (int) value);
+            return dateFormat.format(calendar.getTime());
+        }
     }
 
     private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
+        retrieveMoodDataForMonth();
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);

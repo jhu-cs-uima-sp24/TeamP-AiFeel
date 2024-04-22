@@ -50,6 +50,11 @@
     <string name="profile_picture">profile picture</string>
     <string name="edit_pal">Edit Pal</string>
     <string name="ai_pen_pal">AI Pen-pal</string>
+    <string name="mood1">Miserable</string>
+    <string name="mood2">Unhappy</string>
+    <string name="mood3">Average</string>
+    <string name="mood4">Content</string>
+    <string name="mood5">Joyful</string>
 
 
     <string-array name="gender_array">

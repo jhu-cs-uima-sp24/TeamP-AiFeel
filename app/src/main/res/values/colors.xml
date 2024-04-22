@@ -14,4 +14,11 @@
     <color name="dark_grey">#444444</color>
     <color name="main_orange">#FADBAD</color>
     <color name="turquoise">#AEFADC</color>
+    <color name="mood1">#DE7A60</color>
+    <color name="mood2">#FFBD86</color>
+    <color name="mood3">#FFDF4B</color>
+    <color name="mood4">#DBEA4C</color>
+    <color name="mood5">#7BEA8B</color>
+
+
 </resources>
