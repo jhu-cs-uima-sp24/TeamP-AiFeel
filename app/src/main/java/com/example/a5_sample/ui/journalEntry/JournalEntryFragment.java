@@ -77,12 +77,12 @@ public class JournalEntryFragment extends Fragment {
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         //set up time checker
-        Calendar c = Calendar.getInstance();
-        int hours = c.get(Calendar.HOUR_OF_DAY);
-        int minutes = c.get(Calendar.MINUTE);
-        int seconds = c.get(Calendar.SECOND);
+        //Calendar c = Calendar.getInstance();
+        //int hours = c.get(Calendar.HOUR_OF_DAY);
+        //int minutes = c.get(Calendar.MINUTE);
+        //int seconds = c.get(Calendar.SECOND);
 
-        //initialize database with default values
+        //initialize database with default values each new day
         if (userRef.child(""+dateText+"") == null) {
             Map<String, Object> updates = new HashMap<>();
             updates.put(""+dateText+"", new JournalEntry("", "No response yet", true, mood));
@@ -144,10 +144,19 @@ public class JournalEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String journalText = journalEntry.getText().toString();
+                if (!journalText.matches(".*[a-z].*") && !journalText.matches(".*[A-Z].*")) {
+                    AIResponse = "No response yet";
+                    mood = 3;
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put(""+dateText+"", new JournalEntry(journalText, AIResponse, emptyMailbox, mood));
+                    userRef.updateChildren(updates);
+                }
+                else {
+                    classifyAndSaveMood(journalText);
+                    getAIResponseAndSave(journalText);
+                }
                 mailbox.setImageResource(R.drawable.new_mail_icon);
                 emptyMailbox = false;
-                classifyAndSaveMood(journalText);
-                getAIResponseAndSave(journalText);
             }
         });
 
@@ -171,11 +180,8 @@ public class JournalEntryFragment extends Fragment {
     }
 
     private void getAIResponseAndSave(String journalText) {
-        String prompt = "You will receive a journal entry from the user, please read the journal and provide some response like a friend would do after listening to the content of the journal. " +
-                "Keep your response limited to a few lines You are an intimate friend, engaging with the user in a warm, friendly, and intimate manner, much like a close friend or confidant would. " +
-                "Your purpose is to create a supportive and comforting environment where the user feels valued, understood, and cared for.  " +
-                "Using language that fosters intimacy, empathy, and emotional connection, you aim to build rapport with the user and provide a safe space for them to express their thoughts, " +
-                "feelings, and concerns. Here is the journal content: " + journalText;
+        String prompt = "You will receive a message from the user, please read the message and provide a response like a friend would do after listening to the content. " +
+                "Keep your response limited to a few lines. Respond with the message in a warm, friendly, and intimate manner, much like a close friend or confidant would. " + "Here is the message: " + journalText + ".";
 
         JSONObject jsonBody = new JSONObject();
         try {
