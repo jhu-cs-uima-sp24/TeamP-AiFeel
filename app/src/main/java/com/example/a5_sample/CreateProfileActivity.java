@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,6 +34,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateProfileActivity extends AppCompatActivity {
     private SharedPreferences myPrefs;
     private DatabaseReference dbref;
@@ -43,6 +47,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     ImageButton btnPickImage;
     ActivityResultLauncher<Intent> resultLauncher;
     ImageView profileImg;
+    Uri imageUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,9 @@ public class CreateProfileActivity extends AppCompatActivity {
         email_text.setText(receivedEmail);
         EditText name_text = findViewById(R.id.name_text);
         EditText password_text = findViewById(R.id.password_text);
+        password_text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         EditText retype_password_text = findViewById(R.id.password_text2);
+        retype_password_text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         btnPickImage = findViewById(R.id.edit_profile_picture_button);
         profileImg = findViewById(R.id.profile_picture);
@@ -120,6 +127,17 @@ public class CreateProfileActivity extends AppCompatActivity {
                                                             Log.w(TAG, "User data save failed.", e);
                                                             Toast.makeText(CreateProfileActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
                                                         });
+                                                if (imageUri != null) {
+                                                    Map<String, Object> updates = new HashMap<>();
+                                                    updates.put("profile_picture", imageUri.toString());
+                                                    usersRef.child(firebaseUser.getUid()).updateChildren(updates)
+                                                            .addOnSuccessListener(aVoid -> {
+                                                                Toast.makeText(CreateProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                                                            })
+                                                            .addOnFailureListener(e -> {
+                                                                Toast.makeText(CreateProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
+                                                            });
+                                                }
                                             }
                                             Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
                                             startActivity(intent);
@@ -166,7 +184,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri imageUri = data.getData();
+        imageUri = data.getData();
         profileImg.setImageURI(imageUri);
     }
 

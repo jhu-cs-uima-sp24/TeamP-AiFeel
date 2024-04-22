@@ -1,18 +1,25 @@
 package com.example.a5_sample;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +43,9 @@ public class EditPal extends AppCompatActivity {
     private EditText name;
     private EditText age;
     private boolean hasPopulated;
+    private ImageButton btnPickImage;
+    private ImageView profilePic;
+    private Uri uploadedImage = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,19 @@ public class EditPal extends AppCompatActivity {
         age = findViewById(R.id.ageDisplay);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+
+        profilePic = findViewById(R.id.profile_picture);
+        btnPickImage = findViewById(R.id.edit_profile_picture_button);
+        btnPickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker.with(EditPal.this)
+                        .crop(1f, 1f)	    			//crop image
+                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
+            }
+        });
 
         quit.setOnClickListener(view -> finish());
 
@@ -72,6 +95,8 @@ public class EditPal extends AppCompatActivity {
             // Convert list of personas to a comma-separated string
             String personasString = TextUtils.join(",", personas);
             updates.put("personas", personasString);
+
+            updates.put("pal_picture", uploadedImage.toString());
 
             // Get user ID
             String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -163,6 +188,14 @@ public class EditPal extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri imageUri = data.getData();
+        profilePic.setImageURI(imageUri);
+        uploadedImage = imageUri;
+    }
+
 
     private List<String> loadAllPersonalities() {
         List<String> personalities = new ArrayList<>();
@@ -237,6 +270,13 @@ public class EditPal extends AppCompatActivity {
                             personas.addAll(Arrays.asList(personasString.split(",")));
                             selectedAdapter.setPersonalities(personas); // Prepopulate the adapter with user's personas
                             hasPopulated = true;
+                        }
+                    }
+
+                    if (dataSnapshot.hasChild("pal_picture")) {
+                        Uri pic = Uri.parse(dataSnapshot.child("pal_picture").getValue(String.class));
+                        if (pic != null) {
+                            profilePic.setImageURI(pic);
                         }
                     }
                 }
