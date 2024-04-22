@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
 
-
         //initialize firebase for retrieving mood data
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
@@ -99,6 +98,22 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction()); // pop up button
 
         setMonthView();
+
+
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                updateStreakCount();  // Update streak based on latest data
+                updateStreakCircles();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("DatabaseError", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+
         return myview;
     }
 
@@ -139,8 +154,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
                         //update your calendar here
                         //update the graph here
-                        updateStreakCount();
-                        updateStreakCircles();
+
                         createLineChart();
                         createPieChart();
                     }
