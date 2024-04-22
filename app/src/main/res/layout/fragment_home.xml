@@ -69,71 +69,99 @@
                     android:weightSum="7"
                     android:layout_gravity="center">
 
-                    <View
+                    <TextView
                         android:id="@+id/sunEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Sun"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/monEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Mon"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/tuesEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Tue"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/wedEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Wed"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/thurEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Thu"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/friEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Fri"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         android:layout_marginEnd="10dp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
 
-                    <View
+                    <TextView
                         android:id="@+id/satEmptyCircle"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Sat"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
                         android:background="@drawable/empty_circles"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="0dp" />
@@ -374,7 +402,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="THUR"
+                android:text="THU"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp" />

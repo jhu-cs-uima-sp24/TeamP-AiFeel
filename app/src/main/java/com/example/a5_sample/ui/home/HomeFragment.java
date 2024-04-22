@@ -2,6 +2,7 @@ package com.example.a5_sample.ui.home;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private Map<Integer, Button> monthButtons;
     private DatabaseReference userRef;
     private Map<String, Integer> moodData = new HashMap<>();
-    private Map<String, ImageView> streakCircles = new HashMap<>();
+    private Map<Integer, ImageView> streakCircles = new HashMap<>();
     private int cur_month, cur_year;
     private LineChart moodLineChart;
     //private PieChart moodPieChart;
@@ -72,6 +73,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         monthYearText = myview.findViewById(R.id.monthYearTV);
         selectedDate = LocalDate.now();
 
+        createStreaks(myview);
+        updateStreakCircles();
         moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         //moodPieChart = (PieChart) myview.findViewById(R.id.pieChart);
 
@@ -94,13 +97,13 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void createStreaks(View myview){
-        streakCircles.put("sun", myview.findViewById(R.id.sunFilledCircle));
-        streakCircles.put("mon", myview.findViewById(R.id.monFilledCircle));
-        streakCircles.put("tues", myview.findViewById(R.id.tuesFilledCircle));
-        streakCircles.put("wed", myview.findViewById(R.id.wedFilledCircle));
-        streakCircles.put("thur", myview.findViewById(R.id.thurFilledCircle));
-        streakCircles.put("fri", myview.findViewById(R.id.friFilledCircle));
-        streakCircles.put("sat", myview.findViewById(R.id.satFilledCircle));
+        streakCircles.put(0, myview.findViewById(R.id.sunFilledCircle));
+        streakCircles.put(1, myview.findViewById(R.id.monFilledCircle));
+        streakCircles.put(2, myview.findViewById(R.id.tuesFilledCircle));
+        streakCircles.put(3, myview.findViewById(R.id.wedFilledCircle));
+        streakCircles.put(4, myview.findViewById(R.id.thurFilledCircle));
+        streakCircles.put(5, myview.findViewById(R.id.friFilledCircle));
+        streakCircles.put(6, myview.findViewById(R.id.satFilledCircle));
     }
 
     public void retrieveMoodDataForMonth() {
@@ -130,6 +133,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
                         //update your calendar here
                         //update the graph here
+                        updateStreakCircles();
                         createLineChart();
                         createPieChart();
                     }
@@ -145,26 +149,19 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void updateStreakCircles() {
-        LocalDate startOfWeek = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate today = LocalDate.now();
+        LocalDate streakStart = today.minusDays(today.getDayOfWeek().getValue() % 7);
         HashMap<ImageView, LocalDate> dayMap = new HashMap<>();
-        /*
-        dayMap.put(monFilledCircle, startOfWeek);
-        dayMap.put(tueFilledCircle, startOfWeek.plusDays(1));
-        dayMap.put(wedFilledCircle, startOfWeek.plusDays(2));
-
-         */
-        // Continue mapping for other days of the week
-
-        for (Map.Entry<ImageView, LocalDate> entry : dayMap.entrySet()) {
-            ImageView dayCircle = entry.getKey();
-            LocalDate date = entry.getValue();
-            String dateKey = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) { // Ensure there's an entry and it's not default 0
-                dayCircle.setVisibility(View.VISIBLE);
+        int streakIndex = 0;
+        while (streakStart.isBefore(today) || streakStart.isEqual(today)) {
+            String dateKey = streakStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) {
+                streakCircles.get(streakIndex).setVisibility(View.VISIBLE);
             } else {
-                dayCircle.setVisibility(View.INVISIBLE);
+                streakCircles.get(streakIndex).setVisibility(View.INVISIBLE);
             }
+            streakIndex++;
+            streakStart = streakStart.plusDays(1);
         }
     }
 
