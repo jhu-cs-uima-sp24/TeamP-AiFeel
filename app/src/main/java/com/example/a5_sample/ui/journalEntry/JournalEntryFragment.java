@@ -46,6 +46,9 @@ public class JournalEntryFragment extends Fragment {
     private final String API_KEY = "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";
     private final OkHttpClient client = new OkHttpClient();
     private FragmentJournalEntryBinding binding;
+    private TextView prompt1;
+    private TextView prompt2;
+    private TextView prompt3;
     private EditText journalEntry;
     private String AIResponse;
     private LocalDate getDate;
@@ -62,7 +65,7 @@ public class JournalEntryFragment extends Fragment {
         binding = FragmentJournalEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //assign journal entry, send button, mail button, date
+        //assign journal entry, send button, mail button, date, prompts
         journalEntry = binding.journalEntryText;
         save = binding.saveButton;
         send = binding.sendButton;
@@ -71,6 +74,9 @@ public class JournalEntryFragment extends Fragment {
         getDate = LocalDate.now();
         dateText = getDate.toString();
         date.setText(dateText);
+        prompt1 = binding.prompt1;
+        prompt2 = binding.prompt2;
+        prompt3 = binding.prompt3;
 
         //initialize firebase
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
