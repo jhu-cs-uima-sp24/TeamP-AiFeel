@@ -3,10 +3,12 @@ package com.example.a5_sample.ui.home;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -151,7 +153,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
                         //update your calendar here
                         //update the graph here
-
                         createLineChart();
                         createPieChart();
                         calendarRecyclerView.getAdapter().notifyDataSetChanged();
@@ -232,13 +233,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         LineData lineData = new LineData(dataSet);
         //LineChart moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         moodLineChart.setData(lineData);
+        moodLineChart.getAxisLeft().setEnabled(false);
         moodLineChart.getDescription().setEnabled(false);
-        moodLineChart.getAxisLeft().setDrawGridLines(false);
-        moodLineChart.getAxisLeft().setAxisMinimum(0);
-        moodLineChart.getAxisLeft().setAxisMaximum(5.5f);
-        moodLineChart.getAxisLeft().setGranularity(1f);
-        moodLineChart.getAxisLeft().setGranularityEnabled(true);
-        moodLineChart.getAxisLeft().setTextSize(14f);
+//        moodLineChart.getAxisLeft().setDrawGridLines(false);
+//        moodLineChart.getAxisLeft().setAxisMinimum(0);
+//        moodLineChart.getAxisLeft().setAxisMaximum(5.5f);
+//        moodLineChart.getAxisLeft().setGranularity(1f);
+//        moodLineChart.getAxisLeft().setGranularityEnabled(true);
+//        moodLineChart.getAxisLeft().setTextSize(14f);
         moodLineChart.getXAxis().setDrawGridLines(false);
         moodLineChart.getXAxis().setTextSize(14f);
         moodLineChart.getLegend().setEnabled(false);
@@ -251,9 +253,43 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
         moodLineChart.getXAxis().setPosition(com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM);
         moodLineChart.getXAxis().setValueFormatter(new DateValueFormatter(year, month, 7));
-        moodLineChart.getXAxis().setLabelCount(daysInMonth / 7 + 1, true); // Ensure enough labels are generated
+        moodLineChart.getXAxis().setLabelCount(daysInMonth / 7 + 1, true);
 
         moodLineChart.invalidate();
+
+        moodLineChart.post(new Runnable() {
+            @Override
+            public void run() {
+                addImagesToYAxis();
+            }
+        });
+    }
+
+    private void addImagesToYAxis() {
+        int[] imageRes = {R.drawable.mood_bad, R.drawable.mood_okay, R.drawable.mood_good, R.drawable.mood_great, R.drawable.mood_excellent};
+        float yAxisHeight = moodLineChart.getHeight(); // Total height of the chart
+        float yAxisMax = moodLineChart.getAxisLeft().getAxisMaximum(); // Max value of y-axis
+        float yAxisMin = moodLineChart.getAxisLeft().getAxisMinimum(); // Min value of y-axis
+
+        // Define a standard size for the images
+        int imageSize = Math.min(moodLineChart.getWidth() / 7, moodLineChart.getHeight() / 14);
+
+        for (int i = 0; i < 5; i++) {
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageResource(imageRes[i]);
+
+            // Set the size of the image
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
+
+            float compressedYPosition = (i + 1) * 0.9f; // Apply scaling factor
+            float normalizedPosition = (compressedYPosition - yAxisMin) / (yAxisMax - yAxisMin); // Normalize the position
+            int topMargin = (int) (yAxisHeight * (1 - normalizedPosition)) - imageSize / 2 - 28; // Adjust to center the image vertically
+
+            params.topMargin = topMargin;
+            params.gravity = Gravity.START | Gravity.TOP; // Adjust this based on your layout direction
+
+            ((FrameLayout) moodLineChart.getParent()).addView(imageView, params);
+        }
     }
 
     private void createPieChart() {

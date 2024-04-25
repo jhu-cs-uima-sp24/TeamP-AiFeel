@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:background="@color/peach_yellow"
     android:fitsSystemWindows="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login_layout"
         android:layout_width="match_parent"
@@ -141,7 +143,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password_text"
             app:srcCompat="@drawable/tabler_login" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
