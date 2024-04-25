@@ -1,5 +1,6 @@
 package com.example.a5_sample.ui.home;
 
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         String dayString = daysOfMonth.get(position);
         holder.dayOfMonth.setText(dayString);
+        holder.dayOfMonth.setTypeface(null, Typeface.BOLD);
+
 
         if (!dayString.isEmpty()) {
             int day = Integer.parseInt(dayString);  // Convert the day string to an integer
@@ -55,6 +58,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             } else {
                 // Reset to default background if no mood data
                 holder.itemView.setBackgroundResource(R.color.white);
+            }
+
+            if (date.isAfter(LocalDate.now())) {
+                holder.dayOfMonth.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.light_gray));
+                holder.itemView.setClickable(false);
+            } else {
+                holder.dayOfMonth.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.black));
+                holder.itemView.setClickable(true);
             }
         } else {
             // Handle empty days (outside current month)
