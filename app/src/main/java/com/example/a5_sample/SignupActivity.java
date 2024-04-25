@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,15 +30,12 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        Context context = getApplicationContext();
-//        myPrefs = context.getSharedPreferences(getString(R.string.storage), Context.MODE_PRIVATE);
-//
         String receivedEmail = getIntent().getStringExtra("email");
         EditText email_text = findViewById(R.id.email_text);
         email_text.setText(receivedEmail);
 
 
-        ImageButton searchButton = findViewById(R.id.email_lookup);
+        Button searchButton =  (Button) findViewById(R.id.sign_up);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +54,7 @@ public class SignupActivity extends AppCompatActivity {
                                 Toast mToast = new Toast(getApplicationContext());
 
                                 TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
-                                txtMessage.setText("Reset password link is sent.");
+                                txtMessage.setText("This email already has an account with us. A reset password link is sent.");
 
                                 mToast.setDuration(Toast.LENGTH_SHORT);
                                 mToast.setView(customToastLayout);

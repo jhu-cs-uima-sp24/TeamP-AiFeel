@@ -32,7 +32,8 @@
     <string name="leave">* LEAVE *</string>
     <string name="storage">A5_CONTEXT_SP</string>
     <string name="email">Email</string>
-    <string name="sign_up"><u>Sign up/Forgot Password</u></string>
+    <string name="sign_up"><u>Sign up  </u></string>
+    <string name="forgot_password"><u>Forgot Password  </u></string>
     <string name="sign_in_instead"><u>Sign in Instead</u></string>
     <string name="ai_response">No messages yet</string>
     <string name="ai_response_title">AI Message</string>

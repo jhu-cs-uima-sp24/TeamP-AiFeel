@@ -4,6 +4,7 @@ import java.lang.String;
 public class User {
     private String userId; // Unique ID from Firebase Authentication
     private String email;
+    private String profile_picture;
     private String name;
     private String age;
     private String gender;
@@ -36,9 +37,12 @@ public class User {
 
     public void setName(String name){ this.name = name; }
 
-    public void setGender(String gender) { this.gender = gender; }
 
     public void setUid(String UID) {
         uid = UID;
+    }
+
+    public void setImageURI(String string) {
+        profile_picture = string;
     }
 }

@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
     private SharedPreferences myPrefs;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -112,6 +114,77 @@ public class LoginActivity extends AppCompatActivity {
                 String email = email_text.getText().toString();
                 intent.putExtra("email", email);
                 startActivity(intent);
+            }
+        });
+
+        Button forgot_button = (Button) findViewById(R.id.forgot_password);
+        forgot_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = email_text.getText().toString();
+
+                // Check if the email field is not empty
+                if (!email.isEmpty()) {
+                    mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<String> signInMethods = task.getResult().getSignInMethods();
+                            if (signInMethods != null && signInMethods.contains("password")) {
+                                Log.d(TAG, "reset password");
+
+                                LayoutInflater inflater = getLayoutInflater();
+                                View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                Toast mToast = new Toast(getApplicationContext());
+
+                                TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                txtMessage.setText("Reset password link is sent.");
+
+                                mToast.setDuration(Toast.LENGTH_SHORT);
+                                mToast.setView(customToastLayout);
+                                mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                mToast.show();
+                            } else {
+                                Log.d(TAG, "no email");
+                                LayoutInflater inflater = getLayoutInflater();
+                                View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                Toast mToast = new Toast(getApplicationContext());
+
+                                TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                txtMessage.setText("This email is not registered with us.");
+
+                                mToast.setDuration(Toast.LENGTH_SHORT);
+                                mToast.setView(customToastLayout);
+                                mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                mToast.show();
+                            }
+                        } else {
+                            Log.e("EmailCheck", "Failed to check email", task.getException());
+                            LayoutInflater inflater = getLayoutInflater();
+                            View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                            Toast mToast = new Toast(getApplicationContext());
+
+                            TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                            txtMessage.setText("Failed to check email. Please try again.");
+
+                            mToast.setDuration(Toast.LENGTH_SHORT);
+                            mToast.setView(customToastLayout);
+                            mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                            mToast.show();
+                        }
+                    });
+                } else {
+                    // Email field is empty, prompt the user to fill it
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                    Toast mToast = new Toast(getApplicationContext());
+
+                    TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                    txtMessage.setText("Please enter your email.");
+
+                    mToast.setDuration(Toast.LENGTH_SHORT);
+                    mToast.setView(customToastLayout);
+                    mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                    mToast.show();
+                }
             }
         });
     }

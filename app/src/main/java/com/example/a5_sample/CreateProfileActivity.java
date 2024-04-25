@@ -112,40 +112,74 @@ public class CreateProfileActivity extends AppCompatActivity {
                                             // sign in success,
                                             Log.d(TAG, "createUserWithEmail:success");
                                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                                            User user = new User(name, email);
-
-                                            DatabaseReference usersRef = dbref.child("users");
-                                            if (firebaseUser != null) {
-                                                user.setUid(firebaseUser.getUid()); //set user field
-                                                usersRef.child(firebaseUser.getUid()).setValue(user)
-                                                        .addOnSuccessListener(aVoid -> {
-                                                            Log.d(TAG, "User data saved successfully.");
-                                                            Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
-                                                            startActivity(intent);
-                                                        })
-                                                        .addOnFailureListener(e -> {
-                                                            Log.w(TAG, "User data save failed.", e);
-                                                            Toast.makeText(CreateProfileActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
-                                                        });
-                                                if (imageUri != null) {
-                                                    Map<String, Object> updates = new HashMap<>();
-                                                    updates.put("profile_picture", imageUri.toString());
-                                                    usersRef.child(firebaseUser.getUid()).updateChildren(updates)
-                                                            .addOnSuccessListener(aVoid -> {
-                                                                Toast.makeText(CreateProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                                                            })
-                                                            .addOnFailureListener(e -> {
-                                                                Toast.makeText(CreateProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
-                                                            });
-                                                }
+                                            String userId = firebaseUser.getUid();
+                                            Map<String, Object> userMap = new HashMap<>();
+                                            userMap.put("name", name);
+                                            userMap.put("email", email);
+                                            if (imageUri != null) {
+                                                userMap.put("profile_picture", imageUri.toString());
                                             }
-                                            Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
-                                            startActivity(intent);
+                                            DatabaseReference usersRef = dbref.child("users").child(userId);
+                                            usersRef.setValue(userMap)
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        Log.d(TAG, "User data saved successfully.");
+                                                        Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        Log.w(TAG, "User data save failed.", e);
+                                                        Toast.makeText(CreateProfileActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
+                                                    });
+                                            //User user = new User(name, email);
+//                                            if(imageUri != null){
+//                                                user.setImageURI(imageUri.toString());
+//                                            }
+//                                            DatabaseReference usersRef = dbref.child("users");
+//                                            if (firebaseUser != null) {
+//                                                user.setUid(firebaseUser.getUid()); //set user field
+//                                                usersRef.child(firebaseUser.getUid()).setValue(user)
+//                                                        .addOnSuccessListener(aVoid -> {
+//                                                            Log.d(TAG, "User data saved successfully.");
+//                                                            Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
+//                                                            startActivity(intent);
+//                                                            finish();
+//                                                        })
+//                                                        .addOnFailureListener(e -> {
+//                                                            Log.w(TAG, "User data save failed.", e);
+//                                                            Toast.makeText(CreateProfileActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
+//                                                        });
+//
+//
+//                                            }
                                         } else {
-                                            // If sign in fails, display a message to the user.
-                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                            Toast.makeText(CreateProfileActivity.this, "Authentication failed.",
-                                                    Toast.LENGTH_SHORT).show();
+                                            if(password.length() < 6){
+                                                LayoutInflater inflater = getLayoutInflater();
+                                                View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                                Toast mToast = new Toast(getApplicationContext());
+
+                                                TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                                txtMessage.setText("Password is too short. Please create a password with length > 5");
+
+                                                mToast.setDuration(Toast.LENGTH_SHORT);
+                                                mToast.setView(customToastLayout);
+                                                mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                                mToast.show();
+                                            } else {
+                                                // If sign in fails, display a message to the user.
+                                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                                LayoutInflater inflater = getLayoutInflater();
+                                                View customToastLayout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.root_layout));
+                                                Toast mToast = new Toast(getApplicationContext());
+
+                                                TextView txtMessage = customToastLayout.findViewById(R.id.txt_message);
+                                                txtMessage.setText("Error with connecting to app authentication system, please try again later");
+
+                                                mToast.setDuration(Toast.LENGTH_SHORT);
+                                                mToast.setView(customToastLayout);
+                                                mToast.setGravity(Gravity.BOTTOM, 0, 50);
+                                                mToast.show();
+                                            }
                                         }
                                     }
                                 });
@@ -176,6 +210,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 //go back to sign in page
                 Intent intent = new Intent(CreateProfileActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
