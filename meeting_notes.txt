@@ -40,3 +40,23 @@ April 5 Friday
 We met with our mentor. She helped us with solving the margin bug, along with many other issues. Lisa assisted everyone in setting
 firebase up for their independent parts, and also invited our collaboration on firebase, so we all can view the realtime databse.
 We set out to complete integrating firebase, as well as integrating our parts before the end of sprint.
+
+After Sprint 1:
+
+April 9 Tuesday 4:00-4:30pm
+Delegate tasks for Spring 2. Jonanthan will keep working on Calendar and streak. Lisa will work on data visualization. Eric will work on chat. Iris on Journal Entry
+
+April 12 Friday 3:00 - 4:15pm
+Working meeting. Eric finished basic implementation for chat. Demonstrated for the rest of the team.
+
+April 16 Tuesday 4:00 - 4:30pm 
+Lisa and Iris worked together to implement GPT in journal Entry, coming up with the correct prompts for each task. Jonathan and Iris work together to create OldJournalFragment so that user can access previous journal entry from calendar. Eric continued to work on chat. 
+
+April 19 Friday 3:00 - 4:15pm
+Lisa and Jonathan worked together on retriveing mood data from firebase. Lisa implemented line chart and Jonanthan implemented mood icon in calendar. Eric worked on add profile feature in chat. Iris improved ui in Journal entry. 
+
+April 21 Sunday 3:30 - 4:00 pm 
+Went through all implemented features. Everyone worked on debugging and error prevention. Created presentation and practiced for T5 Presentation on Monday.
+
+April 24 Wednesday 5:00 - 5:30pm
+Testing and debugging before final submission. Improved UI and further error prevention.
