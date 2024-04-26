@@ -21,6 +21,14 @@ The app is near its finished state. Most of this sprint was aimed at integrating
 - Calendar dialog future month button error handling
 - Mood emoji display in calendar cell background
 
+### Journal Fragment
+ - Implementation of old journal entries
+        - Navigatable from the calendar view
+        - Error handling for sending an old entry to the AI
+ - Firebase integration of each entry for each date
+ - GPT integration to generate AI journal responses
+ - Some error handling to minimize AI hallucinations through prompting
+
 ### Chat Fragment
 - API call to allow user to chat with our chatbot
 - Cloud storage of chat history
