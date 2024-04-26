@@ -11,32 +11,45 @@ As a functioning example, you can login with the following info with prepopulate
 The app is near its finished state. Most of this sprint was aimed at integrating the database as well as AI features in the app.
 
 ## Implemented Features
+
+### Login Activity (Lisa)
+- Change passward reset mechanism to the login activity
+- Change ImageButton to TextButton for sign up for better UI
+- Error prevention for too simple password
+- Implemented profile picture upload feature with firebase
+  
 ### Home Fragment
-- Streak implementation
+- Streak implementation (Lisa)
     - Streak counter updating text at top
     - Updating streak fire visualizer corresponding to day of week which user has journaled in the current week
-- Calendar future date cell error handling
-- Calendar future month arrow selector error handling
-- Calendar dialog future year arrow selector error handling
-- Calendar dialog future month button error handling
-- Mood emoji display in calendar cell background
-
-### Journal Fragment
+- Calendar (Jonathan)
+    - Calendar future date cell error handling
+    - Calendar future month arrow selector error handling
+    - Calendar dialog future year arrow selector error handling
+    - Calendar dialog future month button error handling
+    - Mood emoji display in calendar cell background
+- Data visualization (Lisa)
+    - Line chart for mood changes
+    - Line chart added gradient backgound
+    - Line chart with customized icon as y-axis
+    - Piechart for monthly mood distribution
+    - 
+### Journal Fragment (Iris)
  - Implementation of old journal entries
         - Navigatable from the calendar view
         - Error handling for sending an old entry to the AI
  - Firebase integration of each entry for each date
- - GPT integration to generate AI journal responses
+ - GPT integration to generate AI journal responses (Lisa also helped with this)
  - Some error handling to minimize AI hallucinations through prompting
 
-### Chat Fragment
+### Chat Fragment (Eric)
 - API call to allow user to chat with our chatbot
 - Cloud storage of chat history
 - Personalized chatbot role that fits the chatbot's age, gender, and persona
 - Different behavior when talking to users with different age and gender
 - Clear chat history button in the action bar 
 
-### Profile Fragment
+### Profile Fragment (Eric)
 - Additional Error handling with storing user information in the database
 - More detailed persona builder using user selected personalities
 - Implemented profile picture upload feature, which is also displayed in chat
