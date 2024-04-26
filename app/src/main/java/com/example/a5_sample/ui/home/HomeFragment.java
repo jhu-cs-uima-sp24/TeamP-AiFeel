@@ -235,12 +235,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         moodLineChart.setData(lineData);
         moodLineChart.getAxisLeft().setEnabled(false);
         moodLineChart.getDescription().setEnabled(false);
-//        moodLineChart.getAxisLeft().setDrawGridLines(false);
-//        moodLineChart.getAxisLeft().setAxisMinimum(0);
-//        moodLineChart.getAxisLeft().setAxisMaximum(5.5f);
-//        moodLineChart.getAxisLeft().setGranularity(1f);
-//        moodLineChart.getAxisLeft().setGranularityEnabled(true);
-//        moodLineChart.getAxisLeft().setTextSize(14f);
         moodLineChart.getXAxis().setDrawGridLines(false);
         moodLineChart.getXAxis().setTextSize(14f);
         moodLineChart.getLegend().setEnabled(false);
@@ -267,26 +261,27 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     private void addImagesToYAxis() {
         int[] imageRes = {R.drawable.mood_bad, R.drawable.mood_okay, R.drawable.mood_good, R.drawable.mood_great, R.drawable.mood_excellent};
-        float yAxisHeight = moodLineChart.getHeight(); // Total height of the chart
-        float yAxisMax = moodLineChart.getAxisLeft().getAxisMaximum(); // Max value of y-axis
-        float yAxisMin = moodLineChart.getAxisLeft().getAxisMinimum(); // Min value of y-axis
+        float yAxisHeight = moodLineChart.getHeight();
+        float yAxisMax = moodLineChart.getAxisLeft().getAxisMaximum();
+        float yAxisMin = moodLineChart.getAxisLeft().getAxisMinimum();
 
-        // Define a standard size for the images
+
         int imageSize = Math.min(moodLineChart.getWidth() / 7, moodLineChart.getHeight() / 14);
 
         for (int i = 0; i < 5; i++) {
             ImageView imageView = new ImageView(getContext());
             imageView.setImageResource(imageRes[i]);
 
-            // Set the size of the image
+            // set the size of the image
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imageSize, imageSize);
 
-            float compressedYPosition = (i + 1) * 0.9f; // Apply scaling factor
-            float normalizedPosition = (compressedYPosition - yAxisMin) / (yAxisMax - yAxisMin); // Normalize the position
-            int topMargin = (int) (yAxisHeight * (1 - normalizedPosition)) - imageSize / 2 - 28; // Adjust to center the image vertically
+            float compressedYPosition = (i + 1) * 0.9f;
+            float normalizedPosition = (compressedYPosition - yAxisMin) / (yAxisMax - yAxisMin);
+            int topMargin = (int) (yAxisHeight * (1 - normalizedPosition)) - imageSize / 2 - 28; // adjust to center the image vertically
 
             params.topMargin = topMargin;
-            params.gravity = Gravity.START | Gravity.TOP; // Adjust this based on your layout direction
+            params.leftMargin = moodLineChart.getLeft() - imageSize; //move with line chart
+            params.gravity = Gravity.START | Gravity.TOP;
 
             ((FrameLayout) moodLineChart.getParent()).addView(imageView, params);
         }
@@ -294,7 +289,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     private void createPieChart() {
         Map<Integer, Integer> moodCounts = new HashMap<>();
-        // Calculate the count of each mood
+        // calculate the count of each mood
         for (Integer mood : moodData.values()) {
             if (mood != 0) {
                 if (!moodCounts.containsKey(mood)) {
@@ -367,7 +362,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             this.interval = interval;
             calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month - 1); // Month is zero-indexed in Calendar
+            calendar.set(Calendar.MONTH, month - 1);
             dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
         }
 
