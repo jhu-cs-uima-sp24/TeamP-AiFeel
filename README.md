@@ -21,7 +21,17 @@ The app is near its finished state. Most of this sprint was aimed at integrating
 - Calendar dialog future month button error handling
 - Mood emoji display in calendar cell background
 
+### Chat Fragment
+- API call to allow user to chat with our chatbot
+- Cloud storage of chat history
+- Personalized chatbot role that fits the chatbot's age, gender, and persona
+- Different behavior when talking to users with different age and gender
+- Clear chat history button in the action bar 
 
+### Profile Fragment
+- Additional Error handling with storing user information in the database
+- More detailed persona builder using user selected personalities
+- Implemented profile picture upload feature, which is also displayed in chat
 
 
 # Sprint 1:
