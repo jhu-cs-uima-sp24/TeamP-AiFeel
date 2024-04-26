@@ -1,9 +1,30 @@
 # TeamP-AiFeel
+AiFeel is a comforting app which allows users to write journal entries. Our unique approach of integrating AI within journaling allows users to get a better sense of their moods while journaling, keep track of mood stats/analytics through visualization techniques, and talk to a customizable AI Pen-pal to help interpret journal entries & provide assistance/advice whenever needed.
+
 You are able to login through any email and password by creating your own account and signing into it.
 As a functioning example, you can login with the following info with prepopulated data
-- Email: ericzhy0815@outlook.com
-- Password: zhaohongyu0815
+- Email: demo_t5_v2@jhu.edu 
+- Password: 12345678
 
+# Sprint 2:
+## General State
+The app is near its finished state. Most of this sprint was aimed at integrating the database as well as AI features in the app.
+
+## Implemented Features
+### Home Fragment
+- Streak implementation
+    - Streak counter updating text at top
+    - Updating streak fire visualizer corresponding to day of week which user has journaled in the current week
+- Calendar future date cell error handling
+- Calendar future month arrow selector error handling
+- Calendar dialog future year arrow selector error handling
+- Calendar dialog future month button error handling
+- Mood emoji display in calendar cell background
+
+
+
+
+# Sprint 1:
 ## General State
 We have implemented most of the basic features that users interact with--login/signup, starting a journal entry, customizing their profile, and calendar view. For next sprint we'll work on AI and more advanced database storage. 
 
