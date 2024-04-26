@@ -367,6 +367,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private class DateValueFormatter extends ValueFormatter {
         private final Calendar calendar;
         private final SimpleDateFormat dateFormat;
+        private final int interval;
 
         public DateValueFormatter(int year, int month, int interval) {
             this.interval = interval;
