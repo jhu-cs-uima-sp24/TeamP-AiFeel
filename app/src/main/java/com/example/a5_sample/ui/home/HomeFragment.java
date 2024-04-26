@@ -66,50 +66,56 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private Map<Integer, ImageView> streakCircles = new HashMap<>();
     private int cur_month, cur_year;
     private LineChart moodLineChart;
-    //private PieChart moodPieChart;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myview = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Get views of components on home fragment
         calendarRecyclerView = myview.findViewById(R.id.calendarRecyclerView);
         monthYearText = myview.findViewById(R.id.monthYearTV);
         streakCountText = myview.findViewById(R.id.StreakText);
+        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
+        ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
+
+        // Use selectedDate to keep track of the date we are looking at and update calendar view
         selectedDate = LocalDate.now();
 
+        // Update streaks based on database
         updateStreakCount();
         createStreaks(myview);
         updateStreakCircles();
-        moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
-        //moodPieChart = (PieChart) myview.findViewById(R.id.pieChart);
-
-        ImageButton nextMonth = myview.findViewById(R.id.nextMonthButton);
 
         //initialize firebase for retrieving mood data
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         retrieveMoodDataForMonth();
+
+        // Initial error handling to prevent users from selecting future months by turning next month arrow gray
         if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
             nextMonth.setImageResource(R.drawable.date_arrow_gray);
         }
 
+        // Control month arrow selector actions and calendar icon button
         myview.findViewById(R.id.prevMonthButton).setOnClickListener(v -> previousMonthAction(nextMonth)); //top left button
         nextMonth.setOnClickListener(v -> nextMonthAction(nextMonth));
         myview.findViewById(R.id.calendarButton).setOnClickListener(v -> dateSelectionAction()); // pop up button
 
+        // Set correct calendar view based on month/year supplied
         setMonthView();
 
-
+        // Firebase database integration based on user
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                updateStreakCount();  // Update streak based on latest data
+                // Update streaks
+                updateStreakCount();
                 updateStreakCircles();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("DatabaseError", "loadPost:onCancelled", databaseError.toException());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
             }
         });
 
@@ -117,6 +123,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void createStreaks(View myview){
+        // Map to keep track of streak circles
         streakCircles.put(0, myview.findViewById(R.id.sunFilledCircle));
         streakCircles.put(1, myview.findViewById(R.id.monFilledCircle));
         streakCircles.put(2, myview.findViewById(R.id.tuesFilledCircle));
@@ -127,6 +134,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     public void retrieveMoodDataForMonth() {
+        // Get relevant date stats
         int year = selectedDate.getYear();
         int month = selectedDate.getMonthValue();
         Calendar calendar = Calendar.getInstance();
@@ -135,6 +143,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         int[] completedCount = new int[1]; // to count if all data is retrieved
         Map<String, Integer> localMoodData = new HashMap<>(); // temporary storage
 
+        // Integration of firebase database, go through the days
         for (int day = 1; day <= daysInMonth; day++) {
             String dateKey = String.format("%d-%02d-%02d", year, month, day);
             DatabaseReference dateRef = userRef.child(dateKey);
@@ -151,8 +160,8 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                     if (completedCount[0] == daysInMonth) {
                         moodData.clear();
                         moodData.putAll(localMoodData); // copy all fetched data to the main map
-                        //update your calendar here
-                        //update the graph here
+
+                        //update calendar and graphs
                         createLineChart();
                         createPieChart();
                         calendarRecyclerView.getAdapter().notifyDataSetChanged();
@@ -162,27 +171,28 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.out.println("Error fetching data: " + databaseError.getMessage());
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle any errors
                 }
             });
         }
     }
 
     private void updateStreakCount() {
-
+        // Go through the days, going backwards from current day, to calculate streak
         int streakCount = 0;
         LocalDate today = LocalDate.now();
         while (true) {
             String dateKey = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (moodData.containsKey(dateKey) && moodData.get(dateKey) != 0) {
-                streakCount++;
+                streakCount++; // Found data for day and increase streak
             } else {
-                break;
+                break; // Streak ended, stop counting
             }
             today = today.minusDays(1);
         }
 
+        // Update the streak count text at top of home fragment
         StringBuilder streakText = new StringBuilder();
         streakText.append("You've been on a ");
         streakText.append(streakCount);
@@ -193,9 +203,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void updateStreakCircles() {
+        // Only look at the current week
         LocalDate today = LocalDate.now();
         LocalDate streakStart = today.minusDays(today.getDayOfWeek().getValue() % 7);
         HashMap<ImageView, LocalDate> dayMap = new HashMap<>();
+
+        // Go through this week up to current day, updating streak circles if data is found
         int streakIndex = 0;
         while (streakStart.isBefore(today) || streakStart.isEqual(today)) {
             String dateKey = streakStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -210,6 +223,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void createLineChart() {
+        // Get relevant date data and mood data
         int year = selectedDate.getYear();
         int month = selectedDate.getMonthValue();
         Calendar calendar = Calendar.getInstance();
@@ -230,17 +244,11 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         dataSet.setLineWidth(1.5f);
 
+        // Update mood visualization settings
         LineData lineData = new LineData(dataSet);
-        //LineChart moodLineChart = (LineChart) myview.findViewById(R.id.lineChart);
         moodLineChart.setData(lineData);
         moodLineChart.getAxisLeft().setEnabled(false);
         moodLineChart.getDescription().setEnabled(false);
-//        moodLineChart.getAxisLeft().setDrawGridLines(false);
-//        moodLineChart.getAxisLeft().setAxisMinimum(0);
-//        moodLineChart.getAxisLeft().setAxisMaximum(5.5f);
-//        moodLineChart.getAxisLeft().setGranularity(1f);
-//        moodLineChart.getAxisLeft().setGranularityEnabled(true);
-//        moodLineChart.getAxisLeft().setTextSize(14f);
         moodLineChart.getXAxis().setDrawGridLines(false);
         moodLineChart.getXAxis().setTextSize(14f);
         moodLineChart.getLegend().setEnabled(false);
@@ -351,8 +359,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setTextSize(14f);
         pieChart.setDrawEntryLabels(false);
-//        pieChart.setEntryLabelColor(android.graphics.Color.BLACK);
-//        pieChart.setEntryLabelTextSize(12f);
         pieChart.animateY(1400, com.github.mikephil.charting.animation.Easing.EaseInOutQuad);
 
         pieChart.invalidate(); // refresh the chart
@@ -361,7 +367,6 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     private class DateValueFormatter extends ValueFormatter {
         private final Calendar calendar;
         private final SimpleDateFormat dateFormat;
-        private final int interval;
 
         public DateValueFormatter(int year, int month, int interval) {
             this.interval = interval;
@@ -396,6 +401,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void initializeButtons(View dialogView) {
+        // Create month buttons for calendar selector, putting in map for easier access
         monthButtons = new HashMap<>();
         monthButtons.put(1, dialogView.findViewById(R.id.button_jan));
         monthButtons.put(2, dialogView.findViewById(R.id.button_feb));
@@ -412,18 +418,22 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void setMonthTextColor() {
+        // Handle month button color logic
         for (Map.Entry<Integer, Button> entry : monthButtons.entrySet()) {
             Button button = entry.getValue();
 
             if (isMonthInFuture(entry.getKey(), selectedDate.getYear())) {
+                // User handling, ensuring future months are not selected
                 button.setTextColor(ContextCompat.getColor(getContext(), R.color.light_gray));
                 if (button.equals(currentSelectedButton)) {
                     currentSelectedButton.setSelected(false);
                 }
             } else {
+                // Handle month button selection
                 if (button.equals(currentSelectedButton)) {
                     currentSelectedButton.setSelected(true);
                 }
+
                 button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.month_selection_circles));
                 button.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
             }
@@ -431,6 +441,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void previousMonthAction(ImageButton nextMonth) {
+        // Go to previous month on calendar
         selectedDate = selectedDate.minusMonths(1);
         nextMonth.setImageResource(R.drawable.date_arrow);
         setMonthView();
@@ -438,8 +449,10 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
     private void nextMonthAction(ImageButton nextMonth) {
         if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())) {
+            // Gray out arrow if month in future for error handling
             nextMonth.setImageResource(R.drawable.date_arrow_gray);
         } else {
+            // Go to next month on calendar
             selectedDate = selectedDate.plusMonths(1);
             nextMonth.setImageResource(R.drawable.date_arrow);
             if (isMonthInFuture(selectedDate.getMonthValue() + 1, selectedDate.getYear())){
@@ -450,6 +463,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private void dateSelectionAction() {
+        // Handle logic for dialog open, allowing them to easily jump to dates
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.fragment_month_picker, null);
@@ -467,6 +481,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         ImageButton previousYearButton = dialogView.findViewById(R.id.button_previous_year);
         ImageButton nextYearButton = dialogView.findViewById(R.id.button_next_year);
 
+        // Handle logic of previous year button in dialog selector
         previousYearButton.setOnClickListener(v -> {
             selectedDate = selectedDate.minusYears(1);
             yearTextView.setText(String.valueOf(selectedDate.getYear()));
@@ -474,9 +489,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
             setMonthTextColor();
         });
 
+        // Initial handling to prevent user to go to future years
         if (selectedDate.plusYears(1).getYear() > LocalDate.now().getYear()){
             nextYearButton.setImageResource(R.drawable.date_arrow_gray);
         }
+
+        // Handle logic of next year button in dialog selector
         nextYearButton.setOnClickListener(v -> {
             if (selectedDate.plusYears(1).getYear() <= LocalDate.now().getYear()){
                 selectedDate = selectedDate.plusYears(1);
@@ -486,11 +504,13 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                     nextYearButton.setImageResource(R.drawable.date_arrow_gray);
                 }
             } else {
+                // Error prevention to prevent going into future years
                 nextYearButton.setImageResource(R.drawable.date_arrow_gray);
             }
             setMonthTextColor();
         });
 
+        // Month button logic handling
         for (Map.Entry<Integer, Button> entry : monthButtons.entrySet()) {
             Button button = entry.getValue();
             button.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.month_selection_circles));
@@ -499,7 +519,9 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 @Override
                 public void onClick(View v) {
                     int month = entry.getKey();
+                    // Error handling to ensure user does not select future months
                     if(!selectedDate.withMonth(month).isAfter(LocalDate.now())) {
+                        // Select the month to be set
                         selectedDate = selectedDate.withMonth(month);
 
                         if (currentSelectedButton != null) {
@@ -513,6 +535,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
         }
 
 
+        // OK button logic action
         Button setButton = dialogView.findViewById(R.id.button_set);
         setButton.setOnClickListener(v -> {
             if (currentSelectedButton != null) {
@@ -520,10 +543,12 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
                 dialog.dismiss();
                 currentSelectedButton = null;
             } else {
+                // Error handling if user does not specify the month
                 Toast.makeText(getContext(), "Please select a month first", Toast.LENGTH_SHORT).show();
             }
         });
 
+        // Cancel button logic action
         Button cancelButton = dialogView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(v -> {
             dialog.dismiss();
@@ -533,6 +558,7 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
 
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
+        // Place dates in calendar dependent of month
         ArrayList<String> daysInMonthArray = new ArrayList<>();
         YearMonth yearMonth = YearMonth.from(date);
 
@@ -551,12 +577,14 @@ public class HomeFragment extends Fragment implements CalendarAdapter.OnItemList
     }
 
     private String monthYearFromDate(LocalDate date) {
+        // Format date correctly
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);
     }
 
     @Override
     public void onItemClick(int position, String dayText) {
+        // Handle clicking on dates in calendar to open journal entries
         if (!dayText.equals("") && !isJournalEntryOpen) {
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
             Fragment fragment = new OldJournalEntryFragment();

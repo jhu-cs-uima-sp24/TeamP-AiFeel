@@ -32,6 +32,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     @NonNull
     @Override
     public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Make the cells of the calendar
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -53,7 +54,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
             if (moodData.containsKey(dateKey)) {
                 Integer mood = moodData.get(dateKey);
-                int backgroundResource = getBackgroundResourceForMood(mood);  // Get the appropriate drawable based on mood
+                int backgroundResource = getBackgroundResourceForMood(mood);  // Get the mood emoji based on mood
                 holder.itemView.setBackgroundResource(backgroundResource);
             } else {
                 // Reset to default background if no mood data
@@ -61,9 +62,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             }
 
             if (date.isAfter(LocalDate.now())) {
+                // Error handling for future dates on calendar
                 holder.dayOfMonth.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.light_gray));
                 holder.itemView.setClickable(false);
             } else {
+                // Ensure non-future dates on calendar are clickable and are not gray
                 holder.dayOfMonth.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.black));
                 holder.itemView.setClickable(true);
             }
@@ -74,6 +77,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     private int getBackgroundResourceForMood(Integer mood) {
+        // Mood emoji assignment
         switch (mood) {
             case 1: return R.drawable.mood_bad;
             case 2: return R.drawable.mood_okay;
@@ -88,6 +92,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     @Override
     public int getItemCount() {
+        // Get number of days
         return daysOfMonth.size();
     }
 
