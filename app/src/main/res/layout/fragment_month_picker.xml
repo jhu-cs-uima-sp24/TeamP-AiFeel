@@ -12,7 +12,7 @@
 
         <ImageButton
             android:id="@+id/button_previous_year"
-            android:contentDescription="Previous"
+            android:contentDescription="@string/prevYear"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="fitCenter"
@@ -30,7 +30,7 @@
 
         <ImageButton
             android:id="@+id/button_next_year"
-            android:contentDescription="Next"
+            android:contentDescription="@string/nextYear"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="fitCenter"
@@ -58,7 +58,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Jan" />
+                android:text="@string/janMonth" />
 
             <Button
                 android:id="@+id/button_feb"
@@ -67,7 +67,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Feb" />
+                android:text="@string/febMonth" />
 
             <Button
                 android:id="@+id/button_mar"
@@ -76,7 +76,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Mar" />
+                android:text="@string/marMonth" />
 
             <Button
                 android:id="@+id/button_apr"
@@ -85,7 +85,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Apr" />
+                android:text="@string/aprMonth" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +100,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="May" />
+                android:text="@string/mayMonth" />
 
             <Button
                 android:id="@+id/button_jun"
@@ -109,7 +109,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Jun" />
+                android:text="@string/junMonth" />
 
             <Button
                 android:id="@+id/button_jul"
@@ -118,7 +118,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Jul" />
+                android:text="@string/julMonth" />
 
             <Button
                 android:id="@+id/button_aug"
@@ -127,7 +127,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Aug" />
+                android:text="@string/augMonth" />
         </LinearLayout>
 
         <LinearLayout
@@ -142,7 +142,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="sep" />
+                android:text="@string/sepMonth" />
 
             <Button
                 android:id="@+id/button_oct"
@@ -151,7 +151,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Oct" />
+                android:text="@string/octMonth" />
 
             <Button
                 android:id="@+id/button_nov"
@@ -160,7 +160,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Nov" />
+                android:text="@string/novMonth" />
 
             <Button
                 android:id="@+id/button_dec"
@@ -169,7 +169,7 @@
                 android:layout_columnWeight="1"
                 android:background="@null"
                 android:onClick="onMonthSelected"
-                android:text="Dec" />
+                android:text="@string/decMonth" />
         </LinearLayout>
     </LinearLayout>
 
@@ -185,13 +185,13 @@
             android:layout_height="wrap_content"
             android:textColor="@color/saffron_mango"
             android:background="@android:color/transparent"
-            android:text="OK" />
+            android:text="@string/okText" />
         <Button
             android:id="@+id/button_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/saffron_mango"
             android:background="@android:color/transparent"
-            android:text="CANCEL" />
+            android:text="@string/cancelText" />
     </LinearLayout>
 </LinearLayout>

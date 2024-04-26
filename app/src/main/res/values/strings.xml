@@ -56,6 +56,34 @@
     <string name="mood3">Average</string>
     <string name="mood4">Content</string>
     <string name="mood5">Joyful</string>
+    <string name="addImage">AddImage</string>
+    <string name="sun">SUN</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="streakPlaceholder">You\'ve been on a 0-day streak of journaling.</string>
+    <string name="calendarIcon">Jump to date</string>
+    <string name="prevMonth">Previous Month</string>
+    <string name="nextMonth">Next Month</string>
+    <string name="prevYear">Previous Year</string>
+    <string name="nextYear">Next Year</string>
+    <string name="okText">OK</string>
+    <string name="cancelText">CANCEL</string>
+    <string name="janMonth">Jan</string>
+    <string name="febMonth">Feb</string>
+    <string name="marMonth">Mar</string>
+    <string name="aprMonth">Apr</string>
+    <string name="mayMonth">May</string>
+    <string name="junMonth">Jun</string>
+    <string name="julMonth">Jul</string>
+    <string name="augMonth">Aug</string>
+    <string name="sepMonth">sep</string>
+    <string name="octMonth">Oct</string>
+    <string name="novMonth">Nov</string>
+    <string name="decMonth">Dec</string>
 
 
     <string-array name="gender_array">

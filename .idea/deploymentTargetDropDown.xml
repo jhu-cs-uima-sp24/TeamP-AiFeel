@@ -10,12 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_2_API_UpsideDownCakePrivacySandbox.avd" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_3a_XL_API_34.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-25T23:23:34.188093Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-26T02:09:05.820403Z" />
         </State>
       </entry>
     </value>
