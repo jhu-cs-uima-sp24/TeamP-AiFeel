@@ -6,9 +6,11 @@ As a functioning example, you can login with the following info with prepopulate
 - Email: demo_t5_v2@jhu.edu 
 - Password: 12345678
 
+Note: Please use either the above demo account OR make a new account. Do not use other existing/old accounts as they might not be fully integrated with our updated database structure.
+
 # Sprint 2:
 ## General State
-The app is near its finished state. Most of this sprint was aimed at integrating the database as well as AI features in the app.
+The app is at its finished state. Most of this sprint was aimed at integrating the database as well as AI features in the app.
 
 ## Implemented Features
 
