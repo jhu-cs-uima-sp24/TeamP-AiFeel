@@ -9,7 +9,7 @@ As a functioning example, you can login with the following info with prepopulate
 Note: Please use either the above demo account OR make a new account. Do not use other existing/old accounts as they might not be fully integrated with our updated database structure.
 
 # T6 Final Wrapup
-We dubbugged our program based on T5 feedback. 1) the edit profile/pal page does work with special characters, but you would need a new account from sprint 1, as we made database changes. Please try the provided account as an example or create a new one. 2) Also fixed bugs on the main page and stats. 3) fixed journal, main views for smaller and wider screens
+We dubbugged our program based on feedback. 1) the edit profile/pal page does work with special characters, but you would need a new account from sprint 1, as we made database changes. Please try the provided account as an example or create a new one. 2) Also fixed bugs on the main page and stats. 3) fixed journal, main views for smaller and wider screens
 
 # Sprint 2:
 ## General State
@@ -17,29 +17,29 @@ The app is at its finished state. Most of this sprint was aimed at integrating t
 
 ## Implemented Features
 
-### Login Activity (Lisa)
+### Login Activity
 - Change passward reset mechanism to the login activity
 - Change ImageButton to TextButton for sign up for better UI
 - Error prevention for too simple password
 - Implemented profile picture upload feature with firebase
   
 ### Home Fragment
-- Streak implementation (Lisa)
+- Streak implementation
     - Streak counter updating text at top
     - Updating streak fire visualizer corresponding to day of week which user has journaled in the current week
-- Calendar (Jonathan)
+- Calendar
     - Calendar future date cell error handling
     - Calendar future month arrow selector error handling
     - Calendar dialog future year arrow selector error handling
     - Calendar dialog future month button error handling
     - Mood emoji display in calendar cell background
-- Data visualization (Lisa)
+- Data visualization
     - Line chart for mood changes
     - Line chart added gradient backgound
     - Line chart with customized icon as y-axis
     - Piechart for monthly mood distribution
-    - 
-### Journal Fragment (Iris)
+      
+### Journal Fragment
  - Implementation of old journal entries
         - Navigatable from the calendar view
         - Error handling for sending an old entry to the AI
@@ -47,14 +47,14 @@ The app is at its finished state. Most of this sprint was aimed at integrating t
  - GPT integration to generate AI journal responses (Lisa also helped with this)
  - Some error handling to minimize AI hallucinations through prompting
 
-### Chat Fragment (Eric)
+### Chat Fragment
 - API call to allow user to chat with our chatbot
 - Cloud storage of chat history
 - Personalized chatbot role that fits the chatbot's age, gender, and persona
 - Different behavior when talking to users with different age and gender
 - Clear chat history button in the action bar 
 
-### Profile Fragment (Eric)
+### Profile Fragment 
 - Additional Error handling with storing user information in the database
 - More detailed persona builder using user selected personalities
 - Implemented profile picture upload feature, which is also displayed in chat
@@ -101,6 +101,7 @@ We have implemented most of the basic features that users interact with--login/s
 - Buttons in dialog which can be highlighted to select months
 - Streak display in xml file, with slots for empty and non-empty circles to keep track of streak
 - Inclusion of mood emoji in drawables which can be synced to calendar cells
+  
 ### Profile
 - User email, name, age, gender, notification setting, and pal data are prepopulated from firebase data
 - Edit profile button leads to edit profile activity
