@@ -1,4 +1,4 @@
-# TeamP-AiFeel
+# AiFeel
 AiFeel is a comforting app which allows users to write journal entries. Our unique approach of integrating AI within journaling allows users to get a better sense of their moods while journaling, keep track of mood stats/analytics through visualization techniques, and talk to a customizable AI Pen-pal to help interpret journal entries & provide assistance/advice whenever needed.
 
 You are able to login through any email and password by creating your own account and signing into it.
@@ -9,7 +9,7 @@ As a functioning example, you can login with the following info with prepopulate
 Note: Please use either the above demo account OR make a new account. Do not use other existing/old accounts as they might not be fully integrated with our updated database structure.
 
 # T6 Final Wrapup
-We dubbugged our program based on feedback. 1) the edit profile/pal page does work with special characters, but you would need a new account from sprint 1, as we made database changes. Please try the provided account as an example or create a new one. 2) Also fixed bugs on the main page and stats. 3) fixed journal, main views for smaller and wider screens
+We debugged our program based on feedback. 1) the edit profile/pal page does work with special characters, but you would need a new account from sprint 1, as we made database changes. Please try the provided account as an example or create a new one. 2) Also fixed bugs on the main page and stats. 3) fixed journal, main views for smaller and wider screens
 
 # Sprint 2:
 ## General State
